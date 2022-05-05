@@ -80,15 +80,27 @@ if (!createObject('modSystemSetting', [
 }
 
 if (!createObject('modDashboardWidget', [
-    'name' => 'dashbored.dinosaur-game.name',
-    'description' => 'dashbored.dinosaur-game.desc',
+    'name' => 'dashbored.dino_game.name',
+    'description' => 'dashbored.dino_game.desc',
     'type' => 'file',
     'size' => 'one-third',
     'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/dinosaurgame.class.php',
     'namespace' => 'dashbored',
     'lexicon' => 'dashbored:default',
 ], 'name', false)) {
-    echo "Error creating dinosaur-game widget.\n";
+    echo "Error creating dino-game widget.\n";
+}
+
+if (!createObject('modDashboardWidget', [
+    'name' => 'dashbored.weather.name',
+    'description' => 'dashbored.weather.desc',
+    'type' => 'file',
+    'size' => 'one-third',
+    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/weather.class.php',
+    'namespace' => 'dashbored',
+    'lexicon' => 'dashbored:default',
+], 'name', false)) {
+    echo "Error creating weather widget.\n";
 }
 
 $settings = include dirname(dirname(__FILE__)).'/_build/data/transport.settings.php';
