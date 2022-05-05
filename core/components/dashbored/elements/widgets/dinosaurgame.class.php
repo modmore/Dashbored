@@ -8,10 +8,9 @@ class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
     {
         $this->initialize();
 
-        $this->widget->set('name', 'Dinosaur Game'/*$this->modx->lexicon('dashbored.dinosaur_game.name')*/);
+        $this->widget->set('name', $this->modx->lexicon('dashbored.dino_game.name'));
 
         $this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/index.css');
-        //$this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/extra.css');
         
         $this->controller->addHtml(<<<HTML
 <script src="{$this->dashbored->config['assets_url']}dinogame/js/dinogame.js"></script>
@@ -24,16 +23,16 @@ HTML
         );
         
         return <<<HTML
-<div class="dashbored-dinosaurgame-inner-widget" style="height:100%;">
+<div class="dashbored-dinosaurgame-inner-widget">
     <div class="dashbored-spinner" id="dashbored{$this->widget->get('id')}-spinner"></div>
     <div class="offline">
     <div id="messageBox" class="sendmessage">
-         <h1 style="text-align: center; font-family: 'Open Sans', sans-serif;">Press Space to start</h1>
+         <h1 style="text-align: center; font-family: 'Open Sans', sans-serif;">{$this->modx->lexicon('dashbored.dino_game.press_space_to_start')}</h1>
          <div class="niokbutton" onclick="okbuttonsend()"></div>
     </div>
     <div id="#dashbored{$this->widget->get('id')}-dinosaurgame" class="dashbored-dinosaurgame">
         <div id="main-content">
-            <div class="icon icon-offline" alt=""></div>
+            <div class="icon icon-offline"></div>
         </div>
         <div id="offline-resources">
             <img id="offline-resources-1x" src="{$this->dashbored->config['assets_url']}dinogame/assets/default_100_percent/100-offline-sprite.png">
@@ -47,15 +46,10 @@ HTML
     </div>
 </div>
 <script>
-    //Prevent spacebar from scrolling browser window.
+    // Prevent spacebar from scrolling browser window.
     var widget = document.getElementById("dashboard-block-{$this->widget->get('id')}");
-    document.addEventListener('click', function(event) {
-        if (widget.contains(event.target)) {
-            widget.dataset.active = 'true';
-        } 
-        else {
-            widget.dataset.active = 'false';
-        }
+    document.addEventListener('click', function(e) {
+        widget.dataset.active = widget.contains(e.target) ? 'true' : 'false';
     });
     
     window.addEventListener('keydown', (e) => {  
