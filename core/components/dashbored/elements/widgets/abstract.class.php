@@ -44,12 +44,12 @@ HTML
             'connectorUrl' => $this->dashbored->config['connector_url'],
             'version' => $this->dashbored->version,
         ]);
-        $this->controller->addHtml(<<<HTML
-<script>
-    Dashbored.config = $config;
-</script>
-HTML
-        );
+//        $this->controller->addHtml(<<<HTML
+//<script>
+//    Dashbored.config = $config;
+//</script>
+//HTML
+//        );
     }
 }
 return 'DashboredAbstractDashboardWidget';

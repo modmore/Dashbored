@@ -11,7 +11,7 @@ class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
         $this->widget->set('name', 'Dinosaur Game'/*$this->modx->lexicon('dashbored.dinosaur_game.name')*/);
 
         $this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/index.css');
-        $this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/extra.css');
+        //$this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/extra.css');
         
         $this->controller->addHtml(<<<HTML
 <script src="{$this->dashbored->config['assets_url']}dinogame/js/dinogame.js"></script>
@@ -24,7 +24,7 @@ HTML
         );
         
         return <<<HTML
-<div class="dashbored-dinosaurgame-inner-widget">
+<div class="dashbored-dinosaurgame-inner-widget" style="height:100%;">
     <div class="dashbored-spinner" id="dashbored{$this->widget->get('id')}-spinner"></div>
     <div class="offline">
     <div id="messageBox" class="sendmessage">
@@ -47,15 +47,24 @@ HTML
     </div>
 </div>
 <script>
-    // Prevent spacebar from scrolling browser window.
-    window.addEventListener('keydown', (e) => {  
-        if (e.keyCode === 32 && e.target === document.body) {  
-            e.preventDefault();  
+    //Prevent spacebar from scrolling browser window.
+    var widget = document.getElementById("dashboard-block-{$this->widget->get('id')}");
+    document.addEventListener('click', function(event) {
+        if (widget.contains(event.target)) {
+            widget.dataset.active = 'true';
+        } 
+        else {
+            widget.dataset.active = 'false';
         }
-        elseif (e.keyCode === 32) {
-            e.preventDefault();  
+    });
+    
+    window.addEventListener('keydown', (e) => {  
+        if (e.keyCode === 32) {
             let box = document.getElementById("messageBox");
             box.style.visibility = "hidden";
+            if (widget.dataset.active === 'true') {
+                 e.preventDefault();
+            }
         }
     });
 </script>
