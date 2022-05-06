@@ -54,6 +54,17 @@ if (!createObject('modSystemSetting', [
     echo "Error creating dashbored.assets_path setting.\n";
 }
 
+if (!createObject('modSystemSetting', [
+    'key' => 'dashbored.weather.default_city',
+    'value' => 'Amsterdam',
+    'xtype' => 'textfield',
+    'namespace' => 'dashbored',
+    'area' => 'Weather',
+    'editedon' => time(),
+], 'key', false)) {
+    echo "Error creating dashbored.weather.default_city setting.\n";
+}
+
 /* Fetch assets url */
 $url = 'http';
 if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {

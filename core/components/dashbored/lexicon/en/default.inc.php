@@ -8,3 +8,6 @@ $_lang['dashbored.dino_game.press_space_to_start'] = 'Press Space to start';
 // Weather
 $_lang['dashbored.weather.name'] = 'Weather';
 $_lang['dashbored.weather.desc'] = 'Local weather forecast for your MODX dashboard.';
+$_lang['dashbored.weather.precip'] = 'Precipitation';
+$_lang['dashbored.weather.humidity'] = 'Humidity';
+$_lang['dashbored.weather.wind'] = 'Wind';

@@ -1,6 +1,8 @@
 <?php
 
 //require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+use MODX\Revolution\Smarty\modSmarty;
+
 
 /**
  * Service class for Dashbored.
@@ -15,6 +17,11 @@ class Dashbored
      * @var modX
      */
     public $modx;
+
+    /**
+     * @var modSmarty
+     */
+    public $smarty;
 
     /**
      * Configuration options loaded from system settings
@@ -64,6 +71,11 @@ class Dashbored
             'connector_url' => $assetsUrl . 'connector.php',
         ], $config);
 
+
+        $this->smarty = new modSmarty($modx, [
+            'template_dir' => $this->config['templates_path']
+        ]);
+        
         if ($this->modx->lexicon) {
             $this->modx->lexicon->load('dashbored:default');
         }

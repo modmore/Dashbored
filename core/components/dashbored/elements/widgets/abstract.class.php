@@ -31,25 +31,21 @@ abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterf
         $this->assetsUrl = $this->dashbored->config['assets_url'];
         $this->controller->addCss($this->assetsUrl . 'css/mgr.css?v=' . urlencode($this->dashbored->version));
 
-        // Manually load the "dashbored:default" lexicon so that translations can be accessed within the widgets.
-        $this->controller->addHtml(<<<HTML
-<script>
-    Ext.applyIf(MODx.lang, {$this->modx->toJSON($this->modx->lexicon->loadCache('dashbored'))});
-</script>
-HTML
-        );
-
         $config = $this->modx->toJSON([
             'assetsUrl' => $this->assetsUrl,
             'connectorUrl' => $this->dashbored->config['connector_url'],
             'version' => $this->dashbored->version,
         ]);
-//        $this->controller->addHtml(<<<HTML
-//<script>
-//    Dashbored.config = $config;
-//</script>
-//HTML
-//        );
+        $this->controller->addHtml(<<<HTML
+<script src="{$this->assetsUrl}dashbored.js"></script>
+<script>
+Ext.onReady(function() {
+    Ext.applyIf(MODx.lang, {$this->modx->toJSON($this->modx->lexicon->loadCache('dashbored'))});
+    Dashbored.config = $config;
+});
+</script>
+HTML
+        );
     }
 }
 return 'DashboredAbstractDashboardWidget';

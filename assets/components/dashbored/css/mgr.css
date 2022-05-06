@@ -1,0 +1,108 @@
+.dashbored-spinner {
+    animation: rotate 2s linear infinite;
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+    width: 50px;
+    height: 50px;
+}
+
+.dashbored-spinner .path {
+    stroke: hsl(210, 100%, 100%);
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+.dashbored-weather-widget {
+    height: 300px;
+    padding: 0 12px;
+    color: #fff;
+}
+.dashbored-weather-widget .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.dashbored-weather-widget .region {
+    text-align: right;
+    height: 80px;
+    text-transform: uppercase;
+}
+.dashbored-weather-widget .region .main {
+    font-size: 1.6em;
+    font-weight: 500;
+}
+.dashbored-weather-widget .region .row {
+    display: flex;
+    justify-content: end;
+    gap: 6px;
+}   
+.dashbored-weather-widget .current {
+    text-align: center;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.dashbored-weather-widget .current .current-row {
+    display: flex;
+    justify-content: center;
+    font-size: 4em;
+}
+.dashbored-weather-widget .current .icon {
+    padding-right: 10px;
+}
+.dashbored-weather-widget .current .comment {
+    margin-top: -6px;
+    font-size: 1.5em;
+}
+.dashbored-weather-widget .current .extras-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 11px;
+    font-weight: 300;
+    margin-top: 6px;
+}
+.dashbored-weather-widget .outlook {
+    height: 120px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: end;
+}
+.dashbored-weather-widget .outlook .day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.dashbored-weather-widget .outlook .temp {
+    font-weight: 700;
+    font-size: 14px;
+}
+.dashbored-weather-widget .outlook img {
+    height: 20px;
+}
