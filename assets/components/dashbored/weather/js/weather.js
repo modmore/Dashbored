@@ -8,8 +8,8 @@ function DashboredWeather(containerId) {
     
     this.region = this.containerEl.querySelector('.region');
     this.region.main = this.region.querySelector('.main');
-    this.region.secondary = this.region.querySelector('.secondary');
     this.region.dayhour = this.region.querySelector('.dayhour');
+    this.region.row = this.region.querySelector('.row');
     
     this.current = this.containerEl.querySelector('.current');
     this.current.icon = this.current.querySelector('.icon');
@@ -57,7 +57,12 @@ DashboredWeather.prototype = {
         // Region
         let split = data.region.split(', ');
         this.region.main.textContent = split[0];
-        this.region.secondary.innerHTML = '&bull;&nbsp;&nbsp;' + split[1];
+        if (typeof split[1] !== 'undefined') {
+            let second = document.createElement('span');
+            second.classList.add('secondary');
+            second.innerHTML = '&bull;&nbsp;&nbsp;' + split[1];
+            this.region.row.appendChild(second);
+        }
         this.region.dayhour.textContent = data.currentConditions.dayhour;
         
         // Current

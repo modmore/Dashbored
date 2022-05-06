@@ -39,7 +39,6 @@ HTML
              <p class="main"></p>
              <div class="row">
                  <p class="dayhour"></p>
-                 <p class="secondary"></p>
              </div>
         </div>
         <div class="current">
