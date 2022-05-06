@@ -75,6 +75,9 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
             $data['currentConditions']['wind'] = $data['currentConditions']['wind'][$this->windType];
             $data['currentConditions']['temp_type'] = $this->tempType;
 
+            // Remove the first day as it's the same as the current day.
+            array_shift($data['next_days']);
+            
             foreach ($data['next_days'] as $k => $day) {
                 $data['next_days'][$k]['max_temp'] = $data['next_days'][$k]['max_temp'][$this->tempType];
             }
