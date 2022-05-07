@@ -8,10 +8,11 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
     {
         $this->initialize();
 
-        $this->widget->set('name', $this->modx->lexicon('dashbored.weather.name'));
-
         $this->controller->addCss($this->dashbored->config['assets_url'] . 'css/mgr.css');
 
+        $titleBar = $this->getWidgetTitleBar('weather');
+        $this->widget->set('name', $titleBar);
+        
         $this->controller->addHtml(<<<HTML
 <style>
     #dashboard-block-{$this->widget->get('id')} {
@@ -26,6 +27,7 @@ Ext.onReady(function() {
     new DashboredWeather('#dashbored{$this->widget->get('id')}-weather').setup('hongkong'); // todo: get dynamic query!
 });
 </script>
+
 HTML
         );
 

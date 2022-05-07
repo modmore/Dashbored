@@ -35,6 +35,37 @@
         stroke-dashoffset: -124;
     }
 }
+.dashbored-widget-title {
+    display: flex;
+    align-items: center;
+}
+.dashbored-title-btns {
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+}
+.dashbored-title-btn-outer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 32px;
+}
+.dashbored-title-btn {
+    position: absolute;
+    margin: 0;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    left: 0;
+    right: 0;
+}
+.dashbored-title-btn i {
+    color: #00decc;
+}
+.dashbored-title-btn:hover i {
+    color: #ff9640;
+}
 
 .dashbored-weather-widget {
     height: 300px;

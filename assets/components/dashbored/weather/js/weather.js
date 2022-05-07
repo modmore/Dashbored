@@ -4,6 +4,7 @@ function DashboredWeather(containerId) {
     }
     DashboredWeather.instance_ = this;
 
+    this.window = {};
     this.containerEl = document.querySelector(containerId);
     
     this.region = this.containerEl.querySelector('.region');
@@ -22,10 +23,36 @@ function DashboredWeather(containerId) {
     this.current.wind = this.current.querySelector('.wind');
     
     this.outlook = this.containerEl.querySelector('.outlook');
+
+    document.querySelector('.dashbored-title-btn.config.weather').addEventListener('click', (e) => {
+        this.openSettings();
+    });
 }
 window['DashboredWeather'] = DashboredWeather;
 
+DashboredWeather.config = {};
+
 DashboredWeather.prototype = {
+    openSettings: function() {
+        if (this.dashboredSettingsWindow) {
+            this.dashboredSettingsWindow.destroy();
+        }
+        this.dashboredSettingsWindow = MODx.load({
+            xtype: 'dashboredweather-settings'
+            ,listeners: {
+                'success': {fn: function() {
+                        alert('success');
+                    },scope:this},
+                'failure': {fn: function(r) {
+                        alert('failure');
+                    }, scope: this
+                }
+            }
+        });
+        //this.dashboredSettingsWindow.setValues(values);
+        this.dashboredSettingsWindow.show();
+    },
+    
     loadData: function(query) {
         let that = this;
         
@@ -100,7 +127,6 @@ DashboredWeather.prototype = {
             that.outlook.appendChild(div);
         });
         
-        
         this.disableSpinner();
         
     },
@@ -113,3 +139,58 @@ DashboredWeather.prototype = {
         this.loadData(query);
     }
 }
+
+DashboredWeather.Settings = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: 'Dashbored Weather Configuration',
+        url: DashboredWeather.config.connectorUrl,
+        baseParams: {
+            action: 'mgr/weather/save'
+        },
+        layout: 'form',
+        autoHeight: true,
+        allowDrop: false,
+        modal: true,
+        fileUpload: true,
+        width: 600,
+        bwrapCssClass: 'x-window-with-tabs',
+        fields: [{
+            xtype: 'modx-tabs',
+            defaults: {
+                layout: 'form'
+            },
+            items: [{
+                title: 'Measurements',
+                items: [{
+                    xtype: 'modx-combo',
+                    fieldLabel: 'Temperature Measurement',
+                    name: 'temp_type',
+                    anchor: '100%',
+                },{
+                    xtype: 'label',
+                    cls: 'desc-under',
+                    html: 'Select celsius or fahrenheit'
+                },{
+                    xtype: 'modx-combo',
+                    fieldLabel: 'Distance Measurement',
+                    name: 'distance_type',
+                    anchor: '100%',
+                },{
+                    xtype: 'label',
+                    cls: 'desc-under',
+                    html: 'Select kilometres or miles'
+                }]
+            },{
+                title: 'Background',
+                items: []
+            },{
+                title: 'API',
+                items: []
+            }]
+        }]
+    });
+    DashboredWeather.Settings.superclass.constructor.call(this, config);
+};
+Ext.extend(DashboredWeather.Settings, MODx.Window);
+Ext.reg('dashboredweather-settings', DashboredWeather.Settings);

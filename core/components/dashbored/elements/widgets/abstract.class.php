@@ -47,5 +47,26 @@ Ext.onReady(function() {
 HTML
         );
     }
+    
+    public function getWidgetTitleBar($type)
+    {
+        return <<<HTML
+<div class="dashbored-widget-title">
+    <span>{$this->modx->lexicon("dashbored.{$type}.name")}</span>
+    <div class="dashbored-title-btns">
+        <div class="dashbored-title-btn-outer">
+            <button title="{$this->modx->lexicon('dashbored.configuration')}" class="dashbored-title-btn config {$type}">
+                <i class="icon icon-cog"></i>
+            </button>
+        </div>
+        <div class="dashbored-title-btn-outer">
+            <button title="{$this->modx->lexicon('dashbored.refresh')}" class="dashbored-title-btn refresh {$type}">
+                <i class="icon icon-refresh"></i>
+            </button>
+        </div>
+    </div>
+</div>
+HTML;
+    }
 }
 return 'DashboredAbstractDashboardWidget';
