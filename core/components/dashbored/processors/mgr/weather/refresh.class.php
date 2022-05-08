@@ -6,6 +6,7 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
     protected $location;
     protected $tempType;
     protected $windType;
+    protected $refresh;
     
     const ENDPOINT = 'https://weatherdbi.herokuapp.com/data/weather/';
 
@@ -42,6 +43,8 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
         $this->windType = $windType
             ? filter_var($windType, FILTER_SANITIZE_STRING)
             : $this->modx->getOption('dashbored.weather.default_wind_type', '', 'km', true);
+
+        $this->refresh = (bool)$this->getProperty('refresh');
         
         return true;
     }
@@ -59,7 +62,8 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
      */
     protected function getData(): array
     {
-        if (!$data = $this->modx->cacheManager->get('weather_data', Dashbored::$cacheOptions)) {
+        $data = $this->modx->cacheManager->get('weather_data', Dashbored::$cacheOptions);
+        if ($this->refresh || !$data) {
             $c = curl_init();
             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($c, CURLOPT_URL, self::ENDPOINT . $this->location);
@@ -87,7 +91,7 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
             $this->modx->cacheManager->set('weather_data', $data, 7200, Dashbored::$cacheOptions);
         }
         
-        return $data;
+        return $data ?? [];
     }
 }
 return 'DashboredWeatherRefreshProcessor';

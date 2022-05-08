@@ -1,6 +1,6 @@
 .dashbored-spinner {
     animation: rotate 2s linear infinite;
-    z-index: 2;
+    z-index: 10;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -71,6 +71,16 @@
     height: 300px;
     padding: 0 12px;
     color: #fff;
+}
+.dashbored-weather-mask {
+    visibility: hidden;
+    position: absolute;
+    margin: -10px;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background: rgb(255,255,255);
+    background: linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(123,217,238,1) 22%, rgba(0,181,222,1) 70%);
 }
 .dashbored-weather-widget .column {
     display: flex;

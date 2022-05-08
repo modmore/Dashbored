@@ -27,6 +27,9 @@ function DashboredWeather(containerId) {
     document.querySelector('.dashbored-title-btn.config.weather').addEventListener('click', (e) => {
         this.openSettings();
     });
+    document.querySelector('.dashbored-title-btn.refresh.weather').addEventListener('click', (e) => {
+        this.refresh();
+    });
 }
 window['DashboredWeather'] = DashboredWeather;
 
@@ -53,13 +56,17 @@ DashboredWeather.prototype = {
         this.dashboredSettingsWindow.show();
     },
     
-    loadData: function(query) {
+    loadData: function(query = '', ignoreCache = false) {
         let that = this;
+
+        this.enableSpinner();
         
         MODx.Ajax.request({
             url: Dashbored.config.connectorUrl
             ,params: {
-                action: 'mgr/weather/refresh'
+                action: 'mgr/weather/refresh',
+                location: query,
+                refresh: ignoreCache ? 1 : ''
             }
             ,listeners: {
                 success: {
@@ -93,6 +100,7 @@ DashboredWeather.prototype = {
         this.region.dayhour.textContent = data.currentConditions.dayhour;
         
         // Current
+        this.current.icon.innerHTML = '';
         let img = document.createElement('img');
         img.src = data.currentConditions.iconURL;
         this.current.icon.appendChild(img);
@@ -106,6 +114,7 @@ DashboredWeather.prototype = {
         this.current.wind.innerHTML = _('dashbored.weather.wind') + ': <strong>' + data.currentConditions.wind + '</strong>';
         
         // Outlook
+        this.outlook.innerHTML = '';
         data.next_days.forEach(function(day) {
             let div = document.createElement('div');
             div.classList.add('day');
@@ -132,7 +141,15 @@ DashboredWeather.prototype = {
     },
     
     disableSpinner: function() {
-        document.querySelector('.dashbored-weather-widget .dashbored-spinner').style.visibility = 'hidden';
+        document.querySelector('.dashbored-weather-mask').style.visibility = 'hidden';
+    },
+
+    enableSpinner: function() {
+        document.querySelector('.dashbored-weather-mask').style.visibility = 'visible';
+    },
+    
+    refresh: function() {
+        this.loadData('singapore', true);
     },
     
     setup: function(query) {
@@ -151,7 +168,6 @@ DashboredWeather.Settings = function(config) {
         layout: 'form',
         autoHeight: true,
         allowDrop: false,
-        modal: true,
         fileUpload: true,
         width: 600,
         bwrapCssClass: 'x-window-with-tabs',
@@ -161,8 +177,17 @@ DashboredWeather.Settings = function(config) {
                 layout: 'form'
             },
             items: [{
-                title: 'Measurements',
+                title: 'Settings',
                 items: [{
+                    xtype: 'textfield',
+                    fieldLabel: 'City',
+                    name: 'location',
+                    anchor: '100%'
+                },{
+                    xtype: 'label',
+                    cls: 'desc-under',
+                    html: 'Type the city name without spaces. e.g. newyork, hongkong, london etc.'
+                },{
                     xtype: 'modx-combo',
                     fieldLabel: 'Temperature Measurement',
                     name: 'temp_type',
