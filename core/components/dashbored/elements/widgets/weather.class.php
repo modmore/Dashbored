@@ -4,7 +4,11 @@ require_once __DIR__ . '/abstract.class.php';
 
 class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 {
-    public function render()
+    public const DEFAULT_LOCATION = 'amsterdam';
+    public const DEFAULT_TEMP_TYPE = 'c';
+    public const DEFAULT_DISTANCE_TYPE = 'km';
+    
+    public function render(): string
     {
         $this->initialize();
 
@@ -12,6 +16,13 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 
         $titleBar = $this->getWidgetTitleBar('weather');
         $this->widget->set('name', $titleBar);
+        
+        $props = $this->widget->get('properties');
+        $props = [
+            'location' => $props['location'] ?? self::DEFAULT_LOCATION,
+            'temp_type' => $props['temp_type'] ?? self::DEFAULT_TEMP_TYPE,
+            'distance_type' => $props['distance_type'] ?? self::DEFAULT_DISTANCE_TYPE,
+        ];
         
         $this->controller->addHtml(<<<HTML
 <style>
@@ -24,7 +35,7 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 <script src="{$this->dashbored->config['assets_url']}weather/js/weather.js"></script>
 <script>
 Ext.onReady(function() {
-    new DashboredWeather('#dashbored{$this->widget->get('id')}-weather').setup('hongkong'); // todo: get dynamic query!
+    new DashboredWeather('#dashbored{$this->widget->get('id')}-weather').setup();
 });
 </script>
 
@@ -37,13 +48,16 @@ HTML
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
     </svg>
 </div>
-<div id="dashbored{$this->widget->get('id')}-weather" class="dashbored-weather-widget">
+<div id="dashbored{$this->widget->get('id')}-weather" 
+    data-id="{$this->widget->get('id')}" 
+    data-location="{$props['location']}" 
+    data-temptype="{$props['temp_type']}" 
+    data-distancetype="{$props['distance_type']}" 
+    class="dashbored-weather-widget">
     <div class="column">
         <div class="region">
              <p class="main"></p>
-             <div class="row">
-                 <p class="dayhour"></p>
-             </div>
+             <div class="row"></div>
         </div>
         <div class="current">
             <div class="current-row">

@@ -11,3 +11,7 @@ $_lang['dashbored.weather.desc'] = 'Local weather forecast for your MODX dashboa
 $_lang['dashbored.weather.precip'] = 'Precipitation';
 $_lang['dashbored.weather.humidity'] = 'Humidity';
 $_lang['dashbored.weather.wind'] = 'Wind';
+$_lang['dashbored.weather.celsius'] = 'Celsius - ℃';
+$_lang['dashbored.weather.fahrenheit'] = 'Fahrenheit - ℉';
+$_lang['dashbored.weather.kilometres'] = 'Kilometres';
+$_lang['dashbored.weather.miles'] = 'Miles';

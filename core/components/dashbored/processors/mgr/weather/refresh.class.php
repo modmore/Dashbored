@@ -1,8 +1,13 @@
 <?php
 
+use MODX\Revolution\modDashboardWidget;
+
+require_once dirname(__DIR__, 3) . '/elements/widgets/weather.class.php';
+
 class DashboredWeatherRefreshProcessor extends modProcessor {
     
     protected $dashbored;
+    protected $widget;
     protected $location;
     protected $tempType;
     protected $windType;
@@ -27,22 +32,17 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
             $this->modx->getOption('core_path') . 'components/dashbored/');
         $this->dashbored = $this->modx->getService('dashbored', 'Dashbored', $corePath . 'model/dashbored/');
         
-        $location = $this->getProperty('location');
-        $this->location = $location 
-            ? filter_var($location, FILTER_SANITIZE_STRING) 
-            : $this->modx->getOption('dashbored.weather.default_city', '', 'amsterdam', true);
-
-        // 'c' or 'f'
-        $tempType = $this->getProperty('temp_type');
-        $this->tempType = $tempType
-            ? filter_var($tempType, FILTER_SANITIZE_STRING)
-            : $this->modx->getOption('dashbored.weather.default_temperature_type', '', 'c', true);
-
-        // 'km' or 'mile'
-        $windType = $this->getProperty('wind_type');
-        $this->windType = $windType
-            ? filter_var($windType, FILTER_SANITIZE_STRING)
-            : $this->modx->getOption('dashbored.weather.default_wind_type', '', 'km', true);
+        $this->widget = $this->modx->getObject(modDashboardWidget::class, [
+            'id' => $this->getProperty('id')
+        ]);
+        if (!$this->widget) {
+            return false;
+        }
+        
+        $props = $this->widget->get('properties');
+        $this->location = $props['location'] ?? WeatherDashboardWidget::DEFAULT_LOCATION;
+        $this->tempType = $props['temp_type'] ?? WeatherDashboardWidget::DEFAULT_TEMP_TYPE;
+        $this->windType = $props['distance_type'] ?? WeatherDashboardWidget::DEFAULT_DISTANCE_TYPE;
 
         $this->refresh = (bool)$this->getProperty('refresh');
         
@@ -63,6 +63,7 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
     protected function getData(): array
     {
         $data = $this->modx->cacheManager->get('weather_data', Dashbored::$cacheOptions);
+        
         if ($this->refresh || !$data) {
             $c = curl_init();
             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
