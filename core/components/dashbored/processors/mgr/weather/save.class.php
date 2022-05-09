@@ -2,6 +2,8 @@
 
 use MODX\Revolution\modDashboardWidget;
 
+require_once dirname(__DIR__, 3) . '/elements/widgets/weather.class.php';
+
 class DashboredWeatherSaveProcessor extends modProcessor {
 
     protected $dashbored;
@@ -49,11 +51,13 @@ class DashboredWeatherSaveProcessor extends modProcessor {
 
         // 'c' or 'f'
         $tempType = $this->getProperty('temp_type');
-        $properties['temp_type'] = $tempType ? filter_var($tempType, FILTER_SANITIZE_STRING) : 'c';
+        $properties['temp_type'] = $tempType 
+            ? filter_var($tempType, FILTER_SANITIZE_STRING) : WeatherDashboardWidget::DEFAULT_TEMP_TYPE;
 
         // 'km' or 'mile'
-        $windType = $this->getProperty('wind_type');
-        $properties['distance_type'] = $windType ? filter_var($windType, FILTER_SANITIZE_STRING) : 'km';
+        $distanceType = $this->getProperty('distance_type');
+        $properties['distance_type'] = $distanceType 
+            ? filter_var($distanceType, FILTER_SANITIZE_STRING) : WeatherDashboardWidget::DEFAULT_DISTANCE_TYPE;
         
         $widget->set('properties', $properties);
         $widget->save();

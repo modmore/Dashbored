@@ -10,7 +10,7 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
     protected $widget;
     protected $location;
     protected $tempType;
-    protected $windType;
+    protected $distanceType;
     protected $refresh;
     
     const ENDPOINT = 'https://weatherdbi.herokuapp.com/data/weather/';
@@ -42,7 +42,7 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
         $props = $this->widget->get('properties');
         $this->location = $props['location'] ?? WeatherDashboardWidget::DEFAULT_LOCATION;
         $this->tempType = $props['temp_type'] ?? WeatherDashboardWidget::DEFAULT_TEMP_TYPE;
-        $this->windType = $props['distance_type'] ?? WeatherDashboardWidget::DEFAULT_DISTANCE_TYPE;
+        $this->distanceType = $props['distance_type'] ?? WeatherDashboardWidget::DEFAULT_DISTANCE_TYPE;
 
         $this->refresh = (bool)$this->getProperty('refresh');
         
@@ -72,19 +72,23 @@ class DashboredWeatherRefreshProcessor extends modProcessor {
             curl_close($c);
 
             $data = json_decode($data, true);
-            unset($data['contact_author']);
 
-            $data['currentConditions']['temp'] = $data['currentConditions']['temp'][$this->tempType];
-            $data['currentConditions']['temp_type'] = $this->tempType;
+            $data['current'] = $data['currentConditions'];
+            unset($data['currentConditions']);
+            $data['outlook'] = $data['next_days'];
+            unset($data['next_days']);
+            
+            $data['current']['temp'] = $data['current']['temp'][$this->tempType];
+            $data['current']['temp_type'] = $this->tempType;
 
-            $data['currentConditions']['wind'] = $data['currentConditions']['wind'][$this->windType];
-            $data['currentConditions']['temp_type'] = $this->tempType;
+            $data['current']['wind'] = $data['current']['wind'][$this->distanceType];
+            $data['current']['distance_type'] = $this->distanceType;
 
             // Remove the first day as it's the same as the current day.
-            array_shift($data['next_days']);
+            array_shift($data['outlook']);
             
-            foreach ($data['next_days'] as $k => $day) {
-                $data['next_days'][$k]['max_temp'] = $data['next_days'][$k]['max_temp'][$this->tempType];
+            foreach ($data['outlook'] as $k => $day) {
+                $data['outlook'][$k]['max_temp'] = $data['outlook'][$k]['max_temp'][$this->tempType];
             }
             
             $data = filter_var_array($data, FILTER_SANITIZE_STRING) ?? [];

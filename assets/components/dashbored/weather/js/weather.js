@@ -15,7 +15,6 @@ function DashboredWeather(containerId) {
     this.current = this.containerEl.querySelector('.current');
     this.current.icon = this.current.querySelector('.icon');
     this.current.temp = this.current.querySelector('.temp');
-    this.current.degrees = this.current.querySelector('.degrees');
     this.current.temp_type = this.current.querySelector('.temp_type');
     this.current.comment = this.current.querySelector('.comment');
     this.current.precip = this.current.querySelector('.precip');
@@ -98,7 +97,9 @@ DashboredWeather.prototype = {
     },
     
     render: function(data) {
-        let that = this;
+        let that = this,
+            tempType = data.current.temp_type === 'c' ? _('dashbored.weather.celsius_symbol') : _('dashbored.weather.fahrenheit_symbol'),
+            distanceType = data.current.distance_type === 'km' ? _('dashbored.weather.kph') : _('dashbored.weather.mph');
         
         // Region
         let split = data.region.split(', ');
@@ -107,7 +108,7 @@ DashboredWeather.prototype = {
         
         let dayhour = document.createElement('span');
         dayhour.classList.add('dayhour');
-        dayhour.textContent = data.currentConditions.dayhour;
+        dayhour.textContent = data.current.dayhour;
         this.region.row.appendChild(dayhour);
         
         if (typeof split[1] !== 'undefined') {
@@ -120,20 +121,19 @@ DashboredWeather.prototype = {
         // Current
         this.current.icon.innerHTML = '';
         let img = document.createElement('img');
-        img.src = data.currentConditions.iconURL;
+        img.src = data.current.iconURL;
         this.current.icon.appendChild(img);
         
-        this.current.temp.textContent = data.currentConditions.temp;
-        this.current.degrees.innerHTML = "&deg;";
-        this.current.temp_type.textContent = data.currentConditions.temp_type;
-        this.current.comment.textContent = data.currentConditions.comment;
-        this.current.precip.innerHTML = _('dashbored.weather.precip') + ': <strong>' + data.currentConditions.precip + '</strong>';
-        this.current.humidity.innerHTML = _('dashbored.weather.humidity') + ': <strong>' + data.currentConditions.humidity + '</strong>';
-        this.current.wind.innerHTML = _('dashbored.weather.wind') + ': <strong>' + data.currentConditions.wind + '</strong>';
+        this.current.temp.textContent = data.current.temp;
+        this.current.temp_type.textContent = tempType;
+        this.current.comment.textContent = data.current.comment;
+        this.current.precip.innerHTML = _('dashbored.weather.precip') + ': <strong>' + data.current.precip + '</strong>';
+        this.current.humidity.innerHTML = _('dashbored.weather.humidity') + ': <strong>' + data.current.humidity + '</strong>';
+        this.current.wind.innerHTML = _('dashbored.weather.wind') + ': <strong>' + data.current.wind + ' ' + distanceType + '</strong>';
         
         // Outlook
         this.outlook.innerHTML = '';
-        data.next_days.forEach(function(day) {
+        data.outlook.forEach(function(day) {
             let div = document.createElement('div');
             div.classList.add('day');
             

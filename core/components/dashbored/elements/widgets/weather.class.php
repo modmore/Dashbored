@@ -61,7 +61,7 @@ HTML
         </div>
         <div class="current">
             <div class="current-row">
-                <span class="icon"></span><span class="temp"></span><span class="degrees"></span><span class="temp_type"></span>
+                <span class="icon"></span><span class="temp"></span></span><span class="temp_type"></span>
             </div>
             <div class="comment"></div>
             <div class="extras-row">
