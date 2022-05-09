@@ -54,17 +54,6 @@ if (!createObject('modSystemSetting', [
     echo "Error creating dashbored.assets_path setting.\n";
 }
 
-if (!createObject('modSystemSetting', [
-    'key' => 'dashbored.weather.default_city',
-    'value' => 'Amsterdam',
-    'xtype' => 'textfield',
-    'namespace' => 'dashbored',
-    'area' => 'Weather',
-    'editedon' => time(),
-], 'key', false)) {
-    echo "Error creating dashbored.weather.default_city setting.\n";
-}
-
 /* Fetch assets url */
 $url = 'http';
 if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
@@ -112,6 +101,18 @@ if (!createObject('modDashboardWidget', [
     'lexicon' => 'dashbored:default',
 ], 'name', false)) {
     echo "Error creating weather widget.\n";
+}
+
+if (!createObject('modDashboardWidget', [
+    'name' => 'dashbored.quotes.name',
+    'description' => 'dashbored.quotes.desc',
+    'type' => 'file',
+    'size' => 'one-third',
+    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/quotes.class.php',
+    'namespace' => 'dashbored',
+    'lexicon' => 'dashbored:default',
+], 'name', false)) {
+    echo "Error creating quotes widget.\n";
 }
 
 $settings = include dirname(dirname(__FILE__)).'/_build/data/transport.settings.php';

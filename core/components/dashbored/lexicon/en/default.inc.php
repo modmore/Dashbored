@@ -19,3 +19,7 @@ $_lang['dashbored.weather.kilometres'] = 'Kilometres';
 $_lang['dashbored.weather.miles'] = 'Miles';
 $_lang['dashbored.weather.kph'] = 'km/h';
 $_lang['dashbored.weather.mph'] = 'mi/h';
+
+// Quotes
+$_lang['dashbored.quotes.name'] = 'Daily Quotes';
+$_lang['dashbored.quotes.desc'] = 'Daily inspirational quotes on your MODX dashboard.';

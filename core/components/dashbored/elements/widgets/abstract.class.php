@@ -48,7 +48,7 @@ HTML
         );
     }
     
-    public function getWidgetTitleBar($type)
+    public function getWidgetTitleBar($type): string
     {
         return <<<HTML
 <div class="dashbored-widget-title">
