@@ -182,6 +182,7 @@ DashboredWeather.prototype = {
 
 DashboredWeather.Settings = function(config) {
     config = config || {};
+    var win = this;
     Ext.applyIf(config,{
         title: 'Dashbored Weather Configuration',
         url: Dashbored.config.connectorUrl,
@@ -263,7 +264,14 @@ DashboredWeather.Settings = function(config) {
                 title: 'Background',
                 listeners: {
                     'activate': {fn: function(tab) {
-                        tab.find('itemId', 'background_type')[0].setValue(this.record.background_type);
+                        var group = tab.find('itemId', 'background_type')[0];
+                        group.setValue(this.record.background_type);
+                        var radios = group.items.items;
+                        radios.forEach(function(radio) {
+                            if (radio.checked) {
+                                win.switchBackgroundTab(radio);
+                            }
+                        });
                     }, scope: this}
                 },
                 items: [{
@@ -299,31 +307,20 @@ DashboredWeather.Settings = function(config) {
                     html: '<div class="dashbored-settings-bg-image"><span>No background</span></div>',
                     itemId: 'none',
                     type: 'bg-panel',
+                    hidden: true,
                     anchor: '100%'
                 },{
+                    html: '<div class="dashbored-settings-bg-image"><span>Image</span></div>',
                     itemId: 'image',
                     type: 'bg-panel',
-                    layout: 'column',
                     hidden: true,
-                    items: [{
-                        layout: 'form',
-                        columnWidth: .5,
-                        items: [{
-                            html: '<div class="dashbored-settings-bg-image"><span>Image</span></div>'
-                        }]
-                    }]
+                    anchor: '100%'
                 },{
+                    html: '<div class="dashbored-settings-bg-image"><span>Video</span></div>',
                     itemId: 'video',
                     type: 'bg-panel',
-                    layout: 'column',
                     hidden: true,
-                    items: [{
-                        layout: 'form',
-                        columnWidth: .5,
-                        items: [{
-                            html: '<div class="dashbored-settings-bg-image"><span>Video</span></div>'
-                        }]
-                    }]
+                    anchor: '100%'
                 }]
             },{
                 title: 'API',
