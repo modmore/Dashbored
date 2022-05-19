@@ -11,7 +11,7 @@ class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
         $this->widget->set('name', $this->modx->lexicon('dashbored.dino_game.name'));
 
         $this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/index.css');
-        
+       
         $this->controller->addHtml(<<<HTML
 <script src="{$this->dashbored->config['assets_url']}dinogame/js/dinogame.js"></script>
 <script>

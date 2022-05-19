@@ -22,15 +22,17 @@ function DashboredWeather(containerId) {
     this.current.wind = this.current.querySelector('.wind');
     
     this.outlook = this.containerEl.querySelector('.outlook');
-
+    this.record = {};
+    
     document.querySelector('.dashbored-title-btn.config.weather').addEventListener('click', (e) => {
-        let record = {
+        this.record = {
             id: this.containerEl.dataset.id, 
             location: this.containerEl.dataset.location, 
             temp_type: this.containerEl.dataset.temptype, 
-            distance_type: this.containerEl.dataset.distancetype
+            distance_type: this.containerEl.dataset.distancetype,
+            background_type: this.containerEl.dataset.backgroundtype
         }; 
-        this.openSettings(record);
+        this.openSettings(this.record);
     });
     document.querySelector('.dashbored-title-btn.refresh.weather').addEventListener('click', (e) => {
         this.refresh();
@@ -48,12 +50,14 @@ DashboredWeather.prototype = {
         }
         this.dashboredSettingsWindow = MODx.load({
             xtype: 'dashboredweather-settings'
+            ,record: record
             ,listeners: {
                 'success': {fn: function(r) {
                     let props = r.a.result.object.properties;
                     this.containerEl.dataset.location = props.location;
                     this.containerEl.dataset.temptype = props.temp_type;
-                    this.containerEl.dataset.distance_type = props.distance_type;
+                    this.containerEl.dataset.distancetype = props.distance_type;
+                    this.containerEl.dataset.backgroundtype = props.background_type;
                     that.refresh(props.location);
                 },scope:this},
                 'failure': {fn: function(r) {
@@ -82,6 +86,7 @@ DashboredWeather.prototype = {
             ,listeners: {
                 success: {
                     fn: function(r) {
+                        this.record = r.results;
                         that.render(r.results);
                     }
                     ,scope: this
@@ -194,6 +199,8 @@ DashboredWeather.Settings = function(config) {
             name: 'id'
         },{
             xtype: 'modx-tabs',
+            itemId: 'settings-tabs',
+            deferRender: false,
             defaults: {
                 layout: 'form'
             },
@@ -254,7 +261,70 @@ DashboredWeather.Settings = function(config) {
                 }]
             },{
                 title: 'Background',
-                items: []
+                listeners: {
+                    'activate': {fn: function(tab) {
+                        tab.find('itemId', 'background_type')[0].setValue(this.record.background_type);
+                    }, scope: this}
+                },
+                items: [{
+                    xtype: 'radiogroup',
+                    fieldLabel: 'Background Type',
+                    cls: 'dashbored-bg-type',
+                    itemId: 'background_type',
+                    items: [{
+                        boxLabel: 'None',
+                        name: 'background_type',
+                        inputValue: 'none',
+                        itemId: 'none',
+                        checked: true,
+                        listeners: {
+                            check: {fn: this.switchBackgroundTab, scope: this}
+                        }
+                    },{
+                        boxLabel: 'Image',
+                        name: 'background_type',
+                        inputValue: 'image',
+                        listeners: {
+                            check: {fn: this.switchBackgroundTab, scope: this}
+                        }
+                    },{
+                        boxLabel: 'Video',
+                        name: 'background_type',
+                        inputValue: 'video',
+                        listeners: {
+                            check: {fn: this.switchBackgroundTab, scope: this}
+                        }
+                    }]
+                },{
+                    html: '<div class="dashbored-settings-bg-image"><span>No background</span></div>',
+                    itemId: 'none',
+                    type: 'bg-panel',
+                    anchor: '100%'
+                },{
+                    itemId: 'image',
+                    type: 'bg-panel',
+                    layout: 'column',
+                    hidden: true,
+                    items: [{
+                        layout: 'form',
+                        columnWidth: .5,
+                        items: [{
+                            html: '<div class="dashbored-settings-bg-image"><span>Image</span></div>'
+                        }]
+                    }]
+                },{
+                    itemId: 'video',
+                    type: 'bg-panel',
+                    layout: 'column',
+                    hidden: true,
+                    items: [{
+                        layout: 'form',
+                        columnWidth: .5,
+                        items: [{
+                            html: '<div class="dashbored-settings-bg-image"><span>Video</span></div>'
+                        }]
+                    }]
+                }]
             },{
                 title: 'API',
                 items: []
@@ -263,5 +333,45 @@ DashboredWeather.Settings = function(config) {
     });
     DashboredWeather.Settings.superclass.constructor.call(this, config);
 };
-Ext.extend(DashboredWeather.Settings, MODx.Window);
+Ext.extend(DashboredWeather.Settings, MODx.Window, {
+    
+    switchBackgroundTab: function(radio) {
+        if (!radio.checked) {
+            return;
+        }
+        
+        var tab = this.find('itemId', 'settings-tabs')[0].getActiveTab(),
+            panels = tab.find('type', 'bg-panel');
+        
+        panels.forEach(function (panel) {
+            if (radio.inputValue === panel.itemId) {
+                panel.setVisible(true);
+            } else {
+                panel.setVisible(false);
+            }
+        });
+        
+    },
+    
+    selectImageFromBrowser: function(fld) {
+        console.log(fld)
+        var browser = MODx.load({
+            xtype: 'modx-browser',
+            id: Ext.id(),
+            multiple: true,
+            listeners: {
+                //select: selectImageCallback(fld)
+            },
+            allowedFileTypes: 'png,gif,jpg,jpeg,svg',
+            hideFiles: true,
+            source: MODx.config.default_media_source,
+            openTo: '/',
+        });
+        // if (Commerce.Config && Commerce.Config.media) {
+        //     fileBrowser.setSource(Commerce.Config.media.source);
+        // }
+        fileBrowser.show();
+        
+    }
+});
 Ext.reg('dashboredweather-settings', DashboredWeather.Settings);

@@ -59,6 +59,9 @@ class DashboredWeatherSaveProcessor extends modProcessor {
         $properties['distance_type'] = $distanceType 
             ? filter_var($distanceType, FILTER_SANITIZE_STRING) : WeatherDashboardWidget::DEFAULT_DISTANCE_TYPE;
         
+        $bgType = $this->getProperty('background_type');
+        $properties['background_type'] = $bgType ? filter_var($bgType, FILTER_SANITIZE_STRING) : 'none';
+        
         $widget->set('properties', $properties);
         $widget->save();
 

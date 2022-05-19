@@ -22,6 +22,7 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
             'location' => $props['location'] ?? self::DEFAULT_LOCATION,
             'temp_type' => $props['temp_type'] ?? self::DEFAULT_TEMP_TYPE,
             'distance_type' => $props['distance_type'] ?? self::DEFAULT_DISTANCE_TYPE,
+            'background_type' => $props['background_type'] ?? 'none',
         ];
         
         $this->controller->addHtml(<<<HTML
@@ -29,6 +30,7 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
     #dashboard-block-{$this->widget->get('id')} {
         background: rgb(255,255,255);
         background: linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(123,217,238,1) 22%, rgba(0,181,222,1) 70%); 
+        padding: 0;
     }
     #dashboard-block-{$this->widget->get('id')} .title-wrapper {background: #fff;}
 </style>
@@ -48,11 +50,15 @@ HTML
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
     </svg>
 </div>
-<div id="dashbored{$this->widget->get('id')}-weather" 
+<!--<video width="600" height="300" autoplay loop style="position: absolute; object-fit: cover; width:100%; height: 100%; margin: -10px;">-->
+<!--  <source src="/packages/dashbored/assets/components/dashbored/weather/videos/clouds2.mp4" type="video/mp4">-->
+<!--</video>-->
+<div id="dashbored{$this->widget->get('id')}-weather" style="position: relative; z-index: 2; pointer-events: none;"
     data-id="{$this->widget->get('id')}" 
     data-location="{$props['location']}" 
     data-temptype="{$props['temp_type']}" 
     data-distancetype="{$props['distance_type']}" 
+    data-backgroundtype="{$props['background_type']}" 
     class="dashbored-weather-widget">
     <div class="column">
         <div class="region">

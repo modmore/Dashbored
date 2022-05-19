@@ -79,7 +79,7 @@
     margin: -10px;
     height: 100%;
     width: 100%;
-    z-index: 1;
+    z-index: 3 !important;
     background: rgb(255,255,255);
     background: linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(123,217,238,1) 22%, rgba(0,181,222,1) 70%);
 }
@@ -140,6 +140,7 @@
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    padding-bottom: 6px;
 }
 .dashbored-weather-widget .outlook .temp {
     font-weight: 700;
@@ -175,4 +176,25 @@
 .dashbored-quotes-widget .author {
     margin-top: 36px;
     font-size: .8em;
+}
+
+/* Window */
+.dashbored-bg-type {
+    background: #fbfbfb;
+    padding: 16px;
+    border-radius: 3px;
+}
+.dashbored-bg-type .x-form-item.x-hide-label {
+    padding-top: 0 !important;
+}
+.dashbored-settings-bg-image {
+    background: rgb(255,255,255);
+    background: linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(123,217,238,1) 22%, rgba(0,181,222,1) 70%);
+    border-radius: 3px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 48px;
 }
