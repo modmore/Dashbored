@@ -1,5 +1,13 @@
 <?php
 
+$_lang['dashbored'] = 'Dashbored';
+$_lang['dashbored.image'] = 'Image';
+$_lang['dashbored.video'] = 'Video';
+$_lang['dashbored.select_image'] = 'Select image';
+$_lang['dashbored.select_video'] = 'Select video';
+$_lang['dashbored.none'] = 'None';
+$_lang['dashbored.no_background'] = 'No background';
+
 // Dino Game
 $_lang['dashbored.dino_game.name'] = 'Dino Game';
 $_lang['dashbored.dino_game.desc'] = 'Play the "No Internet" Chrome Dino game on your MODX dashboard.';

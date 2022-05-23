@@ -179,29 +179,28 @@
 }
 
 /* Window */
-.dashbored-bg-type {
+.db-bg-type {
     background: #fbfbfb;
     padding: 16px;
     border-radius: 3px;
 }
-.dashbored-bg-type .x-form-item.x-hide-label {
+.db-bg-type .x-form-item.x-hide-label {
     padding-top: 0 !important;
 }
-.dashbored-settings-bg {
+.db-settings-bg {
     position: relative;
     background: rgb(255,255,255);
     background: linear-gradient(120deg, rgba(255,255,255,1) 0%, rgba(123,217,238,1) 22%, rgba(0,181,222,1) 70%);
     border-radius: 3px;
     height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: #fff;
     font-size: 48px;
+    overflow: hidden;
 }
-.dashbored-settings-bg .overlay {
+.db-settings-bg .db-overlay {
     position: absolute;
-    object-fit: cover;
+    top: 0;
+    left: 0;
     display: flex;
     width: 100%;
     height: 100%;
@@ -212,16 +211,34 @@
     transition: 0.3s opacity;
     cursor: pointer;
 }
-.dashbored-settings-bg:hover .overlay {
+.db-settings-bg:hover .db-overlay {
     opacity: 1;
 }
-.dashbored-settings-bg .overlay button {
+.db-settings-bg .db-overlay span {
     background: rgba(0,181,222,1);
     color: #fff;
     border: 0;
     font-size: 26px;
     border-radius: 3px;
     padding: 16px;
+}
+.db-bg-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.db-settings-bg .db-bg-img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.db-settings-bg .db-bg-video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
 .dashbored-settings-bg.none {}

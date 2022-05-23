@@ -278,7 +278,7 @@ DashboredWeather.Settings = function(config) {
                 items: [{
                     xtype: 'radiogroup',
                     fieldLabel: 'Background Type',
-                    cls: 'dashbored-bg-type',
+                    cls: 'db-bg-type',
                     itemId: 'background_type',
                     items: [{
                         boxLabel: 'None',
@@ -305,30 +305,20 @@ DashboredWeather.Settings = function(config) {
                         }
                     }]
                 },{
-                    html: '<div class="dashbored-settings-bg none"><span>No background</span></div>',
+                    html: '<div class="db-settings-bg none"><div class="db-bg-content"><span>No background</span></div></div>',
                     itemId: 'none',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%'
                 },{
-                    html: '<div class="dashbored-settings-bg image">' +
-                            '<span>Image</span>' +
-                            '<div class="overlay">' +
-                                '<button class="select-img-btn">Select Image</button>' +
-                            '</div>' +
-                        '</div>',
+                    html: this.renderBackgroundPanel('image'),
                     itemId: 'image',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%',
                     editable: true
                 },{
-                    html: '<div class="dashbored-settings-bg video">' +
-                            '<span>Video</span>' +
-                            '<div class="overlay">' +
-                                '<button class="select-video-btn">Select Video</button>' +
-                            '</div>' +
-                        '</div>',
+                    html: this.renderBackgroundPanel('video'),
                     itemId: 'video',
                     type: 'bg-panel',
                     hidden: true,
@@ -356,7 +346,7 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
                 panel.setVisible(true);
                 if (panel.body && panel.editable) {
                     panel.body.on('click', function () {
-                        that.selectImageFromBrowser(panel);
+                        that.selectFileFromBrowser(panel, radio.inputValue);
                     });
                 }
             } else {
@@ -371,31 +361,60 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
     getBackgroundPanels: function() {
         return this.find('itemId', 'settings-tabs')[0].getActiveTab().find('type', 'bg-panel');
     },
-    selectImageFromBrowser: function(panel) {
-        var browser = MODx.load({
+    renderBackgroundPanel: function(name) {
+        return `<div class="db-settings-bg ${name}">
+                    <div id="db-${name}-content" class="db-bg-content">${_('dashbored.' + name)}</div>
+                    <div class="db-overlay">
+                        <span class="db-select-btn">${_('dashbored.select_' + name)}</span>
+                    </div>
+                </div>`;
+    },
+    selectFileFromBrowser: function(panel, type) {
+        const videoTypes = ['webm', 'mp4', 'mkv'],
+              imageTypes = ['png', 'gif', 'jpg', 'jpeg', 'svg', 'webp'];
+        
+        let browser = MODx.load({
             xtype: 'modx-browser',
             id: Ext.id(),
             multiple: true,
             listeners: {
                 select: {fn: function(file) {
-                    this.selectImageCallback(file, panel);
+                    if (imageTypes.includes(file.ext) && type === 'image') {
+                        this.selectImage(panel, file);
+                    }
+                    else if (videoTypes.includes(file.ext) && type === 'video') {
+                        this.selectVideo(panel, file);
+                    }
+                    else {
+                        MODx.msg.alert('Invalid File Type', 'Invalid file type!');
+                    }
                 }, scope: this}
             },
-            allowedFileTypes: 'png,gif,jpg,jpeg,svg,webp',
+            allowedFileTypes: type === 'video' ? videoTypes.join(',') : imageTypes.join(','),
             hideFiles: true,
             source: MODx.config.default_media_source,
             openTo: '/',
+            root: '/'
         });
         browser.show();
     },
-    selectImageCallback: function(file, panel) {
-        console.log('in the callback');
-        console.log(panel);
-        console.log(file);
-        var container = panel.get('.dashbored-settings-bg');
-        console.log(container);
-        var imgTag = '<img class="dashbored-settings-bg" src="' + Ext.util.Format.htmlEncode(file.image) + '">';
-        panel.update(imgTag);
+    selectImage: function(panel, file) {
+        let el = panel.getEl().down('#db-image-content'),
+            img = document.createElement('img');
+        img.classList.add('db-bg-img');
+        img.src = Ext.util.Format.htmlEncode(file.image);
+        el.dom.innerHTML = '';
+        el.appendChild(img);
+    },
+    selectVideo: function(panel, file) {
+        let el = panel.getEl().down('#db-video-content'),
+            video = document.createElement('video');
+        video.classList.add('db-bg-video');
+        video.src = '/' + file.relativeUrl;
+        video.setAttribute('autoplay', 'true');
+        video.setAttribute('loop', 'true');
+        el.dom.innerHTML = '';
+        el.appendChild(video);
     }
 });
 Ext.reg('dashboredweather-settings', DashboredWeather.Settings);
