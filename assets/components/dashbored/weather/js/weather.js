@@ -266,6 +266,7 @@ DashboredWeather.Settings = function(config) {
                     'activate': {fn: function(tab) {
                         var group = tab.find('itemId', 'background_type')[0];
                         group.setValue(this.record.background_type);
+                        
                         var radios = group.items.items;
                         radios.forEach(function(radio) {
                             if (radio.checked) {
@@ -304,23 +305,35 @@ DashboredWeather.Settings = function(config) {
                         }
                     }]
                 },{
-                    html: '<div class="dashbored-settings-bg-image"><span>No background</span></div>',
+                    html: '<div class="dashbored-settings-bg none"><span>No background</span></div>',
                     itemId: 'none',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%'
                 },{
-                    html: '<div class="dashbored-settings-bg-image"><span>Image</span></div>',
+                    html: '<div class="dashbored-settings-bg image">' +
+                            '<span>Image</span>' +
+                            '<div class="overlay">' +
+                                '<button class="select-img-btn">Select Image</button>' +
+                            '</div>' +
+                        '</div>',
                     itemId: 'image',
                     type: 'bg-panel',
                     hidden: true,
-                    anchor: '100%'
+                    anchor: '100%',
+                    editable: true
                 },{
-                    html: '<div class="dashbored-settings-bg-image"><span>Video</span></div>',
+                    html: '<div class="dashbored-settings-bg video">' +
+                            '<span>Video</span>' +
+                            '<div class="overlay">' +
+                                '<button class="select-video-btn">Select Video</button>' +
+                            '</div>' +
+                        '</div>',
                     itemId: 'video',
                     type: 'bg-panel',
                     hidden: true,
-                    anchor: '100%'
+                    anchor: '100%',
+                    editable: true
                 }]
             },{
                 title: 'API',
@@ -337,38 +350,52 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
             return;
         }
         
-        var tab = this.find('itemId', 'settings-tabs')[0].getActiveTab(),
-            panels = tab.find('type', 'bg-panel');
-        
-        panels.forEach(function (panel) {
+        var that = this;
+        this.getBackgroundPanels().forEach(function (panel) {
             if (radio.inputValue === panel.itemId) {
                 panel.setVisible(true);
+                if (panel.body && panel.editable) {
+                    panel.body.on('click', function () {
+                        that.selectImageFromBrowser(panel);
+                    });
+                }
             } else {
                 panel.setVisible(false);
+                if (panel.body) {
+                    panel.body.removeAllListeners();
+                }
             }
         });
         
     },
-    
-    selectImageFromBrowser: function(fld) {
-        console.log(fld)
+    getBackgroundPanels: function() {
+        return this.find('itemId', 'settings-tabs')[0].getActiveTab().find('type', 'bg-panel');
+    },
+    selectImageFromBrowser: function(panel) {
         var browser = MODx.load({
             xtype: 'modx-browser',
             id: Ext.id(),
             multiple: true,
             listeners: {
-                //select: selectImageCallback(fld)
+                select: {fn: function(file) {
+                    this.selectImageCallback(file, panel);
+                }, scope: this}
             },
-            allowedFileTypes: 'png,gif,jpg,jpeg,svg',
+            allowedFileTypes: 'png,gif,jpg,jpeg,svg,webp',
             hideFiles: true,
             source: MODx.config.default_media_source,
             openTo: '/',
         });
-        // if (Commerce.Config && Commerce.Config.media) {
-        //     fileBrowser.setSource(Commerce.Config.media.source);
-        // }
-        fileBrowser.show();
-        
+        browser.show();
+    },
+    selectImageCallback: function(file, panel) {
+        console.log('in the callback');
+        console.log(panel);
+        console.log(file);
+        var container = panel.get('.dashbored-settings-bg');
+        console.log(container);
+        var imgTag = '<img class="dashbored-settings-bg" src="' + Ext.util.Format.htmlEncode(file.image) + '">';
+        panel.update(imgTag);
     }
 });
 Ext.reg('dashboredweather-settings', DashboredWeather.Settings);
