@@ -24,6 +24,24 @@ html, body {
     display: none;
 }
 
+.dashbored-dinosaurgame-inner-widget {
+    display: flex; 
+    justify-content: stretch;
+}
+.dashbored-dinosaurgame-inner-widget .offline {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.dashbored-dinosaurgame-inner-widget .dashbored-dinosaurgame {
+    width: 100%; 
+    max-width: 600px;
+}
+.dashbored-dinosaurgame #main-content {
+    height: 200px;
+}
 
 /* Offline page */
 
@@ -42,7 +60,7 @@ html, body {
     max-width: 600px;
     overflow: hidden;
     position: absolute;
-    top: 35px;
+    top: 70px;
     width: 44px;
 }
 
