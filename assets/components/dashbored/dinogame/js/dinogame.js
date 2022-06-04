@@ -268,6 +268,9 @@ Runner.prototype = {
 
     setupPlayerSelect: function() {
         var that = this;
+        if (this.containerEl) {
+            delete(this.containerEl);
+        }
         this.containerEl = document.createElement('div');
         this.containerEl.className = Runner.classes.PLAYER_SELECT;
         this.playerSelect = this.outerContainerEl.querySelector('.player-select');
@@ -284,6 +287,34 @@ Runner.prototype = {
             that.loadImages();
         });
         
+    },
+    
+    quit: function() {
+        this.stop();
+        this.playCount = 0;
+        this.runningTime = 0;
+        this.playing = false;
+        this.crashed = false;
+        this.playerSelected = false;
+        this.activated = false;
+        this.paused = false;
+        this.inverted = false;
+        this.invertTimer = 0;
+        this.resizeTimerId_ = null;
+        this.audioBuffer = null;
+        this.soundFx = {};
+        this.audioContext = null;
+        this.time = 0;
+        this.runningTime = 0;
+        this.msPerFrame = 1000 / FPS;
+        this.currentSpeed = this.config.SPEED;
+        this.obstacles = [];
+        this.images = {};
+        this.imagesLoaded = 0;
+        this.dimensions = Runner.defaultDimensions;
+        this.distanceRan = 0;
+        this.playerSelect.style.display = 'flex';
+        this.containerEl.removeChild(this.canvas);
     },
     
     /**
@@ -316,6 +347,10 @@ Runner.prototype = {
      * definition.
      */
     loadImages: function () {
+        Runner.imageSprite = null;
+        this.spriteDef = null;
+        document.querySelector('.dashbored-dinosaurgame-inner-widget .sendmessage').style.visibility = 'visible';
+        
         if (IS_HIDPI) {
             Runner.imageSprite = this.playerSelected === 'modbot' 
                 ? document.getElementById('offline-resources-modbot-2x')
@@ -876,8 +911,8 @@ Runner.prototype = {
      * Pause the game if the tab is not in focus.
      */
     onVisibilityChange: function (e) {
-        if (document.hidden || document.webkitHidden || e.type == 'blur' ||
-            document.visibilityState != 'visible') {
+        if (document.hidden || document.webkitHidden || e.type === 'blur' ||
+            document.visibilityState !== 'visible') {
             this.stop();
         } else if (!this.crashed) {
             this.tRex.reset();
@@ -1000,6 +1035,11 @@ function createCanvas(container, width, height, opt_classname) {
     container.appendChild(canvas);
 
     return canvas;
+}
+
+function removeCanvas(container) {
+    var canvas = container.querySelector('canvas');
+    container.removeChild(canvas);
 }
 
 

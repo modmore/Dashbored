@@ -21,21 +21,13 @@ class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
 </script>
 <script src="{$this->dashbored->config['assets_url']}dinogame/js/dinogame.js"></script>
 <script>
-function startDinoGame() {
-    if (typeof Runner.instance_ !== 'undefined') {
-        //delete Runner.instance_;
-        var canvas = document.querySelector('#dashbored{$this->widget->get('id')}-dinosaurgame .runner-canvas'),
-            container = document.querySelector('#dashbored{$this->widget->get('id')}-dinosaurgame .runner-container');
-            canvas = null;
-    }
-    new Runner('#dashbored{$this->widget->get('id')}-dinosaurgame');
-}
 Ext.onReady(function() {
-    startDinoGame();
+    var runner = new Runner('#dashbored{$this->widget->get('id')}-dinosaurgame');
     
     // Reset game on click
     document.querySelector('.dashbored-title-btn.refresh.dino_game').addEventListener('click', function(e) {
-        startDinoGame();
+        runner.quit();
+        runner = new Runner('#dashbored{$this->widget->get('id')}-dinosaurgame');
     });
 });
 </script>
@@ -44,7 +36,7 @@ HTML
         
         return <<<HTML
 <div class="dashbored-dinosaurgame-inner-widget">
-    <div class="offline"> 
+    <div class="offline">
         <div id="messageBox" class="sendmessage">
              <h1 style="text-align: center; font-family: 'Open Sans', sans-serif;">Press Space to start</h1>
              <div class="niokbutton" onclick="okbuttonsend()"></div>
