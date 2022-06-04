@@ -33,9 +33,11 @@ function Runner(outerContainerId, opt_config) {
 
     this.distanceMeter = null;
     this.distanceRan = 0;
-
-    this.highestScore = 0;
-
+    
+    //this.highestScore = 0;
+    this.highestScore = dashboredDinoSavedScore;
+    this.playerSelect = null;
+    
     this.time = 0;
     this.runningTime = 0;
     this.msPerFrame = 1000 / FPS;
@@ -64,11 +66,19 @@ function Runner(outerContainerId, opt_config) {
     this.images = {};
     this.imagesLoaded = 0;
 
-    if (this.isDisabled()) {
-        this.setupDisabledRunner();
-    } else {
-        this.loadImages();
+    this.playerSelected = false;
+    
+    // Player Select
+    if (!this.playerSelected) {
+        this.setupPlayerSelect();
     }
+    
+    // Disabled this in favour of player select option
+    // if (this.isDisabled()) {
+    //     this.setupDisabledRunner();
+    // } else {
+    //     this.loadImages();
+    // }
 }
 window['Runner'] = Runner;
 
@@ -148,7 +158,8 @@ Runner.classes = {
     INVERTED: 'inverted',
     SNACKBAR: 'snackbar',
     SNACKBAR_SHOW: 'snackbar-show',
-    TOUCH_CONTROLLER: 'controller'
+    TOUCH_CONTROLLER: 'controller',
+    PLAYER_SELECT: 'player-select'
 };
 
 
@@ -255,6 +266,26 @@ Runner.prototype = {
         }.bind(this));
     },
 
+    setupPlayerSelect: function() {
+        var that = this;
+        this.containerEl = document.createElement('div');
+        this.containerEl.className = Runner.classes.PLAYER_SELECT;
+        this.playerSelect = this.outerContainerEl.querySelector('.player-select');
+        this.outerContainerEl.appendChild(this.playerSelect);
+        
+        var tRexBtn = this.outerContainerEl.querySelector('.player-select .player-trex');
+        var modbotBtn = this.outerContainerEl.querySelector('.player-select .player-modbot');
+        tRexBtn.addEventListener('click', function(e) {
+            that.playerSelected = 'trex';
+            that.loadImages();
+        });
+        modbotBtn.addEventListener('click', function(e) {
+            that.playerSelected = 'modbot';
+            that.loadImages();
+        });
+        
+    },
+    
     /**
      * Setting individual settings for debugging.
      * @param {string} setting
@@ -286,13 +317,18 @@ Runner.prototype = {
      */
     loadImages: function () {
         if (IS_HIDPI) {
-            Runner.imageSprite = document.getElementById('offline-resources-2x');
+            Runner.imageSprite = this.playerSelected === 'modbot' 
+                ? document.getElementById('offline-resources-modbot-2x')
+                : document.getElementById('offline-resources-2x');
             this.spriteDef = Runner.spriteDefinition.HDPI;
         } else {
-            Runner.imageSprite = document.getElementById('offline-resources-1x');
+            Runner.imageSprite = this.playerSelected === 'modbot'
+                ? document.getElementById('offline-resources-modbot-1x')
+                : document.getElementById('offline-resources-1x');
             this.spriteDef = Runner.spriteDefinition.LDPI;
         }
 
+        this.playerSelect.style.display = 'none';
         if (Runner.imageSprite.complete) {
             this.init();
         } else {
@@ -348,8 +384,7 @@ Runner.prototype = {
      */
     init: function () {
         // Hide the static icon.
-        document.querySelector('.' + Runner.classes.ICON).style.visibility =
-            'hidden';
+        document.querySelector('.' + Runner.classes.ICON).style.visibility = 'hidden';
 
         this.adjustDimensions();
         this.setSpeed();
@@ -374,6 +409,9 @@ Runner.prototype = {
         this.distanceMeter = new DistanceMeter(this.canvas,
             this.spriteDef.TEXT_SPRITE, this.dimensions.WIDTH);
 
+        // Load previous high score
+        this.distanceMeter.setHighScore(this.highestScore, true);
+        
         // Draw t-rex
         this.tRex = new Trex(this.canvas, this.spriteDef.TREX);
 
@@ -712,8 +750,8 @@ Runner.prototype = {
     onKeyUp: function (e) {
         var keyCode = String(e.keyCode);
         var isjumpKey = Runner.keycodes.JUMP[keyCode] ||
-            e.type == Runner.events.TOUCHEND ||
-            e.type == Runner.events.MOUSEDOWN;
+            e.type === Runner.events.TOUCHEND ||
+            e.type === Runner.events.MOUSEDOWN;
 
         if (this.isRunning() && isjumpKey) {
             this.tRex.endJump();
@@ -777,7 +815,7 @@ Runner.prototype = {
         this.distanceMeter.acheivement = false;
 
         this.tRex.update(100, Trex.status.CRASHED);
-
+        
         // Game over panel.
         if (!this.gameOverPanel) {
             this.gameOverPanel = new GameOverPanel(this.canvas,
@@ -990,9 +1028,7 @@ function getTimeStamp() {
     return IS_IOS ? new Date().getTime() : performance.now();
 }
 
-
 //******************************************************************************
-
 
 /**
  * Game over panel.
@@ -2015,8 +2051,7 @@ DistanceMeter.prototype = {
         if (!this.acheivement) {
             distance = this.getActualDistance(distance);
             // Score has gone beyond the initial digit count.
-            if (distance > this.maxScore && this.maxScoreUnits ==
-                this.config.MAX_DISTANCE_UNITS) {
+            if (distance > this.maxScore && this.maxScoreUnits === this.config.MAX_DISTANCE_UNITS) {
                 this.maxScoreUnits++;
                 this.maxScore = parseInt(this.maxScore + '9');
             } else {
@@ -2085,13 +2120,41 @@ DistanceMeter.prototype = {
      * Set the highscore as a array string.
      * Position of char in the sprite: H - 10, I - 11.
      * @param {number} distance Distance ran in pixels.
+     * @param isInit
      */
-    setHighScore: function (distance) {
+    setHighScore: function (distance, isInit = false) {
+        var rawScore = distance;
         distance = this.getActualDistance(distance);
         var highScoreStr = (this.defaultString +
             distance).substr(-this.maxScoreUnits);
 
         this.highScore = ['10', '11', ''].concat(highScoreStr.split(''));
+        
+        if (!isInit) {
+            // Send high score to server
+            MODx.Ajax.request({
+                url: Dashbored.config.connectorUrl
+                ,params: {
+                    id: Runner.instance_.outerContainerEl.dataset.id,
+                    score: rawScore,
+                    action: 'mgr/dinogame/submithighscore',
+                }
+                ,listeners: {
+                    success: {
+                        fn: function(r) {
+                            console.log('Wooo! New high score!');
+                        }
+                        ,scope: this
+                    }
+                    ,failure: {
+                        fn: function(r) {
+                            console.error('Unable to submit high score!');
+                        }
+                        ,scope: this
+                    }
+                }
+            });
+        }
     },
 
     /**
