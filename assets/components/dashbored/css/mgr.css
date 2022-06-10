@@ -210,6 +210,7 @@
     background: rgba(255,255,255,0.3);
     transition: 0.3s opacity;
     cursor: pointer;
+    z-index: 10;
 }
 .db-settings-bg:hover .db-overlay {
     opacity: 1;
@@ -222,20 +223,34 @@
     border-radius: 3px;
     padding: 16px;
 }
-.db-bg-content {
+.db-settings-bg-mask {
+    position: absolute;
+    background: rgba(0,0,0,0);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    opacity: .5;
+}
+.db-settings-bg .db-bg-content {
     position: relative;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
-.db-settings-bg .db-bg-img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+.db-settings-bg .db-bg-label {
+    position: relative;
+    z-index: 5;
 }
+.db-settings-bg .db-bg-img,
 .db-settings-bg .db-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
     object-fit: cover;
     width: 100%;
     height: 100%;

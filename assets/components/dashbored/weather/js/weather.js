@@ -182,6 +182,7 @@ DashboredWeather.prototype = {
 
 DashboredWeather.Settings = function(config) {
     config = config || {};
+    this.bgOpacity = config.bgOpacity || 0;
     var win = this;
     Ext.applyIf(config,{
         title: 'Dashbored Weather Configuration',
@@ -305,28 +306,44 @@ DashboredWeather.Settings = function(config) {
                         }
                     }]
                 },{
-                    html: '<div class="db-settings-bg none"><div class="db-bg-content"><span>No background</span></div></div>',
+                    html: '<div class="db-settings-bg none">' +
+                            '<div class="db-bg-content"><span class="db-bg-label">No background</span></div>' +
+                            '<div class="db-settings-bg-mask" style="background: rgba(0,0,0,'+ this.bgOpacity +');"></div>' +
+                            '</div>',
                     itemId: 'none',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%'
                 },{
-                    html: this.renderBackgroundPanel('image'),
+                    html: this.renderBackgroundPanel('image', this),
                     itemId: 'image',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%',
-                    editable: true
+                    editable: true,
+                    scope: this
                 },{
-                    html: this.renderBackgroundPanel('video'),
+                    html: this.renderBackgroundPanel('video', this),
                     itemId: 'video',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%',
-                    editable: true
+                    editable: true,
+                    scope: this
+                },{
+                    xtype: 'sliderfield',
+                    fieldLabel: 'Background Mask Opacity',
+                    itemId: 'bg-mask-slider',
+                    name: 'bg_mask',
+                    listeners: {
+                        'valid': {fn: function(slider) {
+                            win.bgOpacity = slider.getValue();
+                            win.updateOpacity(win);
+                        }, scope: this},
+                    }
                 }]
             },{
-                title: 'API',
+                title: 'About',
                 items: []
             }]
         }]
@@ -334,13 +351,24 @@ DashboredWeather.Settings = function(config) {
     DashboredWeather.Settings.superclass.constructor.call(this, config);
 };
 Ext.extend(DashboredWeather.Settings, MODx.Window, {
-    
+    updateOpacity: function(win) {
+        document.querySelectorAll('.db-settings-bg-mask').forEach(function(mask) {
+            let bgOpacity = win.bgOpacity;
+            if (bgOpacity < 10 && bgOpacity > 0) {
+                bgOpacity = '0' + bgOpacity;
+            }
+            if (bgOpacity === 0 || bgOpacity === 100) {
+                bgOpacity = '.' + bgOpacity;
+            }
+            mask.style.backgroundColor = 'rgba(0,0,0,.' + bgOpacity + ')';
+        })
+    },
     switchBackgroundTab: function(radio) {
         if (!radio.checked) {
             return;
         }
         
-        var that = this;
+        let that = this;
         this.getBackgroundPanels().forEach(function (panel) {
             if (radio.inputValue === panel.itemId) {
                 panel.setVisible(true);
@@ -361,9 +389,12 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
     getBackgroundPanels: function() {
         return this.find('itemId', 'settings-tabs')[0].getActiveTab().find('type', 'bg-panel');
     },
-    renderBackgroundPanel: function(name) {
+    renderBackgroundPanel: function(name, win) {
         return `<div class="db-settings-bg ${name}">
-                    <div id="db-${name}-content" class="db-bg-content">${_('dashbored.' + name)}</div>
+                    <div id="db-${name}-content" class="db-bg-content">
+                        <div class="db-bg-label">${_('dashbored.' + name)}</div>
+                        <div class="db-settings-bg-mask"></div>
+                    </div>
                     <div class="db-overlay">
                         <span class="db-select-btn">${_('dashbored.select_' + name)}</span>
                     </div>
@@ -403,7 +434,6 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
             img = document.createElement('img');
         img.classList.add('db-bg-img');
         img.src = Ext.util.Format.htmlEncode(file.image);
-        el.dom.innerHTML = '';
         el.appendChild(img);
     },
     selectVideo: function(panel, file) {
@@ -413,7 +443,6 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
         video.src = '/' + file.relativeUrl;
         video.setAttribute('autoplay', 'true');
         video.setAttribute('loop', 'true');
-        el.dom.innerHTML = '';
         el.appendChild(video);
     }
 });
