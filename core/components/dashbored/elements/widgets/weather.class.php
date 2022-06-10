@@ -4,9 +4,16 @@ require_once __DIR__ . '/abstract.class.php';
 
 class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 {
-    public const DEFAULT_LOCATION = 'amsterdam';
-    public const DEFAULT_TEMP_TYPE = 'c';
-    public const DEFAULT_DISTANCE_TYPE = 'km';
+    // Values are defaults
+    public const ACCEPTED_FIELDS = [
+        'location' => 'amsterdam',
+        'temp_type' => 'c',
+        'distance_type' => 'km',
+        'background_type' => 'none',
+        'bg_mask' => '0',
+        'bg_image' => '',
+        'bg_video' => '',
+    ];
     
     public function render(): string
     {
@@ -16,14 +23,12 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 
         $titleBar = $this->getWidgetTitleBar('weather');
         $this->widget->set('name', $titleBar);
-        
-        $props = $this->widget->get('properties');
-        $props = [
-            'location' => $props['location'] ?? self::DEFAULT_LOCATION,
-            'temp_type' => $props['temp_type'] ?? self::DEFAULT_TEMP_TYPE,
-            'distance_type' => $props['distance_type'] ?? self::DEFAULT_DISTANCE_TYPE,
-            'background_type' => $props['background_type'] ?? 'none',
-        ];
+
+        $props = [];
+        foreach (self::ACCEPTED_FIELDS as $field => $default) {
+            $props[$field] = self::getUserSetting($this->modx, 'dashbored.weather.' . $field, 
+                $this->modx->user->get('id')) ?? $default;
+        }
         
         $this->controller->addHtml(<<<HTML
 <style>
@@ -59,6 +64,7 @@ HTML
     data-temptype="{$props['temp_type']}" 
     data-distancetype="{$props['distance_type']}" 
     data-backgroundtype="{$props['background_type']}" 
+    data-backgroundmask="{$props['bg_mask']}" 
     class="dashbored-weather-widget">
     <div class="column">
         <div class="region">

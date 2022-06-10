@@ -1,13 +1,14 @@
 <?php
 
-use MODX\Revolution\modDashboardWidget;
+use MODX\Revolution\modUserSetting;
 
 require_once dirname(__DIR__, 3) . '/elements/widgets/weather.class.php';
 
 class DashboredWeatherSaveProcessor extends modProcessor {
 
+    public $errors = [];
     protected $dashbored;
-
+    
     /**
      * @return string[]
      */
@@ -30,42 +31,43 @@ class DashboredWeatherSaveProcessor extends modProcessor {
 
     public function process()
     {
-        if (!$id = $this->getProperty('id')) {
-            return $this->failure('Cannot find widget id.');
+        $output = [];
+        foreach (WeatherDashboardWidget::ACCEPTED_FIELDS as $field => $default) {
+            $prop = $this->getProperty($field);
+            if (filter_var($prop, FILTER_SANITIZE_STRING)) {
+                $setting = $this->saveUserSetting('dashbored.weather.' . $field, $prop);
+                $output[$field] = $setting->get('value');
+            }
         }
+        return $this->success($output);
+    }
 
-        /** @var modDashboardWidget $widget */
-        $widget = $this->modx->getObject(modDashboardWidget::class, [
-            'id' => $id
+    /**
+     * @param string $key
+     * @param $value
+     * @return \xPDO\Om\xPDOObject|null
+     */
+    protected function saveUserSetting(string $key, $value): ?\xPDO\Om\xPDOObject
+    {
+        $userId = $this->modx->user->get('id');
+        $userSetting = $this->modx->getObject(modUserSetting::class, [
+            'user' => $userId,
+            'key' => $key
         ]);
-        if (!$widget) {
-            return $this->failure('Cannot find weather widget.');
+        if (!$userSetting) {
+            $userSetting = $this->modx->newObject(modUserSetting::class);
+            $userSetting->set('user', $userId);
+            $userSetting->set('key', $key);
         }
+        $userSetting->fromArray([
+            'value' => $value,
+            'xtype' => 'textfield',
+            'namespace' => 'dashbored',
+            'area' => 'weather'
+        ]);
+        $userSetting->save();
         
-        $properties = [];
-
-        $location = $this->getProperty('location');
-        $properties['location'] = $this->getProperty('location')
-            ? filter_var($location, FILTER_SANITIZE_STRING)
-            : $this->modx->getOption('dashbored.weather.default_city', '', 'amsterdam', true);
-
-        // 'c' or 'f'
-        $tempType = $this->getProperty('temp_type');
-        $properties['temp_type'] = $tempType 
-            ? filter_var($tempType, FILTER_SANITIZE_STRING) : WeatherDashboardWidget::DEFAULT_TEMP_TYPE;
-
-        // 'km' or 'mile'
-        $distanceType = $this->getProperty('distance_type');
-        $properties['distance_type'] = $distanceType 
-            ? filter_var($distanceType, FILTER_SANITIZE_STRING) : WeatherDashboardWidget::DEFAULT_DISTANCE_TYPE;
-        
-        $bgType = $this->getProperty('background_type');
-        $properties['background_type'] = $bgType ? filter_var($bgType, FILTER_SANITIZE_STRING) : 'none';
-        
-        $widget->set('properties', $properties);
-        $widget->save();
-
-        return $this->success('', $widget);
+        return $userSetting;
     }
 }
 return 'DashboredWeatherSaveProcessor';

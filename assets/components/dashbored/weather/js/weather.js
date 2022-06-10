@@ -22,16 +22,11 @@ function DashboredWeather(containerId) {
     this.current.wind = this.current.querySelector('.wind');
     
     this.outlook = this.containerEl.querySelector('.outlook');
-    this.record = {};
+    this.record = {
+        id: this.containerEl.dataset.id
+    };
     
     document.querySelector('.dashbored-title-btn.config.weather').addEventListener('click', (e) => {
-        this.record = {
-            id: this.containerEl.dataset.id, 
-            location: this.containerEl.dataset.location, 
-            temp_type: this.containerEl.dataset.temptype, 
-            distance_type: this.containerEl.dataset.distancetype,
-            background_type: this.containerEl.dataset.backgroundtype
-        }; 
         this.openSettings(this.record);
     });
     document.querySelector('.dashbored-title-btn.refresh.weather').addEventListener('click', (e) => {
@@ -53,11 +48,8 @@ DashboredWeather.prototype = {
             ,record: record
             ,listeners: {
                 'success': {fn: function(r) {
-                    let props = r.a.result.object.properties;
-                    this.containerEl.dataset.location = props.location;
-                    this.containerEl.dataset.temptype = props.temp_type;
-                    this.containerEl.dataset.distancetype = props.distance_type;
-                    this.containerEl.dataset.backgroundtype = props.background_type;
+                    let props = r.a.result.message;
+                    this.record = r.results;
                     that.refresh(props.location);
                 },scope:this},
                 'failure': {fn: function(r) {
@@ -277,6 +269,12 @@ DashboredWeather.Settings = function(config) {
                     }, scope: this}
                 },
                 items: [{
+                    xtype: 'hidden',
+                    name: 'bg_image'
+                },{
+                    xtype: 'hidden',
+                    name: 'bg_video'
+                },{
                     xtype: 'radiogroup',
                     fieldLabel: 'Background Type',
                     cls: 'db-bg-type',
@@ -306,16 +304,13 @@ DashboredWeather.Settings = function(config) {
                         }
                     }]
                 },{
-                    html: '<div class="db-settings-bg none">' +
-                            '<div class="db-bg-content"><span class="db-bg-label">No background</span></div>' +
-                            '<div class="db-settings-bg-mask" style="background: rgba(0,0,0,'+ this.bgOpacity +');"></div>' +
-                            '</div>',
+                    html: this.renderBackgroundPanel('none'),
                     itemId: 'none',
                     type: 'bg-panel',
                     hidden: true,
                     anchor: '100%'
                 },{
-                    html: this.renderBackgroundPanel('image', this),
+                    html: this.renderBackgroundPanel('image'),
                     itemId: 'image',
                     type: 'bg-panel',
                     hidden: true,
@@ -323,7 +318,7 @@ DashboredWeather.Settings = function(config) {
                     editable: true,
                     scope: this
                 },{
-                    html: this.renderBackgroundPanel('video', this),
+                    html: this.renderBackgroundPanel('video'),
                     itemId: 'video',
                     type: 'bg-panel',
                     hidden: true,
@@ -389,7 +384,16 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
     getBackgroundPanels: function() {
         return this.find('itemId', 'settings-tabs')[0].getActiveTab().find('type', 'bg-panel');
     },
-    renderBackgroundPanel: function(name, win) {
+    renderBackgroundPanel: function(name) {
+        if (name === 'none') {
+            return `<div class="db-settings-bg none">
+                    <div class="db-bg-content">
+                        <span class="db-bg-label">No background</span>
+                        <div class="db-settings-bg-mask" style="background: rgba(0, 0, 0, ${this.bgOpacity});"></div>
+                    </div>
+                </div>`;
+        }
+        
         return `<div class="db-settings-bg ${name}">
                     <div id="db-${name}-content" class="db-bg-content">
                         <div class="db-bg-label">${_('dashbored.' + name)}</div>

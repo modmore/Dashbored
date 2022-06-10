@@ -1,5 +1,8 @@
 <?php
 
+use MODX\Revolution\modX;
+use MODX\Revolution\modUserSetting;
+
 require_once dirname(__DIR__, 2) . '/model/dashbored/dashbored.class.php';
 
 abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterface
@@ -67,6 +70,25 @@ HTML
     </div>
 </div>
 HTML;
+    }
+
+    /**
+     * @param modX $modx
+     * @param string $key
+     * @param int $userId
+     * @return array|bool|float|mixed
+     */
+    public static function getUserSetting(modX $modx, string $key, int $userId)
+    {
+        $userSetting = $modx->getObject(modUserSetting::class, [
+            'user' => $userId,
+            'key' => $key
+        ]);
+        if (!$userSetting) {
+            return null;
+        }
+
+        return $userSetting->get('value');
     }
 }
 return 'DashboredAbstractDashboardWidget';
