@@ -1,11 +1,12 @@
-function DashboredWeather(containerId) {
+function DashboredWeather(widgetId) {
     if (DashboredWeather.instance_) {
         return DashboredWeather.instance_;
     }
     DashboredWeather.instance_ = this;
 
     this.window = {};
-    this.containerEl = document.querySelector(containerId);
+    this.widgetEl = document.querySelector('#dashboard-block-' + widgetId);
+    this.containerEl = this.widgetEl.querySelector('#dashbored' + widgetId + '-weather');
     
     this.region = this.containerEl.querySelector('.region');
     this.region.main = this.region.querySelector('.main');
@@ -22,6 +23,7 @@ function DashboredWeather(containerId) {
     this.current.wind = this.current.querySelector('.wind');
     
     this.outlook = this.containerEl.querySelector('.outlook');
+    
     this.record = {
         id: this.containerEl.dataset.id
     };
@@ -85,7 +87,7 @@ DashboredWeather.prototype = {
                 }
                 ,failure: {
                     fn: function(r) {
-                        console.error('Unable to retrieve weather data from the server.');
+                        console.error('[Dashbored] Unable to retrieve weather data from the server.');
                     }
                     ,scope: this
                 }
@@ -151,8 +153,43 @@ DashboredWeather.prototype = {
             that.outlook.appendChild(div);
         });
         
-        this.disableSpinner();
+        // Render background
+        let bg = this.widgetEl.querySelector('.dashbored-bg'),
+            currentBg = bg.querySelector('.db-bg-element');
+        if (currentBg) {
+            bg.removeChild(currentBg);
+        }
+            
+        // Image
+        if (data.background_type === 'image' && data.bg_image) {
+            let newImg = document.createElement('img');
+            newImg.classList.add('db-bg-element');
+            newImg.src = Ext.util.Format.htmlEncode(data.bg_image);
+            bg.appendChild(newImg);
+        }
+
+        // Video
+        if (data.background_type === 'video' && data.bg_video) {
+            let newVideo = document.createElement('video');
+            newVideo.classList.add('db-bg-element');
+            newVideo.src = data.bg_video;
+            newVideo.setAttribute('autoplay', 'true');
+            newVideo.setAttribute('loop', 'true');
+            bg.appendChild(newVideo);
+        }
         
+        // Render mask
+        if (data.bg_mask) {
+            let mask = bg.querySelector('.db-bg-mask');
+            mask.style.backgroundColor = this.getBackgroundStyle(parseInt(data.bg_mask));
+            
+            // Don't darken if no background
+            if (data.background_type === 'none') {
+                mask.style.backgroundColor = 'rgba(0,0,0,0)';
+            }
+        }
+        
+        this.disableSpinner();
     },
     
     disableSpinner: function() {
@@ -169,12 +206,23 @@ DashboredWeather.prototype = {
     
     setup: function() {
         this.loadData();
+    },
+    
+    getBackgroundStyle: function(bgOpacity) {
+        if (bgOpacity < 10 && bgOpacity > 0) {
+            bgOpacity = '.0' + bgOpacity;
+        }
+        if (bgOpacity !== 0 && bgOpacity !== 100) {
+            bgOpacity = '.' + bgOpacity;
+        }
+        return 'rgba(0,0,0,' + bgOpacity + ')';
     }
 }
 
 DashboredWeather.Settings = function(config) {
     config = config || {};
     this.bgOpacity = config.bgOpacity || 0;
+    this.bgRendered = false;
     var win = this;
     Ext.applyIf(config,{
         title: 'Dashbored Weather Configuration',
@@ -266,6 +314,28 @@ DashboredWeather.Settings = function(config) {
                                 win.switchBackgroundTab(radio);
                             }
                         });
+
+                        if (win.bgRendered === false) {
+                            win.getBackgroundPanels().forEach(function (panel) {
+                                // Render any saved images
+                                if (panel.itemId === 'image' && panel.body) {
+                                    let url = win.fp.find('name', 'bg_image')[0].getValue();
+                                    if (url) {
+                                        win.setImage(panel, url);
+                                    }
+                                }
+                                // Render any saved videos
+                                if (panel.itemId === 'video' && panel.body) {
+                                    let url = win.fp.find('name', 'bg_video')[0].getValue();
+                                    if (url) {
+                                        win.setVideo(panel, url);
+                                    }
+                                }
+                            });
+
+                            // Set flag so backgrounds are only rendered once
+                            win.bgRendered = true;
+                        }
                     }, scope: this}
                 },
                 items: [{
@@ -327,7 +397,7 @@ DashboredWeather.Settings = function(config) {
                     scope: this
                 },{
                     xtype: 'sliderfield',
-                    fieldLabel: 'Background Mask Opacity',
+                    fieldLabel: 'Darken Background',
                     itemId: 'bg-mask-slider',
                     name: 'bg_mask',
                     listeners: {
@@ -348,16 +418,10 @@ DashboredWeather.Settings = function(config) {
 Ext.extend(DashboredWeather.Settings, MODx.Window, {
     updateOpacity: function(win) {
         document.querySelectorAll('.db-settings-bg-mask').forEach(function(mask) {
-            let bgOpacity = win.bgOpacity;
-            if (bgOpacity < 10 && bgOpacity > 0) {
-                bgOpacity = '0' + bgOpacity;
-            }
-            if (bgOpacity === 0 || bgOpacity === 100) {
-                bgOpacity = '.' + bgOpacity;
-            }
-            mask.style.backgroundColor = 'rgba(0,0,0,.' + bgOpacity + ')';
+            mask.style.backgroundColor = DashboredWeather.prototype.getBackgroundStyle(win.bgOpacity);
         })
     },
+    
     switchBackgroundTab: function(radio) {
         if (!radio.checked) {
             return;
@@ -381,9 +445,11 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
         });
         
     },
+    
     getBackgroundPanels: function() {
         return this.find('itemId', 'settings-tabs')[0].getActiveTab().find('type', 'bg-panel');
     },
+    
     renderBackgroundPanel: function(name) {
         if (name === 'none') {
             return `<div class="db-settings-bg none">
@@ -404,6 +470,7 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
                     </div>
                 </div>`;
     },
+    
     selectFileFromBrowser: function(panel, type) {
         const videoTypes = ['webm', 'mp4', 'mkv'],
               imageTypes = ['png', 'gif', 'jpg', 'jpeg', 'svg', 'webp'];
@@ -415,10 +482,12 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
             listeners: {
                 select: {fn: function(file) {
                     if (imageTypes.includes(file.ext) && type === 'image') {
-                        this.selectImage(panel, file);
+                        this.setImage(panel, file.image);
+                        this.fp.find('name', 'bg_image')[0].setValue(file.image);
                     }
                     else if (videoTypes.includes(file.ext) && type === 'video') {
-                        this.selectVideo(panel, file);
+                        this.setVideo(panel, '/' + file.relativeUrl);
+                        this.fp.find('name', 'bg_video')[0].setValue('/' + file.relativeUrl);
                     }
                     else {
                         MODx.msg.alert('Invalid File Type', 'Invalid file type!');
@@ -433,18 +502,20 @@ Ext.extend(DashboredWeather.Settings, MODx.Window, {
         });
         browser.show();
     },
-    selectImage: function(panel, file) {
+    
+    setImage: function(panel, url) {
         let el = panel.getEl().down('#db-image-content'),
             img = document.createElement('img');
         img.classList.add('db-bg-img');
-        img.src = Ext.util.Format.htmlEncode(file.image);
+        img.src = Ext.util.Format.htmlEncode(url);
         el.appendChild(img);
     },
-    selectVideo: function(panel, file) {
+    
+    setVideo: function(panel, url) {
         let el = panel.getEl().down('#db-video-content'),
             video = document.createElement('video');
         video.classList.add('db-bg-video');
-        video.src = '/' + file.relativeUrl;
+        video.src = url;
         video.setAttribute('autoplay', 'true');
         video.setAttribute('loop', 'true');
         el.appendChild(video);

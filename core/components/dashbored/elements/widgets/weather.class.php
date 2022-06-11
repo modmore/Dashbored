@@ -42,7 +42,7 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 <script src="{$this->dashbored->config['assets_url']}weather/js/weather.js"></script>
 <script>
 Ext.onReady(function() {
-    new DashboredWeather('#dashbored{$this->widget->get('id')}-weather').setup();
+    new DashboredWeather('{$this->widget->get('id')}').setup();
 });
 </script>
 
@@ -54,6 +54,9 @@ HTML
     <svg class="dashbored-spinner" viewBox="0 0 50 50">
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
     </svg>
+</div>
+<div class="dashbored-bg" style="position: absolute; object-fit: cover; width: 100%; height: 100%; margin: -10px;">
+    <div class="db-bg-mask" style="position: absolute; object-fit: cover; width: 100%; height: 100%;"></div>
 </div>
 <!--<video width="600" height="300" autoplay loop style="position: absolute; object-fit: cover; width:100%; height: 100%; margin: -10px;">-->
 <!--  <source src="/packages/dashbored/assets/components/dashbored/weather/videos/clouds2.mp4" type="video/mp4">-->

@@ -67,6 +67,31 @@
     color: #ff9640;
 }
 
+.dashbored-bg {
+    position: absolute; 
+    object-fit: cover; 
+    width: 100%; 
+    height: 100%; 
+    margin: -10px;
+    overflow: hidden;
+    border-radius: 0 0 3px 3px;
+}
+.dashbored-bg .db-bg-element {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.db-bg-mask {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: .5;
+}
+
 /* Weather */
 .dashbored-weather-widget {
     height: 300px;
