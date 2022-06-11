@@ -181,7 +181,7 @@ DashboredWeather.prototype = {
         // Render mask
         if (data.bg_mask) {
             let mask = bg.querySelector('.db-bg-mask');
-            mask.style.backgroundColor = this.getBackgroundStyle(parseInt(data.bg_mask));
+            mask.style.backgroundColor = this.getBackgroundStyle(data.bg_mask);
             
             // Don't darken if no background
             if (data.background_type === 'none') {
@@ -209,10 +209,11 @@ DashboredWeather.prototype = {
     },
     
     getBackgroundStyle: function(bgOpacity) {
+        bgOpacity = parseInt(bgOpacity);
         if (bgOpacity < 10 && bgOpacity > 0) {
             bgOpacity = '.0' + bgOpacity;
         }
-        if (bgOpacity !== 0 && bgOpacity !== 100) {
+        else if (bgOpacity !== 0 && bgOpacity !== 100) {
             bgOpacity = '.' + bgOpacity;
         }
         return 'rgba(0,0,0,' + bgOpacity + ')';
@@ -399,6 +400,7 @@ DashboredWeather.Settings = function(config) {
                     xtype: 'sliderfield',
                     fieldLabel: 'Darken Background',
                     itemId: 'bg-mask-slider',
+                    minValue: 1,
                     name: 'bg_mask',
                     listeners: {
                         'valid': {fn: function(slider) {

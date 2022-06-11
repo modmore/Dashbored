@@ -10,7 +10,7 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
         'temp_type' => 'c',
         'distance_type' => 'km',
         'background_type' => 'none',
-        'bg_mask' => '0',
+        'bg_mask' => '1',
         'bg_image' => '',
         'bg_video' => '',
     ];
@@ -55,12 +55,9 @@ HTML
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
     </svg>
 </div>
-<div class="dashbored-bg" style="position: absolute; object-fit: cover; width: 100%; height: 100%; margin: -10px;">
-    <div class="db-bg-mask" style="position: absolute; object-fit: cover; width: 100%; height: 100%;"></div>
+<div class="dashbored-bg">
+    <div class="db-bg-mask"></div>
 </div>
-<!--<video width="600" height="300" autoplay loop style="position: absolute; object-fit: cover; width:100%; height: 100%; margin: -10px;">-->
-<!--  <source src="/packages/dashbored/assets/components/dashbored/weather/videos/clouds2.mp4" type="video/mp4">-->
-<!--</video>-->
 <div id="dashbored{$this->widget->get('id')}-weather" style="position: relative; z-index: 2; pointer-events: none;"
     data-id="{$this->widget->get('id')}" 
     data-location="{$props['location']}" 
