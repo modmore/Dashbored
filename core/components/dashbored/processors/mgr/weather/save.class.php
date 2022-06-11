@@ -34,11 +34,6 @@ class DashboredWeatherSaveProcessor extends modProcessor {
         $output = [];
         foreach (WeatherDashboardWidget::ACCEPTED_FIELDS as $field => $default) {
             $prop = $this->getProperty($field);
-            
-            if ($field === 'bg_mask' && (!$prop || $prop < 1)) {
-                $prop = '0';
-            }
-            
             if (filter_var($prop, FILTER_SANITIZE_STRING)) {
                 $setting = $this->saveUserSetting('dashbored.weather.' . $field, $prop);
                 $output[$field] = $setting->get('value');

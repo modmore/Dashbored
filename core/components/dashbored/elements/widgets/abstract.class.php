@@ -41,6 +41,7 @@ abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterf
         ]);
         $this->controller->addHtml(<<<HTML
 <script src="{$this->assetsUrl}dashbored.js"></script>
+<script src="{$this->assetsUrl}js/dashbored.window.js"></script>
 <script>
 Ext.onReady(function() {
     Ext.applyIf(MODx.lang, {$this->modx->toJSON($this->modx->lexicon->loadCache('dashbored'))});
