@@ -194,7 +194,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
         }
 
         return `<div class="db-settings-bg ${name}">
-                    <div id="db-${name}-content" class="db-bg-content">
+                    <div id="db-${name}-content-${this.getId()}" class="db-bg-content">
                         <div class="db-bg-label">${_('dashbored.' + name)}</div>
                         <div class="db-settings-bg-mask"></div>
                     </div>
@@ -237,7 +237,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
     },
 
     setImage: function(panel, url) {
-        let el = panel.getEl().down('#db-image-content'),
+        let el = panel.getEl().down('#db-image-content-' + this.getId()),
             img = document.createElement('img');
         img.classList.add('db-bg-img');
         img.src = Ext.util.Format.htmlEncode(url);
@@ -245,7 +245,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
     },
 
     setVideo: function(panel, url) {
-        let el = panel.getEl().down('#db-video-content'),
+        let el = panel.getEl().down('#db-video-content-' + this.getId()),
             video = document.createElement('video');
         video.classList.add('db-bg-video');
         video.src = url;

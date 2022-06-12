@@ -4,6 +4,14 @@ require_once __DIR__ . '/abstract.class.php';
 
 class QuotesDashboardWidget extends DashboredAbstractDashboardWidget
 {
+    // Values are defaults
+    public const ACCEPTED_FIELDS = [
+        'background_type' => 'none',
+        'bg_mask' => '1',
+        'bg_image' => '',
+        'bg_video' => '',
+    ];
+    
     public function render(): string
     {
         $this->initialize();
@@ -12,6 +20,12 @@ class QuotesDashboardWidget extends DashboredAbstractDashboardWidget
 
         $titleBar = $this->getWidgetTitleBar('quotes');
         $this->widget->set('name', $titleBar);
+
+        $props = [];
+        foreach (self::ACCEPTED_FIELDS as $field => $default) {
+            $props[$field] = self::getUserSetting($this->modx, 'dashbored.quotes.' . $field,
+                    $this->modx->user->get('id')) ?? $default;
+        }
         
         $this->controller->addHtml(<<<HTML
 <style>
@@ -24,7 +38,7 @@ class QuotesDashboardWidget extends DashboredAbstractDashboardWidget
 <script src="{$this->dashbored->config['assets_url']}quotes/quotes.js"></script>
 <script>
 Ext.onReady(function() {
-    new DashboredQuotes('#dashbored{$this->widget->get('id')}-quotes').setup();
+    new DashboredQuotes('{$this->widget->get('id')}').setup();
 });
 </script>
 
@@ -37,7 +51,11 @@ HTML
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
     </svg>
 </div>
-<div id="dashbored{$this->widget->get('id')}-quotes" data-id="{$this->widget->get('id')}" class="dashbored-quotes-widget">
+<div id="dashbored{$this->widget->get('id')}-quotes" class="dashbored-quotes-widget" 
+    data-id="{$this->widget->get('id')}"
+    data-backgroundtype="{$props['background_type']}" 
+    data-backgroundmask="{$props['bg_mask']}" 
+>
     <blockquote class="quote"></blockquote>
 </div>
 HTML;

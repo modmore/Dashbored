@@ -42,10 +42,10 @@ DashboredWeather.config = {};
 DashboredWeather.prototype = {
     openSettings: function(record) {
         let that = this;
-        if (this.dashboredSettingsWindow) {
-            this.dashboredSettingsWindow.destroy();
+        if (this.dashboredWeatherSettingsWindow) {
+            this.dashboredWeatherSettingsWindow.destroy();
         }
-        this.dashboredSettingsWindow = MODx.load({
+        this.dashboredWeatherSettingsWindow = MODx.load({
             xtype: 'dashboredweather-settings'
             ,record: record
             ,listeners: {
@@ -60,8 +60,8 @@ DashboredWeather.prototype = {
                 }
             }
         });
-        this.dashboredSettingsWindow.setValues(record);
-        this.dashboredSettingsWindow.show();
+        this.dashboredWeatherSettingsWindow.setValues(record);
+        this.dashboredWeatherSettingsWindow.show();
     },
     
     loadData: function(location = '', ignoreCache = false) {

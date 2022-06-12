@@ -17,10 +17,7 @@ abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterf
      * @var mixed
      */
     protected $assetsUrl;
-
-    /**
-     * @return void
-     */
+    
     public function initialize(): void
     {
         $this->dashbored = new Dashbored($this->modx);
@@ -40,7 +37,7 @@ abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterf
             'version' => $this->dashbored->version,
         ]);
         $this->controller->addHtml(<<<HTML
-<script src="{$this->assetsUrl}dashbored.js"></script>
+<script src="{$this->assetsUrl}js/dashbored.js"></script>
 <script src="{$this->assetsUrl}js/dashbored.window.js"></script>
 <script>
 Ext.onReady(function() {

@@ -1,21 +1,23 @@
-function DashboredQuotes(containerId) {
+function DashboredQuotes(widgetId) {
     if (DashboredQuotes.instance_) {
         return DashboredQuotes.instance_;
     }
     DashboredQuotes.instance_ = this;
 
     this.window = {};
-    this.containerEl = document.querySelector(containerId);
+    this.widgetEl = document.querySelector('#dashboard-block-' + widgetId);
+    this.containerEl = this.widgetEl.querySelector('#dashbored' + widgetId + '-quotes');
     this.quote = this.containerEl.querySelector('.quote');
 
+    this.record = {
+        id: this.containerEl.dataset.id
+    };
+    
     document.querySelector('.dashbored-title-btn.config.quotes').addEventListener('click', (e) => {
-        let record = {
-            id: this.containerEl.dataset.id
-        };
-        this.openSettings(record);
+        this.openSettings(this.record);
     });
     document.querySelector('.dashbored-title-btn.refresh.quotes').addEventListener('click', (e) => {
-        this.refresh();
+        this.refresh(true);
     });
 }
 window['DashboredQuotes'] = DashboredQuotes;
@@ -30,9 +32,11 @@ DashboredQuotes.prototype = {
         }
         this.dashboredQuotesSettingsWindow = MODx.load({
             xtype: 'dashboredquotes-settings'
+            ,record: record
             ,listeners: {
                 'success': {fn: function(r) {
                         let props = r.a.result.object.properties;
+                        this.record = r.results;
                         that.refresh(props.location);
                     },scope:this},
                 'failure': {fn: function(r) {
@@ -45,7 +49,7 @@ DashboredQuotes.prototype = {
         this.dashboredQuotesSettingsWindow.show();
     },
 
-    loadData: function(location = '', ignoreCache = false) {
+    loadData: function(ignoreCache = false) {
         let that = this;
 
         this.enableSpinner();
@@ -60,6 +64,7 @@ DashboredQuotes.prototype = {
             ,listeners: {
                 success: {
                     fn: function(r) {
+                        this.record = r.results;
                         that.render(r.results);
                     }
                     ,scope: this
@@ -93,8 +98,8 @@ DashboredQuotes.prototype = {
         document.querySelector('.dashbored-quotes-mask').style.visibility = 'visible';
     },
 
-    refresh: function(location) {
-        this.loadData(location, true);
+    refresh: function() {
+        this.loadData(true);
     },
 
     setup: function() {
@@ -103,50 +108,30 @@ DashboredQuotes.prototype = {
 }
 
 DashboredQuotes.Settings = function(config) {
-    config = config || {};
     Ext.applyIf(config,{
         title: 'Dashbored Daily Quotes Configuration',
-        url: Dashbored.config.connectorUrl,
         baseParams: {
             action: 'mgr/quotes/save'
         },
-        layout: 'form',
-        autoHeight: true,
-        allowDrop: false,
-        fileUpload: true,
-        width: 600,
-        bwrapCssClass: 'x-window-with-tabs',
-        fields: [{
-            xtype: 'hidden',
-            name: 'id'
-        },{
-            xtype: 'modx-tabs',
-            defaults: {
-                layout: 'form'
-            },
-            items: [{
-                title: 'Settings',
-                items: [{
-                    xtype: 'textfield',
-                    fieldLabel: 'A field',
-                    name: 'field',
-                    anchor: '100%',
-                    allowBlank: false
-                },{
-                    xtype: 'label',
-                    cls: 'desc-under',
-                    html: 'This is a placeholder field for now.'
-                }]
-            },{
-                title: 'Background',
-                items: []
-            },{
-                title: 'API',
-                items: []
-            }]
-        }]
     });
     DashboredQuotes.Settings.superclass.constructor.call(this, config);
 };
-Ext.extend(DashboredQuotes.Settings, MODx.Window);
+Ext.extend(DashboredQuotes.Settings, Dashbored.Settings, {
+    getSettingsTab: function(win) {
+        return {
+            title: _('settings'),
+            items: [{
+                xtype: 'textfield',
+                fieldLabel: 'Specify Authors',
+                name: 'authors',
+                anchor: '100%',
+                allowBlank: false
+            },{
+                xtype: 'label',
+                cls: 'desc-under',
+                html: 'Add a comma-separated list of authors to load quotes from.'
+            }]
+        };
+    },
+});
 Ext.reg('dashboredquotes-settings', DashboredQuotes.Settings);
