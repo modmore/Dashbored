@@ -35,9 +35,8 @@ DashboredQuotes.prototype = {
             ,record: record
             ,listeners: {
                 'success': {fn: function(r) {
-                        let props = r.a.result.object.properties;
                         this.record = r.results;
-                        that.refresh(props.location);
+                        that.refresh(true);
                     },scope:this},
                 'failure': {fn: function(r) {
                         console.error('[Dashbored] Unable to save quotes settings. ' + r.msg);
@@ -86,6 +85,43 @@ DashboredQuotes.prototype = {
         author.classList.add('author');
         author.textContent = data[0].a;
         this.quote.appendChild(author);
+
+        // Render background
+        let bg = this.widgetEl.querySelector('.dashbored-bg'),
+            currentBg = bg.querySelector('.db-bg-element');
+        if (currentBg) {
+            bg.removeChild(currentBg);
+        }
+
+        // Image
+        if (data.background_type === 'image' && data.bg_image) {
+            let newImg = document.createElement('img');
+            newImg.classList.add('db-bg-element');
+            newImg.src = Ext.util.Format.htmlEncode(data.bg_image);
+            bg.appendChild(newImg);
+        }
+
+        // Video
+        if (data.background_type === 'video' && data.bg_video) {
+            let newVideo = document.createElement('video');
+            newVideo.classList.add('db-bg-element');
+            newVideo.src = data.bg_video;
+            newVideo.setAttribute('autoplay', 'true');
+            newVideo.setAttribute('muted', 'true');
+            newVideo.setAttribute('loop', 'true');
+            bg.appendChild(newVideo);
+        }
+
+        // Render mask
+        if (data.bg_mask) {
+            let mask = bg.querySelector('.db-bg-mask');
+            mask.style.backgroundColor = Dashbored.getBackgroundStyle(data.bg_mask);
+
+            // Don't darken if no background
+            if (data.background_type === 'none') {
+                mask.style.backgroundColor = 'rgba(0,0,0,0)';
+            }
+        }
         
         this.disableSpinner();
     },
@@ -108,6 +144,7 @@ DashboredQuotes.prototype = {
 }
 
 DashboredQuotes.Settings = function(config) {
+    this.widgetType = 'quotes';
     Ext.applyIf(config,{
         title: 'Dashbored Daily Quotes Configuration',
         baseParams: {
@@ -124,8 +161,7 @@ Ext.extend(DashboredQuotes.Settings, Dashbored.Settings, {
                 xtype: 'textfield',
                 fieldLabel: 'Specify Authors',
                 name: 'authors',
-                anchor: '100%',
-                allowBlank: false
+                anchor: '100%'
             },{
                 xtype: 'label',
                 cls: 'desc-under',

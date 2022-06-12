@@ -185,7 +185,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
 
     renderBackgroundPanel: function(name) {
         if (name === 'none') {
-            return `<div class="db-settings-bg none">
+            return `<div class="db-settings-bg db-settings-bg-${this.widgetType} none">
                     <div class="db-bg-content">
                         <span class="db-bg-label">No background</span>
                         <div class="db-settings-bg-mask" style="background: rgba(0, 0, 0, ${this.bgOpacity});"></div>
@@ -193,7 +193,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
                 </div>`;
         }
 
-        return `<div class="db-settings-bg ${name}">
+        return `<div class="db-settings-bg db-settings-bg-${this.widgetType} ${name}">
                     <div id="db-${name}-content-${this.getId()}" class="db-bg-content">
                         <div class="db-bg-label">${_('dashbored.' + name)}</div>
                         <div class="db-settings-bg-mask"></div>

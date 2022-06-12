@@ -51,6 +51,9 @@ HTML
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
     </svg>
 </div>
+<div class="dashbored-bg">
+    <div class="db-bg-mask"></div>
+</div>
 <div id="dashbored{$this->widget->get('id')}-quotes" class="dashbored-quotes-widget" 
     data-id="{$this->widget->get('id')}"
     data-backgroundtype="{$props['background_type']}" 

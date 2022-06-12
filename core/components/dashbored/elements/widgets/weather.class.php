@@ -58,14 +58,14 @@ HTML
 <div class="dashbored-bg">
     <div class="db-bg-mask"></div>
 </div>
-<div id="dashbored{$this->widget->get('id')}-weather" style="position: relative; z-index: 2; pointer-events: none;"
+<div id="dashbored{$this->widget->get('id')}-weather" class="dashbored-weather-widget"
     data-id="{$this->widget->get('id')}" 
     data-location="{$props['location']}" 
     data-temptype="{$props['temp_type']}" 
     data-distancetype="{$props['distance_type']}" 
     data-backgroundtype="{$props['background_type']}" 
     data-backgroundmask="{$props['bg_mask']}" 
-    class="dashbored-weather-widget">
+>
     <div class="column">
         <div class="region">
              <p class="main"></p>

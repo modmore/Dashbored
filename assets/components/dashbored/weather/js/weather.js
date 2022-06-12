@@ -211,6 +211,7 @@ DashboredWeather.prototype = {
 }
 
 DashboredWeather.Settings = function(config) {
+    this.widgetType = 'weather';
     Ext.applyIf(config,{
         title: 'Dashbored Weather Configuration',
         baseParams: {
