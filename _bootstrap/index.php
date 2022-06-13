@@ -115,6 +115,18 @@ if (!createObject('modDashboardWidget', [
     echo "Error creating quotes widget.\n";
 }
 
+if (!createObject('modDashboardWidget', [
+    'name' => 'dashbored.news_feed.name',
+    'description' => 'dashbored.news_feed.desc',
+    'type' => 'file',
+    'size' => 'one-third',
+    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/newsfeed.class.php',
+    'namespace' => 'dashbored',
+    'lexicon' => 'dashbored:default',
+], 'name', false)) {
+    echo "Error creating news feed widget.\n";
+}
+
 $settings = include dirname(dirname(__FILE__)).'/_build/data/transport.settings.php';
 foreach ($settings as $key => $obj) {
     /** @var modSystemSetting $obj */
