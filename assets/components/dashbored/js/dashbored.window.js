@@ -214,18 +214,18 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
             multiple: true,
             listeners: {
                 select: {fn: function(file) {
-                        if (imageTypes.includes(file.ext) && type === 'image') {
-                            this.setImage(panel, file.image);
-                            this.fp.find('name', 'bg_image')[0].setValue(file.image);
-                        }
-                        else if (videoTypes.includes(file.ext) && type === 'video') {
-                            this.setVideo(panel, '/' + file.relativeUrl);
-                            this.fp.find('name', 'bg_video')[0].setValue('/' + file.relativeUrl);
-                        }
-                        else {
-                            MODx.msg.alert('Invalid File Type', 'Invalid file type!');
-                        }
-                    }, scope: this}
+                    if (imageTypes.includes(file.ext) && type === 'image') {
+                        this.setImage(panel, '/' + file.relativeUrl);
+                        this.fp.find('name', 'bg_image')[0].setValue('/' + file.relativeUrl);
+                    }
+                    else if (videoTypes.includes(file.ext) && type === 'video') {
+                        this.setVideo(panel, '/' + file.relativeUrl);
+                        this.fp.find('name', 'bg_video')[0].setValue('/' + file.relativeUrl);
+                    }
+                    else {
+                        MODx.msg.alert('Invalid File Type', 'Invalid file type!');
+                    }
+                }, scope: this}
             },
             allowedFileTypes: type === 'video' ? videoTypes.join(',') : imageTypes.join(','),
             hideFiles: true,

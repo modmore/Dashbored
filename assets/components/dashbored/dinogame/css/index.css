@@ -8,10 +8,10 @@
     display: inline-block;
 }
 
-.icon-offline {
-    content: -webkit-image-set( url(assets/default_100_percent/100-error-offline.png) 1x, url(assets/default_200_percent/200-error-offline.png) 2x);
-    position: relative;
-}
+/*.icon-offline {*/
+/*    content: -webkit-image-set( url(assets/default_100_percent/100-error-offline.png) 1x, url(assets/default_200_percent/200-error-offline.png) 2x);*/
+/*    position: relative;*/
+/*}*/
 
 .hidden {
     display: none;
@@ -50,11 +50,30 @@
 }
 .dashbored-dinosaurgame .players {
     display: flex;
+    margin-top: 10px;
+    gap: 30px;
     justify-content: center;
+}
+.dashbored-dinosaurgame .player-select .player {
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.15);
+    border-radius: 3px;
+    padding: 15px;
+    cursor: pointer;
+    border: 3px solid #fff;
+}
+.dashbored-dinosaurgame .player-select .player:hover {
+    box-shadow: none;
+    border: 3px solid #ff9640;
+}
+.dashbored-dinosaurgame .player-select .player-img img {
+    max-width: 100px;
+}
+.dashbored-dinosaurgame .player-select .player h4 {
+    text-align: center;
+    margin-top: 6px;
 }
 
 /* Offline page */
-
 .offline .interstitial-wrapper {
     color: #2b2b2b;
     font-size: 1em;

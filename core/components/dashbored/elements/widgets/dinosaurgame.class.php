@@ -60,17 +60,17 @@ HTML
                 <div class="player-select">
                     <h1 class="player-select-title" style="text-align: center; font-family: 'Open Sans', sans-serif;">Player Select</h1>
                     <div class="players">
-                        <div class="player-one player">
+                        <div class="player-trex player">
                             <div class="player-img">
-                                <img src="{$this->dashbored->config['assets_url']}dinogame/assets/players/modbot.png">
+                                <img src="{$this->dashbored->config['assets_url']}dinogame/assets/players/dino.png">
                             </div>
-                            <button class="player-trex">Choose T-Rex</button>
+                            <h4>T-Rex</h4>
                         </div>
-                        <div class="player-two player">
+                        <div class="player-modbot player">
                             <div class="player-img">
                                 <img src="{$this->dashbored->config['assets_url']}dinogame/assets/players/modbot.png">
                             </div>
-                            <button class="player-modbot">Choose modbot</button>
+                            <h4>modbot</h4>
                         </div>
                     </div>
                 </div>
