@@ -61,9 +61,14 @@
     cursor: pointer;
     border: 3px solid #fff;
 }
-.dashbored-dinosaurgame .player-select .player:hover {
+.dashbored-dinosaurgame .player:hover {
     box-shadow: none;
-    border: 3px solid #ff9640;
+}
+.dashbored-dinosaurgame .player-modbot:hover {
+    border: 3px dashed #294b72;
+}
+.dashbored-dinosaurgame .player-trex:hover {
+    border: 3px dashed #ff9640;
 }
 .dashbored-dinosaurgame .player-select .player-img img {
     max-width: 100px;
