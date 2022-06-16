@@ -1,0 +1,5 @@
+Dashbored 1.0.0-pl
+------------------
+Released on 2022-07-08
+
+- First release
