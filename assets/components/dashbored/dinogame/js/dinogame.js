@@ -67,6 +67,14 @@ function Runner(outerContainerId, opt_config) {
     this.imagesLoaded = 0;
 
     this.playerSelected = false;
+
+    this.record = {
+        id: this.outerContainerEl.dataset.id,
+        display_name: this.outerContainerEl.dataset.displayname,
+    };
+    document.querySelector('.dashbored-title-btn.config.dino_game').addEventListener('click', (e) => {
+        this.openSettings(this.record);
+    });
     
     // Player Select
     if (!this.playerSelected) {
@@ -237,8 +245,108 @@ Runner.events = {
     LOAD: 'load'
 };
 
+Runner.Settings = function(config) {
+    this.widgetType = 'dinogame';
+    this.jsConfetti = new JSConfetti();
+    Ext.applyIf(config,{
+        title: 'Dashbored Dino Game',
+        baseParams: {
+            action: 'mgr/dinogame/save'
+        },
+    });
+    Runner.Settings.superclass.constructor.call(this, config);
+    this.on('show', function(win) {
+        win.jsConfetti.addConfetti()
+    });
+};
+Ext.extend(Runner.Settings, Dashbored.Settings, {
+    getTabs: function() {
+        let output = [];
+        [this.getHighScoresTab(this), this.getSettingsTab(this), this.getAboutTab(this)].forEach((tab) => {
+            if (tab > '') {
+                output.push(tab);
+            }
+        });
+
+        return output;
+    },
+    
+    getHighScoresTab: function(win) {
+        return {
+            title: 'High Scores',
+            items: [{
+                xtype: 'box',
+                anchor: '100%',
+                html: this.renderHighScores()
+            }]
+        };
+    },
+
+    getSettingsTab: function(win) {
+        return {
+            title: 'Settings',
+            items: [{
+                xtype: 'textfield',
+                name: 'display_name',
+                fieldLabel: 'Display name',
+                anchor: '100%'
+            },{
+                xtype: 'label',
+                cls: 'desc-under',
+                html: 'Add a name here to display if you get a high score. Defaults to your username.'
+            }]
+        };
+    },
+    
+    renderHighScores: function() {
+        let output = `
+            <div class="dashbored-high-scores">
+            <div class="dashbored-high-score-row header"> 
+                <div class="rank">#</div>
+                <div>Score</div>
+                <div class="name">Name</div>
+                <div>Player</div>
+            </div>
+            `;
+        dashboredDinoHighScores.forEach(function(score, i) {
+            output += `<div class="dashbored-high-score-row row${i}">
+                <div class="rank">${i + 1}</div>
+                <div>${score['display_score']}</div>
+                <div class="name">${score['display_name']}</div>
+                <div>${score['character']}</div>
+            </div>`;
+        }); 
+        output += '</div>';
+        return output;
+    }
+});
+Ext.reg('dashboreddinogame-settings', Runner.Settings);
+
 
 Runner.prototype = {
+    openSettings: function(record) {
+        let that = this;
+        if (this.dashboredDinoGameSettingsWindow) {
+            this.dashboredDinoGameSettingsWindow.destroy();
+        }
+        this.dashboredDinoGameSettingsWindow = MODx.load({
+            xtype: 'dashboreddinogame-settings'
+            ,record: record
+            ,listeners: {
+                'success': {fn: function(r) {
+                        Runner.instance_.record.display_name = r.a.result.message.display_name;
+                        console.log(Runner.instance_.record.display_name);
+                    },scope:this},
+                'failure': {fn: function(r) {
+                        console.error('[Dashbored] Unable to save dino game settings. ' + r.msg);
+                    }, scope: this
+                }
+            }
+        });
+        this.dashboredDinoGameSettingsWindow.setValues(record);
+        this.dashboredDinoGameSettingsWindow.show();
+    },
+    
     /**
      * Whether the easter egg has been disabled. CrOS enterprise enrolled devices.
      * @return {boolean}
@@ -279,14 +387,13 @@ Runner.prototype = {
         var tRexBtn = this.outerContainerEl.querySelector('.player-select .player-trex');
         var modbotBtn = this.outerContainerEl.querySelector('.player-select .player-modbot');
         tRexBtn.addEventListener('click', function(e) {
-            that.playerSelected = 'trex';
+            that.playerSelected = 'T-Rex';
             that.loadImages();
         });
         modbotBtn.addEventListener('click', function(e) {
             that.playerSelected = 'modbot';
             that.loadImages();
         });
-        
     },
     
     quit: function() {
@@ -2177,12 +2284,15 @@ DistanceMeter.prototype = {
                 ,params: {
                     id: Runner.instance_.outerContainerEl.dataset.id,
                     score: rawScore,
-                    action: 'mgr/dinogame/submithighscore',
+                    display_score: highScoreStr,
+                    character: Runner.instance_.playerSelected,
+                    action: 'mgr/dinogame/submithighscore'
                 }
                 ,listeners: {
                     success: {
                         fn: function(r) {
                             console.log('Wooo! New high score!');
+                            dashboredDinoHighScores = r.results;
                         }
                         ,scope: this
                     }

@@ -4,6 +4,11 @@ require_once __DIR__ . '/abstract.class.php';
 
 class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
 {
+    // Values are defaults
+    public const ACCEPTED_FIELDS = [
+        'display_name' => '',
+    ];
+    
     public function render()
     {
         $this->initialize();
@@ -14,12 +19,35 @@ class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
         $this->controller->addCss($this->dashbored->config['assets_url'] . 'dinogame/css/index.css');
         
         $properties = $this->widget->get('properties');
+
+        $props = [];
+        foreach (self::ACCEPTED_FIELDS as $field => $default) {
+            $props[$field] = self::getUserSetting($this->modx, 'dashbored.dinogame.' . $field,
+                    $this->modx->user->get('id')) ?? $default;
+        }
+        
+        // Display the lowest high score, in the game when starting as the score to beat!
+        $lowestHighScore = ['score' => 0];
+        $highScores = [];
+        if (isset($properties['high_scores'])) {
+            $lowestHighScore = end($properties['high_scores']);
+            $highScores = $properties['high_scores'];
+        }
+        $highScores = json_encode($highScores);
         
         $this->controller->addHtml(<<<HTML
+<style>
+    #dashboard-block-{$this->widget->get('id')} .body {
+        max-height: 320px;
+        padding: 0;
+    }
+</style>
 <script>
-    var dashboredDinoSavedScore = "{$properties['high_score']}";
+    var dashboredDinoSavedScore = "{$lowestHighScore['score']}";
+    var dashboredDinoHighScores = {$highScores};
 </script>
 <script src="{$this->dashbored->config['assets_url']}dinogame/js/dinogame.js"></script>
+<script src="{$this->dashbored->config['assets_url']}dinogame/js/confetti.js"></script>
 <script>
 Ext.onReady(function() {
     var runner = new Runner('#dashbored{$this->widget->get('id')}-dinosaurgame');
@@ -35,14 +63,16 @@ HTML
         );
         
         return <<<HTML
-<div class="dashbored-dinosaurgame-inner-widget">
+<div class="dashbored-dinosaurgame-inner-widget" >
     <div class="offline">
         <div id="messageBox" class="sendmessage">
              <h1 style="text-align: center; font-family: 'Open Sans', sans-serif;">Press Space to start</h1>
              <div class="niokbutton" onclick="okbuttonsend()"></div>
         </div>
         
-        <div id="dashbored{$this->widget->get('id')}-dinosaurgame" class="dashbored-dinosaurgame" data-id="{$this->widget->get('id')}">
+        <div id="dashbored{$this->widget->get('id')}-dinosaurgame" class="dashbored-dinosaurgame" 
+        data-id="{$this->widget->get('id')}"
+        data-displayname="{$props['display_name']}">
             <div id="main-content">
                 <div class="icon icon-offline"></div>
             </div>

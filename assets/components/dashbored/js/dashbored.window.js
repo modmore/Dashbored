@@ -21,11 +21,7 @@ Dashbored.Settings = function(config) {
             defaults: {
                 layout: 'form'
             },
-            items: [
-                this.getSettingsTab(win),
-                this.getBackgroundTab(win),
-                this.getAboutTab(win)
-            ]
+            items: this.getTabs()
         }]
     });
     Dashbored.Settings.superclass.constructor.call(this, config);
@@ -35,6 +31,17 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
         document.querySelectorAll('.db-settings-bg-mask').forEach(function(mask) {
             mask.style.backgroundColor = Dashbored.getBackgroundStyle(win.bgOpacity);
         })
+    },
+    
+    getTabs: function() {
+        let output = [];
+        [this.getSettingsTab(this), this.getBackgroundTab(this), this.getAboutTab(this)].forEach((tab) => {
+            if (tab > '') {
+                output.push(tab);
+            }
+        });
+        
+        return output;
     },
     
     getBackgroundTab: function(win) {
@@ -151,8 +158,18 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
     getAboutTab: function(win) {
         return {
             title: 'About',
-            items: []
+            items: [{
+                xtype: 'box',
+                anchor: '100%',
+                html: this.renderAboutPanel()
+            }]
         };
+    },
+    
+    renderAboutPanel: function() {
+        return `
+            <div style="background: #f1f1f1; width: 100%; height: 300px;">About info goes here</div>
+        `;
     },
     
     switchBackgroundTab: function(radio) {
