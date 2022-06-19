@@ -155,19 +155,7 @@ DashboredQuotes.Settings = function(config) {
 };
 Ext.extend(DashboredQuotes.Settings, Dashbored.Settings, {
     getSettingsTab: function(win) {
-        return {
-            title: _('settings'),
-            items: [{
-                xtype: 'textfield',
-                fieldLabel: 'Specify Authors',
-                name: 'authors',
-                anchor: '100%'
-            },{
-                xtype: 'label',
-                cls: 'desc-under',
-                html: 'Add a comma-separated list of authors to load quotes from.'
-            }]
-        };
+        return '';
     },
 });
 Ext.reg('dashboredquotes-settings', DashboredQuotes.Settings);
