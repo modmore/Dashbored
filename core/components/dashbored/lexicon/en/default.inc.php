@@ -31,3 +31,7 @@ $_lang['dashbored.weather.mph'] = 'mi/h';
 // Quotes
 $_lang['dashbored.quotes.name'] = 'Daily Quotes';
 $_lang['dashbored.quotes.desc'] = 'Daily inspirational quotes on your MODX dashboard.';
+
+// New Feed
+$_lang['dashbored.news_feed.name'] = 'News Feed';
+$_lang['dashbored.news_feed.desc'] = 'Your favourite news feed in your MODX dashboard.';

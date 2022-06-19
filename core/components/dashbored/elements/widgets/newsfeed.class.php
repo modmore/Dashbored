@@ -13,7 +13,7 @@ class DashboredNewsFeedDashboardWidget extends DashboredAbstractDashboardWidget
 
         $this->controller->addCss($this->dashbored->config['assets_url'] . 'css/mgr.css');
 
-        $titleBar = $this->getWidgetTitleBar('News');
+        $titleBar = $this->getWidgetTitleBar('news_feed');
         $this->widget->set('name', $titleBar);
 
         $props = [];
@@ -47,7 +47,7 @@ HTML
     data-backgroundtype="{$props['background_type']}" 
     data-backgroundmask="{$props['bg_mask']}" 
 >
-    <blockquote class="quote"></blockquote>
+    
 </div>
 HTML;
     }
