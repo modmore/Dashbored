@@ -5,7 +5,9 @@ require_once __DIR__ . '/abstract.class.php';
 class DashboredNewsFeedDashboardWidget extends DashboredAbstractDashboardWidget
 {
     // Values are defaults
-    public const ACCEPTED_FIELDS = [];
+    public const ACCEPTED_FIELDS = [
+        'feed_url' => 'https://modx.today/feed.xml'
+    ];
     
     public function render(): string
     {
@@ -23,7 +25,7 @@ class DashboredNewsFeedDashboardWidget extends DashboredAbstractDashboardWidget
         }
         
         $this->controller->addHtml(<<<HTML
-<script src="{$this->dashbored->config['assets_url']}quotes/newsfeed.js"></script>
+<script src="{$this->dashbored->config['assets_url']}newsfeed/newsfeed.js"></script>
 <script>
 Ext.onReady(function() {
     new DashboredNewsFeed('{$this->widget->get('id')}').setup();
@@ -44,8 +46,6 @@ HTML
 </div>
 <div id="dashbored{$this->widget->get('id')}-newsfeed" class="dashbored-newsfeed-widget" 
     data-id="{$this->widget->get('id')}"
-    data-backgroundtype="{$props['background_type']}" 
-    data-backgroundmask="{$props['bg_mask']}" 
 >
     
 </div>

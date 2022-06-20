@@ -49,10 +49,25 @@ class DashboredNewsFeedRefreshProcessor extends modProcessor {
 
         if ($this->refresh || !$data) {
             
+            $data = [];
+            
             // Get feed data
+            $feed = new SimplePie();
+            $feed->set_feed_url('https://modx.today/feed.xml');
+            $feed->init();
+            $feed->handle_content_type();
+
+            foreach ($feed->get_items() as $item) {
+                $data[] = [
+                    'title' => $item->get_title(),
+                    'date' => $item->get_date(),
+                    'author' => $item->get_author()->get_name(),
+                    'link' => $item->get_link(),
+                    'description' => $item->get_description(),
+                    'content' => $item->get_content(),
+                ];
+            }
             
-            
-            $data = json_decode($data, true);
             $data = filter_var_array($data, FILTER_SANITIZE_STRING) ?? [];
             $data = array_merge($data, $this->fields);
 
