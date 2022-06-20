@@ -78,10 +78,15 @@ DashboredNewsFeed.prototype = {
     },
 
     render: function(data) {
-        data.forEach((article) => {
+        for (const article in data) {
+            // Skip non-articles
+            if (typeof data[article].title === 'undefined') {
+                continue;
+            }
+            
             // Create elements
             let item = document.createElement('div'),
-                title = document.createElement('h4'),
+                title = document.createElement('h2'),
                 authorRow = document.createElement('div'),
                 author = document.createElement('div'),
                 date = document.createElement('div'),
@@ -90,15 +95,16 @@ DashboredNewsFeed.prototype = {
                 content = document.createElement('div');
             
             // Add content to elements
-            title.textContent = article.title;
-            link.href = article.link;
-            author.textContent = article.author;
-            date.textContent = article.date;
-            description.innerHTML = article.description;
-            content.innerHTML = article.content;
+            title.textContent = data[article].title;
+            link.href = data[article].url;
+            author.textContent = data[article].author;
+            date.textContent = data[article].date;
+            description.innerHTML = data[article].description;
+            content.innerHTML = data[article].content;
 
             // Add classes
             item.classList.add('dashbored-news-feed-item');
+            title.classList.add('dashbored-news-feed-title');
             authorRow.classList.add('dashbored-news-feed-author-row');
             author.classList.add('dashbored-news-feed-author');
             date.classList.add('dashbored-news-feed-date');
@@ -107,21 +113,19 @@ DashboredNewsFeed.prototype = {
             content.classList.add('dashbored-news-feed-content');
             
             // Add to DOM
-            link.appendChild(title);
-            item.appendChild(link);
-            
-            authorRow.appendChild(author);
+            title.appendChild(link);
+            item.appendChild(title);
+
             authorRow.appendChild(date);
+            authorRow.appendChild(author);
             item.appendChild(authorRow);
             
             item.appendChild(description);
             item.appendChild(content);
             
             this.containerEl.appendChild(item);
-        });
+        }
         
-        
-
         this.disableSpinner();
     },
 

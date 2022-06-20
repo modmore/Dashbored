@@ -1,45 +1,18 @@
 <?php
 
+require_once dirname(__DIR__) . '/dashbored/refresh.class.php';
 require_once dirname(__DIR__, 3) . '/elements/widgets/newsfeed.class.php';
 
-class DashboredNewsFeedRefreshProcessor extends modProcessor {
+class DashboredNewsFeedRefreshProcessor extends DashboredRefreshProcessor {
 
-    protected $dashbored;
-    protected $widget;
-    protected $refresh;
-    protected $fields = [];
+    protected function loadSettingFields()
+    {
+        foreach (DashboredNewsFeedDashboardWidget::ACCEPTED_FIELDS as $field => $default) {
+            $this->fields[$field] = DashboredNewsFeedDashboardWidget::getUserSetting($this->modx,
+                    'dashbored.newsfeed.' . $field, $this->modx->user->get('id')) ?? $default;
+        }
+    }
     
-
-    /**
-     * @return string[]
-     */
-    public function getLanguageTopics(): array
-    {
-        return ['dashbored:default'];
-    }
-
-    /**
-     * @return bool
-     */
-    public function initialize(): bool
-    {
-        $corePath = $this->modx->getOption('dashbored.core_path', null,
-            $this->modx->getOption('core_path') . 'components/dashbored/');
-        $this->dashbored = $this->modx->getService('dashbored', 'Dashbored', $corePath . 'model/dashbored/');
-
-        $this->refresh = (bool)$this->getProperty('refresh');
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function process(): string
-    {
-        return $this->outputArray($this->getData());
-    }
-
     /**
      * @return array
      */
@@ -53,7 +26,9 @@ class DashboredNewsFeedRefreshProcessor extends modProcessor {
             
             // Get feed data
             $feed = new SimplePie();
-            $feed->set_feed_url('https://modx.today/feed.xml');
+            $feed->set_feed_url($this->fields['feed_url']);
+            // Use Dashbored MODX cache rather than SimplePie's.
+            $feed->enable_cache(false);
             $feed->init();
             $feed->handle_content_type();
 
@@ -62,7 +37,7 @@ class DashboredNewsFeedRefreshProcessor extends modProcessor {
                     'title' => $item->get_title(),
                     'date' => $item->get_date(),
                     'author' => $item->get_author()->get_name(),
-                    'link' => $item->get_link(),
+                    'url' => $item->get_link(),
                     'description' => $item->get_description(),
                     'content' => $item->get_content(),
                 ];

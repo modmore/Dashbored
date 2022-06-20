@@ -1,52 +1,22 @@
 <?php
 
+require_once dirname(__DIR__) . '/dashbored/refresh.class.php';
 require_once dirname(__DIR__, 3) . '/elements/widgets/weather.class.php';
 
-class DashboredWeatherRefreshProcessor extends modProcessor {
+class DashboredWeatherRefreshProcessor extends DashboredRefreshProcessor {
     
-    protected $dashbored;
-    protected $widget;
     protected $location;
-    protected $refresh;
-    protected $fields = [];
     
     const ENDPOINT = 'https://weatherdbi.herokuapp.com/data/weather/';
 
-    /**
-     * @return string[]
-     */
-    public function getLanguageTopics(): array
+    protected function loadSettingFields()
     {
-        return ['dashbored:default'];
-    }
-    
-    /**
-     * @return bool
-     */
-    public function initialize(): bool
-    {
-        $corePath = $this->modx->getOption('dashbored.core_path', null, 
-            $this->modx->getOption('core_path') . 'components/dashbored/');
-        $this->dashbored = $this->modx->getService('dashbored', 'Dashbored', $corePath . 'model/dashbored/');
-        
         foreach (WeatherDashboardWidget::ACCEPTED_FIELDS as $field => $default) {
-            $this->fields[$field] = WeatherDashboardWidget::getUserSetting($this->modx, 
+            $this->fields[$field] = WeatherDashboardWidget::getUserSetting($this->modx,
                     'dashbored.weather.' . $field, $this->modx->user->get('id')) ?? $default;
         }
-
-        $this->refresh = (bool)$this->getProperty('refresh');
-        
-        return true;
     }
-
-    /**
-     * @return string
-     */
-    public function process(): string
-    {
-        return $this->outputArray($this->getData());
-    }
-
+    
     /**
      * @return array
      */

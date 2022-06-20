@@ -209,6 +209,28 @@
     font-size: .8em;
 }
 
+/* News Feed */
+.dashbored-news-feed-item {
+    padding: 16px 0;
+}
+.dashbored-news-feed-title {
+    color: #234368;
+    font-size: 18px;
+    text-decoration: none;
+    margin-bottom: 0;
+}
+.dashbored-news-feed-author-row {
+    display:flex;
+    padding: 6px 0;
+    gap: 12px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.dashbored-news-feed-description,
+.dashbored-news-feed-content {
+    margin-top: 12px;
+}
+
+
 /* Window */
 .db-bg-type {
     background: #fbfbfb;
@@ -291,7 +313,3 @@
     width: 100%;
     height: 100%;
 }
-
-.dashbored-settings-bg.none {}
-.dashbored-settings-bg.image {}
-.dashbored-settings-bg.video {}

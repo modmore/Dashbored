@@ -46,6 +46,7 @@ HTML
 </div>
 <div id="dashbored{$this->widget->get('id')}-newsfeed" class="dashbored-newsfeed-widget" 
     data-id="{$this->widget->get('id')}"
+    data-feedurl="{$props['feed_url']}"
 >
     
 </div>
