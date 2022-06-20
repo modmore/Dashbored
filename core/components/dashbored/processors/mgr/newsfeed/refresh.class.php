@@ -33,10 +33,11 @@ class DashboredNewsFeedRefreshProcessor extends DashboredRefreshProcessor {
             $feed->handle_content_type();
 
             foreach ($feed->get_items() as $item) {
+                $name = $item->get_author() ? $item->get_author()->get_name() : '';
                 $data[] = [
                     'title' => $item->get_title(),
                     'date' => $item->get_date(),
-                    'author' => $item->get_author()->get_name(),
+                    'author' => $name,
                     'url' => $item->get_link(),
                     'description' => $item->get_description(),
                     'content' => $item->get_content(),

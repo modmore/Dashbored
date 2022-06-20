@@ -34,7 +34,7 @@ DashboredNewsFeed.prototype = {
             ,record: record
             ,listeners: {
                 'success': {fn: function(r) {
-                        this.record = r.results;
+                        this.record = r.a.result.message;
                         that.refresh(true);
                     },scope:this},
                 'failure': {fn: function(r) {
@@ -64,6 +64,7 @@ DashboredNewsFeed.prototype = {
                     fn: function(r) {
                         this.record = r.results;
                         that.render(r.results);
+                        
                     }
                     ,scope: this
                 }
@@ -78,6 +79,8 @@ DashboredNewsFeed.prototype = {
     },
 
     render: function(data) {
+        this.containerEl.innerHTML = '';
+        
         for (const article in data) {
             // Skip non-articles
             if (typeof data[article].title === 'undefined') {
@@ -95,22 +98,24 @@ DashboredNewsFeed.prototype = {
                 content = document.createElement('div');
             
             // Add content to elements
-            title.textContent = data[article].title;
+            link.textContent = data[article].title;
             link.href = data[article].url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer'
             author.textContent = data[article].author;
             date.textContent = data[article].date;
             description.innerHTML = data[article].description;
             content.innerHTML = data[article].content;
 
             // Add classes
-            item.classList.add('dashbored-news-feed-item');
-            title.classList.add('dashbored-news-feed-title');
-            authorRow.classList.add('dashbored-news-feed-author-row');
-            author.classList.add('dashbored-news-feed-author');
-            date.classList.add('dashbored-news-feed-date');
-            link.classList.add('dashbored-news-feed-link');
-            description.classList.add('dashbored-news-feed-description');
-            content.classList.add('dashbored-news-feed-content');
+            item.classList.add('dashbored-newsfeed-item');
+            title.classList.add('dashbored-newsfeed-title');
+            authorRow.classList.add('dashbored-newsfeed-author-row');
+            author.classList.add('dashbored-newsfeed-author');
+            date.classList.add('dashbored-newsfeed-date');
+            link.classList.add('dashbored-newsfeed-link');
+            description.classList.add('dashbored-newsfeed-description');
+            content.classList.add('dashbored-newsfeed-content');
             
             // Add to DOM
             title.appendChild(link);
@@ -120,7 +125,7 @@ DashboredNewsFeed.prototype = {
             authorRow.appendChild(author);
             item.appendChild(authorRow);
             
-            item.appendChild(description);
+            //item.appendChild(description);
             item.appendChild(content);
             
             this.containerEl.appendChild(item);
@@ -163,7 +168,7 @@ Ext.extend(DashboredNewsFeed.Settings, Dashbored.Settings, {
             items: [{
                 xtype: 'textfield',
                 fieldLabel: 'News Feed URL',
-                name: 'url',
+                name: 'feed_url',
                 anchor: '100%'
             },{
                 xtype: 'label',
