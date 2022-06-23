@@ -56,6 +56,11 @@ class DashboredDinoGameSubmitHighScoreProcessor extends modProcessor
             $widget->set('properties', $properties);
             $widget->save();
 
+            // Don't return usernames to frontend
+            foreach ($highScores as $key => $highScore) {
+                unset($highScores[$key]['username']);
+            }
+            
             return $this->outputArray($highScores);
         }
 
