@@ -1,6 +1,6 @@
 <?php
 
-use MODX\Revolution\modSystemSetting;
+use MODX\Revolution\modDashboardWidget;
 
 if (!file_exists(dirname(__DIR__).'/config.core.php')) {
     die('ERROR: missing ' . dirname(__DIR__).'/config.core.php file defining the MODX core path.');
@@ -78,60 +78,13 @@ if (!createObject('modSystemSetting', [
 ], 'key', false)) {
     echo "Error creating dashbored.assets_url setting.\n";
 }
-
-if (!createObject('modDashboardWidget', [
-    'name' => 'dashbored.dino_game.name',
-    'description' => 'dashbored.dino_game.desc',
-    'type' => 'file',
-    'size' => 'one-third',
-    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/dinosaurgame.class.php',
-    'namespace' => 'dashbored',
-    'lexicon' => 'dashbored:default',
-], 'name', false)) {
-    echo "Error creating dino-game widget.\n";
-}
-
-if (!createObject('modDashboardWidget', [
-    'name' => 'dashbored.weather.name',
-    'description' => 'dashbored.weather.desc',
-    'type' => 'file',
-    'size' => 'one-third',
-    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/weather.class.php',
-    'namespace' => 'dashbored',
-    'lexicon' => 'dashbored:default',
-], 'name', false)) {
-    echo "Error creating weather widget.\n";
-}
-
-if (!createObject('modDashboardWidget', [
-    'name' => 'dashbored.quotes.name',
-    'description' => 'dashbored.quotes.desc',
-    'type' => 'file',
-    'size' => 'one-third',
-    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/quotes.class.php',
-    'namespace' => 'dashbored',
-    'lexicon' => 'dashbored:default',
-], 'name', false)) {
-    echo "Error creating quotes widget.\n";
-}
-
-if (!createObject('modDashboardWidget', [
-    'name' => 'dashbored.news_feed.name',
-    'description' => 'dashbored.news_feed.desc',
-    'type' => 'file',
-    'size' => 'one-third',
-    'content' =>  $componentPath.'/core/components/dashbored/elements/widgets/newsfeed.class.php',
-    'namespace' => 'dashbored',
-    'lexicon' => 'dashbored:default',
-], 'name', false)) {
-    echo "Error creating news feed widget.\n";
-}
-
-$settings = include dirname(dirname(__FILE__)).'/_build/data/transport.settings.php';
-foreach ($settings as $key => $obj) {
-    /** @var modSystemSetting $obj */
-    if (!createObject('modSystemSetting', $obj->toArray(), 'key', false)) {
-        echo "Error creating dashbored.".$obj->get('key')." setting.\n";
+// Widgets
+$widgets = include $componentPath . '/_build/data/transport.dashboard_widgets.php';
+if (empty($widgets)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not create widgets.');
+foreach ($widgets as $key => $obj) {
+    /** @var modDashboardWidget $obj */
+    if (!createObject(modDashboardWidget::class, $obj->toArray(), 'name', false)) {
+        echo "Error creating ".$obj->get('name')." widget.\n";
     }
 }
 

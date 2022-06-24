@@ -16,8 +16,6 @@ class QuotesDashboardWidget extends DashboredAbstractDashboardWidget
     {
         $this->initialize();
 
-        $this->controller->addCss($this->dashbored->config['assets_url'] . 'css/mgr.css');
-
         $titleBar = $this->getWidgetTitleBar('quotes');
         $this->widget->set('name', $titleBar);
 

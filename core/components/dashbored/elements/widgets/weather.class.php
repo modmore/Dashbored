@@ -19,8 +19,6 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
     {
         $this->initialize();
 
-        $this->controller->addCss($this->dashbored->config['assets_url'] . 'css/mgr.css');
-
         $titleBar = $this->getWidgetTitleBar('weather');
         $this->widget->set('name', $titleBar);
 
