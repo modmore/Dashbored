@@ -30,9 +30,15 @@ class DashboredWeatherRefreshProcessor extends DashboredRefreshProcessor {
             curl_setopt($c, CURLOPT_URL, self::ENDPOINT . $this->fields['location']);
             $data = curl_exec($c);
             curl_close($c);
-
+            
             $data = json_decode($data, true);
 
+            // Handle API error.
+            if (empty($data) || !is_array($data)) {
+                // Return just the field values, skipping API data.
+                return $this->fields;
+            }
+            
             $data['current'] = $data['currentConditions'];
             unset($data['currentConditions']);
             $data['outlook'] = $data['next_days'];

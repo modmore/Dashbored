@@ -71,7 +71,7 @@ DashboredSiteDashMonitor.prototype = {
                 }
                 ,failure: {
                     fn: function(r) {
-                        console.error('Unable to retrieve SiteDash Monitor data from the server.');
+                        console.error('[Dashbored] Unable to retrieve SiteDash Monitor data from the server.');
                     }
                     ,scope: this
                 }

@@ -96,62 +96,14 @@ DashboredWeather.prototype = {
     },
     
     render: function(data) {
-        let that = this,
-            tempType = data.current.temp_type === 'c' ? _('dashbored.weather.celsius_symbol') : _('dashbored.weather.fahrenheit_symbol'),
-            distanceType = data.current.distance_type === 'km' ? _('dashbored.weather.kph') : _('dashbored.weather.mph');
         
-        // Region
-        let split = data.region.split(', ');
-        this.region.main.textContent = split[0];
-        this.region.row.innerHTML = '';
-        
-        let dayhour = document.createElement('span');
-        dayhour.classList.add('dayhour');
-        dayhour.textContent = data.current.dayhour;
-        this.region.row.appendChild(dayhour);
-        
-        if (typeof split[1] !== 'undefined') {
-            let second = document.createElement('span');
-            second.classList.add('secondary');
-            second.innerHTML = '&bull;&nbsp;&nbsp;' + split[1];
-            this.region.row.appendChild(second);
+        if (typeof data.current !== 'undefined') {
+            this.renderWeatherDBData(data);
         }
-        
-        // Current
-        this.current.icon.innerHTML = '';
-        let img = document.createElement('img');
-        img.src = data.current.iconURL;
-        this.current.icon.appendChild(img);
-        
-        this.current.temp.textContent = data.current.temp;
-        this.current.temp_type.textContent = tempType;
-        this.current.comment.textContent = data.current.comment;
-        this.current.precip.innerHTML = _('dashbored.weather.precip') + ': <strong>' + data.current.precip + '</strong>';
-        this.current.humidity.innerHTML = _('dashbored.weather.humidity') + ': <strong>' + data.current.humidity + '</strong>';
-        this.current.wind.innerHTML = _('dashbored.weather.wind') + ': <strong>' + data.current.wind + ' ' + distanceType + '</strong>';
-        
-        // Outlook
-        this.outlook.innerHTML = '';
-        data.outlook.forEach(function(day) {
-            let div = document.createElement('div');
-            div.classList.add('day');
-            
-            let name = document.createElement('div');
-            name.classList.add('name');
-            name.textContent = day.day.substring(0, 3);
-            div.appendChild(name);
-
-            let temp = document.createElement('div');
-            temp.classList.add('temp');
-            temp.textContent = day.max_temp;
-            div.appendChild(temp);
-
-            let img = document.createElement('img');
-            img.src = day.iconURL;
-            div.appendChild(img);
-            
-            that.outlook.appendChild(div);
-        });
+        else {
+            // Render error msg
+            this.displayMessage('Unable to retrieve data from the WeatherDB API. Please try again later.');
+        }
         
         // Render background
         let bg = this.widgetEl.querySelector('.dashbored-bg'),
@@ -191,6 +143,73 @@ DashboredWeather.prototype = {
         }
         
         this.disableSpinner();
+    },
+    
+    renderWeatherDBData: function(data) {
+        let that = this,
+            tempType = data.current.temp_type === 'c' ? _('dashbored.weather.celsius_symbol') : _('dashbored.weather.fahrenheit_symbol'),
+            distanceType = data.current.distance_type === 'km' ? _('dashbored.weather.kph') : _('dashbored.weather.mph');
+
+        // Region
+        let split = data.region.split(', ');
+        this.region.main.textContent = split[0];
+        this.region.row.innerHTML = '';
+
+        let dayhour = document.createElement('span');
+        dayhour.classList.add('dayhour');
+        dayhour.textContent = data.current.dayhour;
+        this.region.row.appendChild(dayhour);
+
+        if (typeof split[1] !== 'undefined') {
+            let second = document.createElement('span');
+            second.classList.add('secondary');
+            second.innerHTML = '&bull;&nbsp;&nbsp;' + split[1];
+            this.region.row.appendChild(second);
+        }
+
+        // Current
+        this.current.icon.innerHTML = '';
+        let img = document.createElement('img');
+        img.src = data.current.iconURL;
+        this.current.icon.appendChild(img);
+
+        this.current.temp.textContent = data.current.temp;
+        this.current.temp_type.textContent = tempType;
+        this.current.comment.textContent = data.current.comment;
+        this.current.precip.innerHTML = _('dashbored.weather.precip') + ': <strong>' + data.current.precip + '</strong>';
+        this.current.humidity.innerHTML = _('dashbored.weather.humidity') + ': <strong>' + data.current.humidity + '</strong>';
+        this.current.wind.innerHTML = _('dashbored.weather.wind') + ': <strong>' + data.current.wind + ' ' + distanceType + '</strong>';
+
+        // Outlook
+        this.outlook.innerHTML = '';
+        data.outlook.forEach(function(day) {
+            let div = document.createElement('div');
+            div.classList.add('day');
+
+            let name = document.createElement('div');
+            name.classList.add('name');
+            name.textContent = day.day.substring(0, 3);
+            div.appendChild(name);
+
+            let temp = document.createElement('div');
+            temp.classList.add('temp');
+            temp.textContent = day.max_temp;
+            div.appendChild(temp);
+
+            let img = document.createElement('img');
+            img.src = day.iconURL;
+            div.appendChild(img);
+
+            that.outlook.appendChild(div);
+        });
+    },
+    
+    displayMessage: function(msg) {
+        let div = document.createElement('div');
+        div.classList.add('dashbored-error-msg');
+        div.textContent = msg;
+        
+        this.containerEl.appendChild(div);
     },
     
     disableSpinner: function() {
