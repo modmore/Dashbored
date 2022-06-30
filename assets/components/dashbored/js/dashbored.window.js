@@ -5,6 +5,7 @@ Dashbored.Settings = function(config) {
     var win = this;
     Ext.applyIf(config,{
         url: Dashbored.config.connectorUrl,
+        bodyCssClass: 'dashbored-settings-window',
         layout: 'form',
         autoHeight: true,
         allowDrop: false,
@@ -22,6 +23,21 @@ Dashbored.Settings = function(config) {
                 layout: 'form'
             },
             items: this.getTabs()
+        }],
+        buttonAlign: 'left',
+        buttons: [{
+            xtype: 'box',
+            html: '<a class="dashbored-credits__logo" href="https://www.modmore.com/dashbored/?utm_source=dashbored_footer" target="_blank" rel="noopener">' +
+                '<img src="' + Dashbored.config.assetsUrl + 'images/modmore.svg" alt="Dashbored is brought to you by {+} modmore"></a>',
+        },'->',{
+            text: config.cancelBtnText || _('cancel')
+            ,scope: this
+            ,handler: function() { config.closeAction !== 'close' ? this.hide() : this.close(); }
+        },{
+            text: config.saveBtnText || _('save')
+            ,cls: 'primary-button'
+            ,scope: this
+            ,handler: this.submit
         }]
     });
     Dashbored.Settings.superclass.constructor.call(this, config);

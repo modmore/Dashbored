@@ -438,6 +438,13 @@
 }
 
 /* Window */
+.dashbored-credits__logo {
+    display:block;
+    height: 40px;
+}
+.dashbored-credits__logo img {
+    height: 40px;
+}
 .db-bg-type {
     background: #fbfbfb;
     padding: 16px;
