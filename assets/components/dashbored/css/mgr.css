@@ -266,6 +266,12 @@
 .dashbored-sitedash-widget * {
     box-sizing: border-box;
 }
+.dashbored-sitedash-widget .sd-alert {
+    color: #DC2626;
+}
+.dashbored-sitedash-widget .sd-info {
+    color: #ffe168;
+}
 .dashbored-sitedash-mask {
     visibility: hidden;
     position: absolute;
@@ -349,7 +355,6 @@
     display: flex;
     justify-content: space-between;
     align-items: end;
-    font-weight: 500;
     padding-left: 6px;
     gap:3px;
 }
@@ -361,8 +366,10 @@
     opacity: .7;
 }
 .dashbored-sitedash-middle > div span {
-    font-weight: normal;
     font-size: 9px;
+}
+.dashbored-sitedash-middle .sd-value {
+    font-weight: 500;
 }
 
 .dashbored-sitedash-footer {

@@ -10,8 +10,12 @@ function DashboredSiteDash(widgetId) {
     
     this.panel = this.containerEl.querySelector('.dashbored-sitedash-panel');
     this.topPanel = this.panel.querySelector('.dashbored-sitedash-top');
+    this.auditPanel = this.topPanel.querySelector('.dashbored-sitedash-audit');
+    
     this.middlePanel = this.panel.querySelector('.dashbored-sitedash-middle');
-    this.bottomPanel = this.panel.querySelector('.dashbored-sitedash-bottom');
+    this.firstCol = this.middlePanel.querySelector('.first-col');
+    this.secondCol = this.middlePanel.querySelector('.second-col');
+    this.thirdCol = this.middlePanel.querySelector('.third-col');
     
     this.footer = document.querySelector('.dashbored-sitedash-footer');
     this.sitedashBtn = this.footer.querySelector('.open-sitedash-btn');
@@ -89,48 +93,200 @@ DashboredSiteDash.prototype = {
     },
 
     render: function(data) {
-        
-
-        // Render background
-        let bg = this.widgetEl.querySelector('.dashbored-bg'),
-            currentBg = bg.querySelector('.db-bg-element');
-        if (currentBg) {
-            bg.removeChild(currentBg);
-        }
-
-        // Image
-        if (data.background_type === 'image' && data.bg_image) {
-            let newImg = document.createElement('img');
-            newImg.classList.add('db-bg-element');
-            newImg.src = Ext.util.Format.htmlEncode(data.bg_image);
-            bg.appendChild(newImg);
-        }
-
-        // Video
-        if (data.background_type === 'video' && data.bg_video) {
-            let newVideo = document.createElement('video');
-            newVideo.classList.add('db-bg-element');
-            newVideo.src = data.bg_video;
-            newVideo.setAttribute('autoplay', 'true');
-            newVideo.setAttribute('muted', 'true');
-            newVideo.setAttribute('loop', 'true');
-            bg.appendChild(newVideo);
-        }
-
-        // Render mask
-        if (data.bg_mask) {
-            let mask = bg.querySelector('.db-bg-mask');
-            mask.style.backgroundColor = Dashbored.getBackgroundStyle(data.bg_mask);
-
-            // Don't darken if no background
-            if (data.background_type === 'none') {
-                mask.style.backgroundColor = 'rgba(0,0,0,0)';
-            }
-        }
-
+        this.renderAPIData(data);
+        Dashbored.renderBackground(this, data);
         this.disableSpinner();
     },
+    
+    renderAPIData: function(data) {
+        this.auditPanel.innerHTML = null;
+        for (const score in data.lighthouse.scores) {
+            this.renderLighthouseScore(score, data.lighthouse.scores[score]);
+        }
+        
+        this.renderColumns(data);
+        
+    },
+    
+    renderLighthouseScore: function(type, score) {
+        const outerDiv = document.createElement('div'),
+            metricDiv = document.createElement('div'),
+            scoreDiv = document.createElement('div'),
+            nameDiv = document.createElement('div'),
+            span = document.createElement('span'),
+            ns = 'http://www.w3.org/2000/svg',
+            svg = document.createElementNS(ns,'svg'),
+            svgPath = document.createElementNS(ns,'path');
+        
+        // Set classes, values and attributes
+        outerDiv.classList.add('audit-' + type);
+        metricDiv.classList.add('audit-metric');
+        scoreDiv.classList.add('audit-score');
+        
+        nameDiv.classList.add('audit-metric-name');
+        nameDiv.textContent = _('dashbored.sitedash.' + type);
+        span.textContent = score;
+        
+        svg.classList.add('audit-metric-circle');
+        svg.setAttribute('viewBox', '0 0 36 36');
+        svgPath.setAttribute('d', `M18 2.0845
+                              a 15.9155 15.9155 0 0 1 0 31.831
+                              a 15.9155 15.9155 0 0 1 0 -31.831`);
+        svgPath.setAttribute('fill', 'none');
+        svgPath.setAttribute('stroke', '#ffe168');
+        svgPath.setAttribute('stroke-width', '3');
+        svgPath.setAttribute('stroke-dasharray', score + ', 100');
+        
+        // Append
+        svg.appendChild(svgPath);
+        scoreDiv.appendChild(span);
+        metricDiv.appendChild(scoreDiv);
+        metricDiv.appendChild(svg);
+        outerDiv.appendChild(metricDiv);
+        outerDiv.appendChild(nameDiv);
+        
+        this.auditPanel.appendChild(outerDiv);
+    },
+    
+    renderColumns: function(data) {
+        this.renderConfigColumn(data.config);
+        this.renderSecurityColumn(data.security);
+        this.renderChecksColumn(data.checks);
+    },
+    
+    renderColumnTitle: function(type) {
+        let title = document.createElement('h3');
+        title.classList.add('section-title');
+        title.textContent = _('dashbored.sitedash.' + type);
+        return title;
+    },
+    
+    renderConfigColumn: function(rows) {
+        this.firstCol.innerHTML = '';
+        this.firstCol.appendChild(this.renderColumnTitle('config'));
+        for (const item in rows) {
+            let row = document.createElement('div'),
+                tag = document.createElement('span'),
+                dots = document.createElement('div'),
+                value = document.createElement('span');
+            
+            tag.classList.add('tag');
+            dots.classList.add('dots');
+            value.classList.add('sd-value');
+            
+            switch (item) {
+                case 'web_server_version':
+                case 'database_version':
+                case 'modx_upgrade_available':
+                    continue;
+                case 'modx_version':
+                case 'ip':
+                case 'php_version':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    value.textContent = rows[item];
+                    break;
+                case 'web_server':
+                    tag.textContent = _('dashbored.sitedash.' + rows[item]);
+                    value.textContent = rows['web_server_version'];
+                    break;
+                case 'database_type':
+                    tag.textContent = _('dashbored.sitedash.' + rows[item]);
+                    value.textContent = rows['database_version'];
+                    break;
+            }
+            
+            row.appendChild(tag);
+            row.appendChild(dots);
+            row.appendChild(value);
+            this.firstCol.appendChild(row);
+            
+        }
+    },
 
+    renderSecurityColumn: function(rows) {
+        this.secondCol.innerHTML = '';
+        this.secondCol.appendChild(this.renderColumnTitle('security'));
+        for (const item in rows) {
+            let row = document.createElement('div'),
+                tag = document.createElement('span'),
+                dots = document.createElement('div'),
+                value = document.createElement('span');
+
+            tag.classList.add('tag');
+            dots.classList.add('dots');
+            value.classList.add('sd-value');
+
+            switch (item) {
+                case 'ssl_cert':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    if (rows[item] !== 'valid') {
+                        value.classList.add('sd-alert');
+                    }
+                    value.textContent = _('dashbored.sitedash.' + rows[item]);
+                    break;
+                case 'tls_version':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    value.textContent = rows[item];
+                    break;
+                case 'core_protected':
+                case 'renamed_manager':
+                case 'setup_removed':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    value.innerHTML = rows[item] === '1'
+                        ? '<i class="icon icon-check"></i>' : '<i class="icon icon-close sd-alert"></i>';
+                    break;
+            }
+
+            row.appendChild(tag);
+            row.appendChild(dots);
+            row.appendChild(value);
+            this.secondCol.appendChild(row);
+        }
+    },
+
+    renderChecksColumn: function(rows) {
+        this.thirdCol.innerHTML = '';
+        this.thirdCol.appendChild(this.renderColumnTitle('checks'));
+        for (const item in rows) {
+            let row = document.createElement('div'),
+                tag = document.createElement('span'),
+                dots = document.createElement('div'),
+                value = document.createElement('span');
+
+            tag.classList.add('tag');
+            dots.classList.add('dots');
+            value.classList.add('sd-value');
+
+            switch (item) {
+                case 'checks_passed':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    value.textContent = rows[item] + '/' + rows['checks_total'];
+                    break;
+                case 'checks_total':
+                    continue;
+                case 'error_log':
+                case 'disk_used':
+                case 'extras_installed':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    value.textContent = rows[item];
+                    break;
+                case 'updates_available':
+                    tag.textContent = _('dashbored.sitedash.' + item);
+                    if (parseInt(rows[item]) < parseInt(rows['extras_installed'])) {
+                        value.classList.add('sd-info');
+                    }
+                    value.textContent = rows[item];
+                    break;
+            }
+
+            row.appendChild(tag);
+            row.appendChild(dots);
+            row.appendChild(value);
+            this.thirdCol.appendChild(row);
+
+        }
+    },
+    
     disableSpinner: function() {
         document.querySelector('.dashbored-sitedash-mask').style.visibility = 'hidden';
     },

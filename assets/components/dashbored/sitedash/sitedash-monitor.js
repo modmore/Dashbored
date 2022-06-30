@@ -80,106 +80,17 @@ DashboredSiteDashMonitor.prototype = {
     },
 
     render: function(data) {
-        
-        this.renderLineChart(data);
-        
-        // Render background
-        let bg = this.widgetEl.querySelector('.dashbored-bg'),
-            currentBg = bg.querySelector('.db-bg-element');
-        if (currentBg) {
-            bg.removeChild(currentBg);
-        }
-
-        // Image
-        if (data.background_type === 'image' && data.bg_image) {
-            let newImg = document.createElement('img');
-            newImg.classList.add('db-bg-element');
-            newImg.src = Ext.util.Format.htmlEncode(data.bg_image);
-            bg.appendChild(newImg);
-        }
-
-        // Video
-        if (data.background_type === 'video' && data.bg_video) {
-            let newVideo = document.createElement('video');
-            newVideo.classList.add('db-bg-element');
-            newVideo.src = data.bg_video;
-            newVideo.setAttribute('autoplay', 'true');
-            newVideo.setAttribute('muted', 'true');
-            newVideo.setAttribute('loop', 'true');
-            bg.appendChild(newVideo);
-        }
-
-        // Render mask
-        if (data.bg_mask) {
-            let mask = bg.querySelector('.db-bg-mask');
-            mask.style.backgroundColor = Dashbored.getBackgroundStyle(data.bg_mask);
-
-            // Don't darken if no background
-            if (data.background_type === 'none') {
-                mask.style.backgroundColor = 'rgba(0,0,0,0)';
-            }
-        }
-
+        this.renderAPIData(data);
+        Dashbored.renderBackground(this, data);
         this.disableSpinner();
     },
-    
-    renderLineChart: function(data) {
-        
-        // Dummy data
-        data = {
-            dates: [
-                '2022-06-18',
-                '2022-06-19',
-                '2022-06-20',
-                '2022-06-21',
-                '2022-06-22',
-                '2022-06-23',
-                '2022-06-24',
-            ],
-            uptime: [
-                100.0,
-                98.0,
-                70.0,
-                100.0,
-                95.0,
-                100.0,
-                100.0
-            ],
-            response_time: [
-                788,
-                1000,
-                950,
-                600,
-                800,
-                1200,
-                700
-            ],
-            cpu: [
-                5.0,
-                7.0,
-                0.5,
-                1.1,
-                3.0,
-                6.6,
-                22.0
-            ],
-            memory: [
-                66.0,
-                80.0,
-                77.5,
-                90.1,
-                95.0,
-                50.6,
-                55.0
-            ]
-        };
-        
-        
-        let dates = data.dates,
-            uptime = data.uptime,
-            responseTime = data.response_time,
-            cpu = data.cpu,
-            memory = data.memory;
+
+    renderAPIData: function(data) {
+        let dates = data.extended.dates,
+            uptime = data.extended.uptime,
+            responseTime = data.extended.response_time,
+            cpu = data.extended.cpu,
+            memory = data.extended.memory;
 
         const ctx = document.getElementById('dashbored-sitedash-uptime').getContext('2d');
         if (this.lineChart) {

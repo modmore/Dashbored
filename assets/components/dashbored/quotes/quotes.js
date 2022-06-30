@@ -79,51 +79,20 @@ DashboredQuotes.prototype = {
     },
 
     render: function(data) {
-        this.quote.innerHTML = '“' + data[0].q  + '”';
+        this.renderAPIData(data);
+
+        Dashbored.renderBackground(this, data);
         
+        this.disableSpinner();
+    },
+    
+    renderAPIData: function(data) {
+        this.quote.innerHTML = '“' + data[0].q  + '”';
+
         let author = document.createElement('footer');
         author.classList.add('author');
         author.textContent = data[0].a;
         this.quote.appendChild(author);
-
-        // Render background
-        let bg = this.widgetEl.querySelector('.dashbored-bg'),
-            currentBg = bg.querySelector('.db-bg-element');
-        if (currentBg) {
-            bg.removeChild(currentBg);
-        }
-
-        // Image
-        if (data.background_type === 'image' && data.bg_image) {
-            let newImg = document.createElement('img');
-            newImg.classList.add('db-bg-element');
-            newImg.src = Ext.util.Format.htmlEncode(data.bg_image);
-            bg.appendChild(newImg);
-        }
-
-        // Video
-        if (data.background_type === 'video' && data.bg_video) {
-            let newVideo = document.createElement('video');
-            newVideo.classList.add('db-bg-element');
-            newVideo.src = data.bg_video;
-            newVideo.setAttribute('autoplay', 'true');
-            newVideo.setAttribute('muted', 'true');
-            newVideo.setAttribute('loop', 'true');
-            bg.appendChild(newVideo);
-        }
-
-        // Render mask
-        if (data.bg_mask) {
-            let mask = bg.querySelector('.db-bg-mask');
-            mask.style.backgroundColor = Dashbored.getBackgroundStyle(data.bg_mask);
-
-            // Don't darken if no background
-            if (data.background_type === 'none') {
-                mask.style.backgroundColor = 'rgba(0,0,0,0)';
-            }
-        }
-        
-        this.disableSpinner();
     },
 
     disableSpinner: function() {

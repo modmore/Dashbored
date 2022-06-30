@@ -44,8 +44,44 @@ $_lang['dashbored.news_feed.desc'] = 'Your favourite news feed in your MODX dash
 $_lang['dashbored.sitedash.name'] = 'SiteDash';
 $_lang['dashbored.sitedash.menu_name'] = '[Dashbored] - SiteDash';
 $_lang['dashbored.sitedash.desc'] = 'SiteDash widget. Lighthouse audit scores, security checks, server config and more!';
+$_lang['dashbored.sitedash.view_in_sitedash'] = 'View in SiteDash';
+$_lang['dashbored.sitedash.lighthouse_audit'] = 'Lighthouse audit';
+$_lang['dashbored.sitedash.average'] = 'Average';
+$_lang['dashbored.sitedash.performance'] = 'Performance';
+$_lang['dashbored.sitedash.accessibility'] = 'Accessibility';
+$_lang['dashbored.sitedash.best_practice'] = 'Best Practice';
+$_lang['dashbored.sitedash.seo'] = 'SEO';
+$_lang['dashbored.sitedash.pwa'] = 'PWA';
+
+$_lang['dashbored.sitedash.config'] = 'Config';
+$_lang['dashbored.sitedash.modx_version'] = 'MODX';
+$_lang['dashbored.sitedash.php_version'] = 'PHP';
+$_lang['dashbored.sitedash.nginx'] = 'Nginx';
+$_lang['dashbored.sitedash.apache'] = 'Apache';
+$_lang['dashbored.sitedash.mysql'] = 'MySQL';
+$_lang['dashbored.sitedash.percona'] = 'Percona';
+$_lang['dashbored.sitedash.mariadb'] = 'MariaDB';
+$_lang['dashbored.sitedash.ip'] = 'IP';
+
+$_lang['dashbored.sitedash.security'] = 'Security';
+$_lang['dashbored.sitedash.ssl_cert'] = 'SSL cert';
+$_lang['dashbored.sitedash.valid'] = 'Valid';
+$_lang['dashbored.sitedash.invalid'] = 'Invalid';
+$_lang['dashbored.sitedash.tls_version'] = 'TLS version';
+$_lang['dashbored.sitedash.core_protected'] = 'Core protected';
+$_lang['dashbored.sitedash.renamed_manager'] = 'Renamed manager';
+$_lang['dashbored.sitedash.setup_removed'] = 'Setup removed';
+
+$_lang['dashbored.sitedash.checks'] = 'Checks';
+$_lang['dashbored.sitedash.checks_passed'] = 'Checks passed';
+$_lang['dashbored.sitedash.checks_total'] = 'Checks total';
+$_lang['dashbored.sitedash.error_log'] = 'Error log';
+$_lang['dashbored.sitedash.disk_used'] = 'Disk used';
+$_lang['dashbored.sitedash.extras_installed'] = 'Extras installed';
+$_lang['dashbored.sitedash.updates_available'] = 'Updates available';
+
 
 // SiteDash Monitor
-$_lang['dashbored.sitedash_monitor.name'] = 'SiteDash | Extended Monitoring';
+$_lang['dashbored.sitedash_monitor.name'] = 'SiteDash | Monitoring';
 $_lang['dashbored.sitedash_monitor.menu_name'] = '[Dashbored] - SiteDash | Extended Monitoring';
 $_lang['dashbored.sitedash_monitor.desc'] = 'SiteDash extended monitoring widget. See server uptime, response times, memory and CPU usage.';

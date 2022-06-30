@@ -56,116 +56,19 @@ HTML
 >
     <div class="dashbored-sitedash-panel">
         <div class="dashbored-sitedash-top">
-            <h3 class="section-title">Lighthouse Audit</h3>
-            <div class="dashbored-sitedash-audit">
-                <div class="audit-average">
-                    <div class="audit-metric">
-                        <div class="audit-score"><span>75</span></div>
-                        <svg class="audit-metric-circle" viewBox="0 0 36 36">
-                            <path d="M18 2.0845
-                              a 15.9155 15.9155 0 0 1 0 31.831
-                              a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ffe168" stroke-width="3" stroke-dasharray="75, 100">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="audit-metric-name">Average</div>
-                </div>
-                <div class="audit-performance">
-                    <div class="audit-metric">
-                        <div class="audit-score"><span>65</span></div>
-                        <svg class="audit-metric-circle" viewBox="0 0 36 36">
-                            <path d="M18 2.0845
-                              a 15.9155 15.9155 0 0 1 0 31.831
-                              a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ffe168" stroke-width="3" stroke-dasharray="65, 100">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="audit-metric-name">Performance</div>
-                </div>
-                <div class="audit-accesibility">
-                    <div class="audit-metric">
-                        <div class="audit-score"><span>71</span></div>
-                        <svg class="audit-metric-circle" viewBox="0 0 36 36">
-                            <path d="M18 2.0845
-                              a 15.9155 15.9155 0 0 1 0 31.831
-                              a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ffe168" stroke-width="3" stroke-dasharray="71, 100">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="audit-metric-name">Accessibility</div>
-                </div>
-                <div class="audit-bestpractices">
-                    <div class="audit-metric">
-                        <div class="audit-score"><span>80</span></div>
-                        <svg class="audit-metric-circle" viewBox="0 0 36 36">
-                            <path d="M18 2.0845
-                              a 15.9155 15.9155 0 0 1 0 31.831
-                              a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ffe168" stroke-width="3" stroke-dasharray="80, 100">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="audit-metric-name">Best Practice</div>
-                </div>
-                <div class="audit-seo">
-                    <div class="audit-metric">
-                        <div class="audit-score"><span>100</span></div>
-                        <svg class="audit-metric-circle" viewBox="0 0 36 36">
-                            <path d="M18 2.0845
-                              a 15.9155 15.9155 0 0 1 0 31.831
-                              a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ffe168" stroke-width="3" stroke-dasharray="100, 100">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="audit-metric-name">SEO</div>
-                </div>
-                <div class="audit-pwa">
-                    <div class="audit-metric">
-                        <div class="audit-score"><span>40</span></div>
-                        <svg class="audit-metric-circle" viewBox="0 0 36 36">
-                            <path d="M18 2.0845
-                              a 15.9155 15.9155 0 0 1 0 31.831
-                              a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ffe168" stroke-width="3" stroke-dasharray="40, 100">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="audit-metric-name">PWA</div>
-                </div>
-            </div>
+            <h3 class="section-title">[[%dashbored.sitedash.lighthouse_audit]]</h3>
+            <div class="dashbored-sitedash-audit"></div>
         </div>
         <div class="dashbored-sitedash-middle">
-            <div class="first-col">
-                <h3 class="section-title">Config</h3>
-                <div><span class="tag">MODX</span> <div class="dots"></div> 3.0.1-pl</div>
-                <div><span class="tag">PHP</span> <div class="dots"></div> 7.4.3</div>
-                <div><span class="tag">Nginx</span> <div class="dots"></div> 1.18.0</div>
-                <div><span class="tag">MySQL</span> <div class="dots"></div> 8.10.4</div>
-                <div><span class="tag">IP</span> <div class="dots"></div> 178.128.112.153</div>
-            </div>
-            <div class="second-col">
-                <h3 class="section-title">Security</h3>
-                <div><span class="tag">SSL cert</span> <div class="dots"></div> Valid </div>
-                <div><span class="tag">SSL version</span> <div class="dots"></div> 3</div>
-                <div><span class="tag">TLS version</span> <div class="dots"></div> 1.3</div>
-                <div><span class="tag">Core protected</span> <div class="dots"></div> <i class="icon icon-check"></i></div>
-                <div><span class="tag">Renamed manager</span> <div class="dots"></div> <i class="icon icon-check"></i></div>
-            </div>
-            <div class="third-col">
-                <h3 class="section-title">Checks</h3>
-                <div><span class="tag">Checks passed</span> <div class="dots"></div> 20/21</div>
-                <div><span class="tag">Error log</span> <div class="dots"></div> 266.93 KB</div>
-                <div><span class="tag">Disk used</span> <div class="dots"></div> 14.79 GB</div>
-                <div><span class="tag">Extras installed</span> <div class="dots"></div> 13</div>
-                <div><span class="tag">Updates available</span> <div class="dots"></div> 4</div>
-            </div>
-        </div>
-        <div class="dashbored-sitedash-bottom">
-            
+            <div class="first-col"></div>
+            <div class="second-col"></div>
+            <div class="third-col"></div>
         </div>
     </div>
 </div>
 <div class="dashbored-sitedash-footer">
     <span class="sitedash-site-url">{$this->modx->getOption('site_url')}</span>
-    <button class="open-sitedash-btn" type="button">View in SiteDash</button>
+    <button class="open-sitedash-btn" type="button">[[%dashbored.sitedash.view_in_sitedash]]</button>
 </div>
 HTML;
     }
