@@ -421,7 +421,7 @@
 .dashbored-sitedash-monitor-widget * {
     box-sizing: border-box;
 }
-.dashbored-sitedash-mask {
+.dashbored-sitedash-monitor-mask {
     visibility: hidden;
     position: absolute;
     margin: -10px;
