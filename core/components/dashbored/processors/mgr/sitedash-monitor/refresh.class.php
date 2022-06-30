@@ -12,5 +12,37 @@ class DashboredSiteDashMonitorRefreshProcessor extends DashboredSiteDashAbstract
                     'dashbored.sitedash_monitor.' . $field, $this->modx->user->get('id')) ?? $default;
         }
     }
+
+    /**
+     * @return array
+     */
+    protected function getData(): array
+    {
+        $data = $this->modx->cacheManager->get('sitedash_monitor_data', Dashbored::$cacheOptions);
+
+        if ($this->refresh || !$data) {
+//            $c = curl_init();
+//            curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+//            
+//            $siteKey = $this->modx->getOption('dashbored.sitedash.site_key');
+//            curl_setopt($c, CURLOPT_URL, "https://sitedash.app/integrations/{$siteKey}.json");
+//
+//            $data = [];
+//            $data = curl_exec($c);
+//            curl_close($c);
+
+            // TODO: Remove when live data available
+            $data = $this->getDummyData();
+
+            $data = json_decode($data, true);
+
+            $data = filter_var_array($data, FILTER_SANITIZE_STRING) ?? [];
+            $data = array_merge($data, $this->fields);
+
+            $this->modx->cacheManager->set('sitedash_monitor_data', $data, 7200, Dashbored::$cacheOptions);
+        }
+
+        return $data ?? [];
+    }
 }
 return 'DashboredSiteDashMonitorRefreshProcessor';

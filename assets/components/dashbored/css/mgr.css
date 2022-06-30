@@ -290,10 +290,11 @@
     width: 100%;
     height: 100%;
     padding: 0 16px 50px 16px;
+    position: relative;
+    z-index: 3;
 }
 .dashbored-sitedash-top,
-.dashbored-sitedash-middle,
-.dashbored-sitedash-bottom {
+.dashbored-sitedash-middle {
     width: 100%;
     max-width: 500px;
     padding: 0;
@@ -459,6 +460,10 @@
 }
 .db-settings-bg-quotes {
     background: linear-gradient(120deg, rgba(255,149,121,1) 0%, rgba(255,128,95,1) 34%, rgba(255,85,41,1) 85%);
+}
+.db-settings-bg-sitedash,
+.db-settings-bg-sitedash-monitor {
+    background: linear-gradient(120deg, rgba(90,114,142,1) 0%, rgba(63,91,123,1) 18%, rgba(35,67,104,1) 54%);
 }
 .db-settings-bg .db-overlay {
     position: absolute;

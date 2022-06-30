@@ -5,7 +5,12 @@ require_once __DIR__ . '/abstract.class.php';
 class DashboredSiteDashMonitorDashboardWidget extends DashboredAbstractDashboardWidget
 {
     // Values are defaults
-    public const ACCEPTED_FIELDS = [];
+    public const ACCEPTED_FIELDS = [
+        'background_type' => 'none',
+        'bg_mask' => '1',
+        'bg_image' => '',
+        'bg_video' => '',
+    ];
 
     public function render(): string
     {
@@ -54,6 +59,8 @@ HTML
 <div class="dashbored-sitedash-header"></div>
 <div id="dashbored{$this->widget->get('id')}-sitedash-monitor" class="dashbored-sitedash-monitor-widget" 
     data-id="{$this->widget->get('id')}"
+    data-backgroundtype="{$props['background_type']}" 
+    data-backgroundmask="{$props['bg_mask']}" 
 >
 
     <div class="dashbored-sitedash-monitor-chart">
