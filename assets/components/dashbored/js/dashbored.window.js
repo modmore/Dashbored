@@ -172,20 +172,52 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
     },
 
     getAboutTab: function(win) {
+        let col = this.renderAboutTabCol(),
+            content = this.renderAboutTabContent();
         return {
             title: 'About',
+            cls: 'about-tab',
             items: [{
                 xtype: 'box',
                 anchor: '100%',
-                html: this.renderAboutPanel()
+                html: this.renderAboutPanel(col, content)
             }]
         };
     },
     
-    renderAboutPanel: function() {
+    renderAboutPanel: function(col, content) {
         return `
-            <div style="background: #f1f1f1; width: 100%; height: 300px;">About info goes here</div>
+            <div class="dashbored-settings-about-panel">
+                <div class="db-settings-about-content">
+                    ${content}
+                </div>
+                <div class="db-settings-about-modmore">
+                    ${col}
+                </div>
+                
+            </div>
         `;
+    },
+    
+    renderAboutTabCol: function() {
+        return `
+        <img class="modmore-logo-white" src="${Dashbored.config.assetsUrl}images/modmore-white.svg" alt="Dashbored is brought to you by {+} modmore">
+        <div class="modmore-blurb">
+            <p>Level up your MODX sites with modmore</p>
+            <ul>
+                <li>Powerful Extras</li>
+                <li>Premium Support</li>
+                <li>One-click upgrades</li>
+                <li>Remote control</li>
+            </ul>
+            <a href="https://modmore.com" target="_blank" rel="noopener">Visit modmore.com</a>
+        </div>
+        <img class="modbot" src="${Dashbored.config.assetsUrl}images/modbot.svg" alt="modbot">
+        `;
+    },
+
+    renderAboutTabContent: function() {
+        return '';
     },
     
     switchBackgroundTab: function(radio) {

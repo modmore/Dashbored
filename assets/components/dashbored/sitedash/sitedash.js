@@ -318,5 +318,15 @@ Ext.extend(DashboredSiteDash.Settings, Dashbored.Settings, {
     getSettingsTab: function(win) {
         return '';
     },
+    renderAboutTabContent: function() {
+        return `
+        <div class="sitedash-about-content">
+            <h2>SiteDash</h2>
+            <p>SiteDash checks all of your sites 4 times a day for security issues, out-of-date extras, error logs growing out of control, crashed tables, and more.</p> 
+            <p>SiteDash notifies you about what you really need to know immediately, gives you powerful remote management features, and presents it all in a user (and mobile) friendly dashboard.</p>
+            <a href="https://sitedash.app/" target="_blank" rel="noopener">https://sitedash.app</a>
+        </div>
+        `;
+    }
 });
 Ext.reg('dashboredsitedash-settings', DashboredSiteDash.Settings);

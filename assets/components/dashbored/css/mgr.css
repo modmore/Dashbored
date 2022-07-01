@@ -382,7 +382,7 @@
     padding: 0 15px;
     margin: 0;
     background-color: #234368;
-    z-index: 2;
+    z-index: 3;
     color: #fff;
     height: 34px;
     border-radius: 0 0 3px 3px;
@@ -441,6 +441,7 @@
 .dashbored-credits__logo {
     display:block;
     height: 40px;
+    margin-top: 2px;
 }
 .dashbored-credits__logo img {
     height: 40px;
@@ -529,4 +530,64 @@
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+.dashbored-settings-about-panel {
+    width: 100%; 
+    height: 300px;
+    display: flex;
+}
+
+.dashbored-settings-about-panel .db-settings-about-modmore {
+    background: rgb(31,74,127);
+    background: linear-gradient(180deg, rgba(31,74,127,1) 26%, rgba(87,119,159,1) 100%);
+    width: 300px;
+    height: calc(100% - 20px);
+    padding: 10px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: -1px -1px 0 rgba(31,74,127,0.3);
+    overflow: hidden;
+    font-size: 11px;
+}
+.dashbored-settings-about-panel .db-settings-about-modmore img {
+    max-width: 90%;
+}
+.dashbored-settings-about-panel .db-settings-about-modmore p {
+    padding: 5px 12px;
+}
+.dashbored-settings-about-panel .db-settings-about-modmore ul {
+    width: 110px;
+    margin: 5px auto;
+    list-style: disc inside;
+    line-height: 1.5;
+}
+.dashbored-settings-about-panel .db-settings-about-modmore a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    margin: 15px 12px 0;
+    background: #1b416f;
+    padding: 5px 2px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,.15);
+    font-weight: bold;
+    cursor: pointer;
+}
+.dashbored-settings-about-panel .db-settings-about-modmore .modbot {
+    margin-top: 15px;
+    padding-left: 10px;
+    height: 150px;
+}
+.dashbored-settings-about-panel .db-settings-about-content {
+    width: 100%;
+    padding: 15px 20px;
+    flex-grow: 1;
+    background: rgb(250,251,252);
+    background: linear-gradient(128deg, rgba(250,251,252,1) 0%, rgba(215,222,228,1) 85%);
+}
+.sitedash-about-content p {
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
