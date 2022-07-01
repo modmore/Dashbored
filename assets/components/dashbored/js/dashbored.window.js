@@ -27,8 +27,8 @@ Dashbored.Settings = function(config) {
         buttonAlign: 'left',
         buttons: [{
             xtype: 'box',
-            html: '<a class="dashbored-credits__logo" href="https://www.modmore.com/dashbored/?utm_source=dashbored_footer" target="_blank" rel="noopener">' +
-                '<img src="' + Dashbored.config.assetsUrl + 'images/modmore.svg" alt="Dashbored is brought to you by {+} modmore"></a>',
+            html: `<a class="dashbored-credits__logo" href="https://www.modmore.com/dashbored/?utm_source=dashbored_footer" target="_blank" rel="noopener">
+                <img src="${Dashbored.config.assetsUrl}images/modmore.svg" alt="Dashbored is brought to you by {+} modmore"></a>`,
         },'->',{
             text: config.cancelBtnText || _('cancel')
             ,scope: this
@@ -210,7 +210,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
                 <li>One-click upgrades</li>
                 <li>Remote control</li>
             </ul>
-            <a href="https://modmore.com" target="_blank" rel="noopener">Visit modmore.com</a>
+            <a href="https://www.modmore.com?utm_source=dashbored_about_tab" target="_blank" rel="noopener">Visit modmore.com</a>
         </div>
         <img class="modbot" src="${Dashbored.config.assetsUrl}images/modbot.svg" alt="modbot">
         `;
@@ -313,7 +313,7 @@ Ext.extend(Dashbored.Settings, MODx.Window, {
         let el = panel.getEl().down('#db-video-content-' + this.getId()),
             video = document.createElement('video');
         video.classList.add('db-bg-video');
-        video.src = url;
+        video.src = Ext.util.Format.htmlEncode(url);
         video.setAttribute('autoplay', 'true');
         video.setAttribute('loop', 'true');
         el.appendChild(video);
