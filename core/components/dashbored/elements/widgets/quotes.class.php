@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/abstract.class.php';
 
-class QuotesDashboardWidget extends DashboredAbstractDashboardWidget
+class DashboredQuotesDashboardWidget extends DashboredAbstractDashboardWidget
 {
     // Values are defaults
     public const ACCEPTED_FIELDS = [
@@ -60,4 +60,4 @@ HTML
 HTML;
     }
 }
-return 'QuotesDashboardWidget';
+return 'DashboredQuotesDashboardWidget';

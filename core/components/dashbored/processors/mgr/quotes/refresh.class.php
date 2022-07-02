@@ -9,8 +9,8 @@ class DashboredQuotesRefreshProcessor extends DashboredRefreshProcessor {
 
     protected function loadSettingFields()
     {
-        foreach (QuotesDashboardWidget::ACCEPTED_FIELDS as $field => $default) {
-            $this->fields[$field] = QuotesDashboardWidget::getUserSetting($this->modx,
+        foreach (DashboredQuotesDashboardWidget::ACCEPTED_FIELDS as $field => $default) {
+            $this->fields[$field] = DashboredQuotesDashboardWidget::getUserSetting($this->modx,
                     'dashbored.quotes.' . $field, $this->modx->user->get('id')) ?? $default;
         }
     }
