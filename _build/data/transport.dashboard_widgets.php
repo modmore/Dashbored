@@ -48,7 +48,7 @@ $widgets[2]->fromArray([
     'description' => 'dashbored.quotes.desc',
     'type' => 'file',
     'size' => 'one-third',
-    'content' =>  $basePath . 'core/components/dashbored/elements/widgets/quotes.class.php',
+    'content' =>  $basePath . 'components/dashbored/elements/widgets/quotes.class.php',
     'namespace' => 'dashbored',
     'lexicon' => 'dashbored:default',
 ], '', true, true);
