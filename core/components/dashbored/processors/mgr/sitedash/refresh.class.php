@@ -27,7 +27,5 @@ class DashboredSiteDashRefreshProcessor extends DashboredSiteDashAbstractProcess
 
         return $data ?? [];
     }
-    
-    
 }
 return 'DashboredSiteDashRefreshProcessor';

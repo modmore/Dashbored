@@ -318,6 +318,15 @@ Ext.extend(Runner.Settings, Dashbored.Settings, {
         }); 
         output += '</div>';
         return output;
+    },
+
+    renderAboutTabContent: function() {
+        return `
+            <h2>Chromium Dino Game</h2>
+            <p>Originally created as an easter egg in the Chromium browser, the dino game has now been adapted for the MODX dashboard!</p>
+            <p>Choose your player, and compete with other users to get the highest score.</p>
+            <a href="https://github.com/wayou/t-rex-runner" target="_blank" rel="noopener">https://github.com/wayou/t-rex-runner</a>
+        `;
     }
 });
 Ext.reg('dashboreddinogame-settings', Runner.Settings);

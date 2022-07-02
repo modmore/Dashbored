@@ -71,6 +71,19 @@ HTML;
     }
 
     /**
+     * @return string
+     */
+    public function getSpinner(): string
+    {
+        return <<<HTML
+<svg class="dashbored-spinner" viewBox="0 0 50 50">
+  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+</svg>
+HTML;
+
+    }
+
+    /**
      * @param modX $modx
      * @param string $key
      * @param int $userId

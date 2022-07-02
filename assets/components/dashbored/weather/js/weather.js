@@ -258,5 +258,13 @@ Ext.extend(DashboredWeather.Settings, Dashbored.Settings, {
             }]
         };
     },
+    renderAboutTabContent: function() {
+        return `
+            <h2>Weather DB API</h2>
+            <p>From the website:</p>
+            <p><em>"This is an API which will provide you with the weather information fast and easy without any authentication or API key. It's completely free to use and simple to implement. "</em></p> 
+            <a href="https://weatherdbi.herokuapp.com/documentation/v1" target="_blank" rel="noopener">https://weatherdbi.herokuapp.com/documentation/v1</a>
+        `;
+    }
 });
 Ext.reg('dashboredweather-settings', DashboredWeather.Settings);

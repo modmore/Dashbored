@@ -96,6 +96,9 @@ DashboredSiteDashMonitor.prototype = {
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });
+        this.containerEl.querySelector('.dashbored-sitedash-monitor-updated').textContent 
+            = _('dashbored.sitedash_monitor.last_updated_at', {at: Dashbored.renderTimestamp(data.extended.updated_at)});
+        
         let dates = data.extended.dates,
             uptime = data.extended.uptime,
             responseTime = data.extended.response_time,

@@ -49,9 +49,7 @@ HTML
 
         return <<<HTML
 <div class="dashbored-sitedash-monitor-mask">
-    <svg class="dashbored-spinner" viewBox="0 0 50 50">
-      <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-    </svg>
+    {$this->getSpinner()}
 </div>
 <div class="dashbored-bg">
     <div class="db-bg-mask"></div>
@@ -66,6 +64,7 @@ HTML
     <div class="dashbored-sitedash-monitor-chart">
         <canvas id="dashbored-sitedash-uptime" width="400" height="120"></canvas>
     </div>
+    <div class="dashbored-sitedash-monitor-updated"></div>
 </div>
 HTML;
     }

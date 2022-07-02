@@ -17,6 +17,8 @@ function DashboredSiteDash(widgetId) {
     this.secondCol = this.middlePanel.querySelector('.second-col');
     this.thirdCol = this.middlePanel.querySelector('.third-col');
     
+    this.updatedAt = '';
+    
     this.footer = document.querySelector('.dashbored-sitedash-footer');
     this.sitedashBtn = this.footer.querySelector('.open-sitedash-btn');
     
@@ -159,15 +161,20 @@ DashboredSiteDash.prototype = {
     },
     
     renderColumns: function(data) {
+        this.updatedAt = Dashbored.renderTimestamp(data.updated_at);
         this.renderConfigColumn(data.config);
         this.renderSecurityColumn(data.security);
         this.renderChecksColumn(data.checks);
     },
     
     renderColumnTitle: function(type) {
-        let title = document.createElement('h3');
+        let title = document.createElement('h3'),
+            span = document.createElement('span');
         title.classList.add('section-title');
         title.textContent = _('dashbored.sitedash.' + type);
+        span.classList.add('dashbored-sitedash-updated-at');
+        span.textContent = this.updatedAt;
+        title.appendChild(span);
         return title;
     },
     
@@ -332,12 +339,10 @@ Ext.extend(DashboredSiteDash.Settings, Dashbored.Settings, {
     },
     renderAboutTabContent: function() {
         return `
-        <div class="sitedash-about-content">
-            <h2>SiteDash</h2>
-            <p>SiteDash checks all of your sites 4 times a day for security issues, out-of-date extras, error logs growing out of control, crashed tables, and more.</p> 
-            <p>SiteDash notifies you about what you really need to know immediately, gives you powerful remote management features, and presents it all in a user (and mobile) friendly dashboard.</p>
-            <a href="https://sitedash.app/" target="_blank" rel="noopener">https://sitedash.app</a>
-        </div>
+        <h2>SiteDash</h2>
+        <p>SiteDash checks all of your sites 4 times a day for security issues, out-of-date extras, error logs growing out of control, crashed tables, and more.</p> 
+        <p>SiteDash notifies you about what you really need to know immediately, gives you powerful remote management features, and presents it all in a user (and mobile) friendly dashboard.</p>
+        <a href="https://sitedash.app/" target="_blank" rel="noopener">https://sitedash.app</a>
         `;
     }
 });

@@ -87,3 +87,4 @@ $_lang['dashbored.sitedash.updates_available'] = 'Updates available';
 $_lang['dashbored.sitedash_monitor.name'] = 'SiteDash | Monitoring';
 $_lang['dashbored.sitedash_monitor.menu_name'] = '[Dashbored] - SiteDash | Extended Monitoring';
 $_lang['dashbored.sitedash_monitor.desc'] = 'SiteDash extended monitoring widget. See server uptime, response times, memory and CPU usage.';
+$_lang['dashbored.sitedash_monitor.last_updated_at'] = 'Last updated at [[+at]]';

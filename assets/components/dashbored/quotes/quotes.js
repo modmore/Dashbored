@@ -126,5 +126,13 @@ Ext.extend(DashboredQuotes.Settings, Dashbored.Settings, {
     getSettingsTab: function(win) {
         return '';
     },
+    renderAboutTabContent: function() {
+        return `
+        <h2>ZenQuotes.io</h2>
+        <p>From the website:</p>
+        <p><em>Zenquotes.io is a simple API that can be used to fetch quotes from infuential figures throughout history into JSON format. While it's not hard to find a database of inspirational quotes online, most of them require registration or just plain suck.</em></p> 
+        <a href="https://zenquotes.io/" target="_blank" rel="noopener">https://zenquotes.io</a>
+        `;
+    }
 });
 Ext.reg('dashboredquotes-settings', DashboredQuotes.Settings);

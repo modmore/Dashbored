@@ -10,13 +10,8 @@ Ext.extend(Dashbored, Ext.Component, {
 });
 Ext.reg('dashbored', Dashbored);
 
-/**
- * Helper function to capitalize the first character in a given string.
- * @param string
- * @returns {string}
- */
-Dashbored.capitalize = function(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+Dashbored.renderTimestamp = function(timestamp) {
+    return Ext.util.Format.date(new Date(parseInt(timestamp) * 1000), 'Y-m-d h:i')
 }
 
 /**

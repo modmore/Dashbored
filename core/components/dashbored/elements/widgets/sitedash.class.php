@@ -48,9 +48,7 @@ HTML
 
         return <<<HTML
 <div class="dashbored-sitedash-mask">
-    <svg class="dashbored-spinner" viewBox="0 0 50 50">
-      <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-    </svg>
+    {$this->getSpinner()}
 </div>
 <div class="dashbored-bg">
     <div class="db-bg-mask"></div>
@@ -63,7 +61,10 @@ HTML
 >
     <div class="dashbored-sitedash-panel">
         <div class="dashbored-sitedash-top">
-            <h3 class="section-title">[[%dashbored.sitedash.lighthouse_audit]]</h3>
+            <h3 class="section-title">
+                [[%dashbored.sitedash.lighthouse_audit]]
+                <span class="dashbored-sitedash-updated-at">2022-07-02 11:00</span>
+            </h3>
             <div class="dashbored-sitedash-audit"></div>
         </div>
         <div class="dashbored-sitedash-middle">

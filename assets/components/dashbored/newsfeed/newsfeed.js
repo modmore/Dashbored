@@ -180,5 +180,14 @@ Ext.extend(DashboredNewsFeed.Settings, Dashbored.Settings, {
     getBackgroundTab: function(win) {
         return '';
     },
+    renderAboutTabContent: function() {
+        return `
+        <h2>News Feed</h2>
+        <h4 class="sub-heading">by MODX.today</h4>
+        <p>MODX.today is an online magazine dedicated to the MODX Content Management Platform. With daily-ish news, fresh insights and reviews about all things MODX.</p>
+        <p>We share MODX related content from around the web with you, and provide weekly-ish newsletters to keep you updated with minimum effort.</p> 
+        <a href="https://modx.today/" target="_blank" rel="noopener">https://modx.today</a>
+        `;
+    }
 });
 Ext.reg('dashborednewsfeed-settings', DashboredNewsFeed.Settings);
