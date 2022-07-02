@@ -1,7 +1,5 @@
 <?php
 
-use MODX\Revolution\modSystemSetting;
-
 $settingSource = include __DIR__ . '/settings.php';
 
 $settings = [];

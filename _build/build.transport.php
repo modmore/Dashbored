@@ -1,9 +1,5 @@
 <?php
 
-use MODX\Revolution\Transport\modPackageBuilder;
-use xPDO\Transport\xPDOTransport;
-use xPDO\Transport\xPDOFileVehicle;
-
 /**
  * @param string $filename The name of the file.
  * @return string The file's content
