@@ -7,6 +7,7 @@ $_lang['dashbored.select_image'] = 'Select image';
 $_lang['dashbored.select_video'] = 'Select video';
 $_lang['dashbored.none'] = 'None';
 $_lang['dashbored.no_background'] = 'No background';
+$_lang['dashbored.no_data_msg'] = 'Unable to retrieve data from [[+type]]. Please try again later.';
 
 // Dino Game
 $_lang['dashbored.dino_game.name'] = 'Dino Game';
@@ -57,6 +58,7 @@ $_lang['dashbored.sitedash.config'] = 'Config';
 $_lang['dashbored.sitedash.modx_version'] = 'MODX';
 $_lang['dashbored.sitedash.php_version'] = 'PHP';
 $_lang['dashbored.sitedash.nginx'] = 'Nginx';
+$_lang['dashbored.sitedash.web'] = 'Web';
 $_lang['dashbored.sitedash.apache'] = 'Apache';
 $_lang['dashbored.sitedash.mysql'] = 'MySQL';
 $_lang['dashbored.sitedash.percona'] = 'Percona';
@@ -67,7 +69,7 @@ $_lang['dashbored.sitedash.security'] = 'Security';
 $_lang['dashbored.sitedash.ssl_cert'] = 'SSL cert';
 $_lang['dashbored.sitedash.valid'] = 'Valid';
 $_lang['dashbored.sitedash.invalid'] = 'Invalid';
-$_lang['dashbored.sitedash.tls_version'] = 'TLS version';
+$_lang['dashbored.sitedash.protocol'] = 'Protocol';
 $_lang['dashbored.sitedash.core_protected'] = 'Core protected';
 $_lang['dashbored.sitedash.renamed_manager'] = 'Renamed manager';
 $_lang['dashbored.sitedash.setup_removed'] = 'Setup removed';

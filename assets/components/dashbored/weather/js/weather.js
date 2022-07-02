@@ -102,7 +102,7 @@ DashboredWeather.prototype = {
         }
         else {
             // Render error msg
-            this.displayMessage('Unable to retrieve data from the WeatherDB API. Please try again later.');
+            Dashbored.displayMessage(this.containerEl, _('dashbored.no_data_msg', {type: 'WeatherDB'}));
         }
         
         Dashbored.renderBackground(this, data);
@@ -111,6 +111,9 @@ DashboredWeather.prototype = {
     },
 
     renderAPIData: function(data) {
+        this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
+            msg.remove();
+        });
         let that = this,
             tempType = data.current.temp_type === 'c' ? _('dashbored.weather.celsius_symbol') : _('dashbored.weather.fahrenheit_symbol'),
             distanceType = data.current.distance_type === 'km' ? _('dashbored.weather.kph') : _('dashbored.weather.mph');
@@ -167,14 +170,6 @@ DashboredWeather.prototype = {
 
             that.outlook.appendChild(div);
         });
-    },
-    
-    displayMessage: function(msg) {
-        let div = document.createElement('div');
-        div.classList.add('dashbored-error-msg');
-        div.textContent = msg;
-        
-        this.containerEl.appendChild(div);
     },
     
     disableSpinner: function() {

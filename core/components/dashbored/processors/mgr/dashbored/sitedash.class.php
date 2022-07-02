@@ -4,6 +4,29 @@ require_once __DIR__ . '/refresh.class.php';
 require_once dirname(__DIR__, 3) . '/elements/widgets/sitedash.class.php';
 
 abstract class DashboredSiteDashAbstractProcessor extends DashboredRefreshProcessor {
+
+    /**
+     * @return array
+     */
+    protected function getSiteDashData(): array
+    {
+        $data = [];
+        $siteKey = $this->modx->getOption('dashbored.sitedash.site_key');
+        if (!empty($siteKey)) {
+            $c = curl_init();
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($c, CURLOPT_URL, "https://sitedash.app/api/integrations/{$siteKey}");
+            $data = curl_exec($c);
+            curl_close($c);
+
+            $data = json_decode($data, true) ?? [];
+            if (isset($data['data'])) {
+                $data = filter_var_array($data['data'], FILTER_SANITIZE_STRING) ?? [];
+            }
+        }
+
+        return array_merge($data, $this->fields);
+    }
     
     /**
      * Get some test data to populate the widget
@@ -14,7 +37,7 @@ abstract class DashboredSiteDashAbstractProcessor extends DashboredRefreshProces
         return '{
         "account_valid": true,
         "site_url": "example.com",
-        "sitedash_link": "https://sitedash.app/dashboard/site/{code_for_this_site}",
+        "sitedash_link": "https://sitedash.app/dashboard/site/",
         "updated_at": 1656142038,
         "lighthouse": {
             "scores": {

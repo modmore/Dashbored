@@ -80,12 +80,22 @@ DashboredSiteDashMonitor.prototype = {
     },
 
     render: function(data) {
-        this.renderAPIData(data);
+        if (typeof data.site_url !== 'undefined') {
+            this.renderAPIData(data);
+        }
+        else {
+            // Render error msg
+            Dashbored.displayMessage(this.containerEl, _('dashbored.no_data_msg', {type: 'SiteDash'}));
+        }
+        
         Dashbored.renderBackground(this, data);
         this.disableSpinner();
     },
 
     renderAPIData: function(data) {
+        this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
+            msg.remove();
+        });
         let dates = data.extended.dates,
             uptime = data.extended.uptime,
             responseTime = data.extended.response_time,

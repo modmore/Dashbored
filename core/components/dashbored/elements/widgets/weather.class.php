@@ -6,7 +6,7 @@ class WeatherDashboardWidget extends DashboredAbstractDashboardWidget
 {
     // Values are defaults
     public const ACCEPTED_FIELDS = [
-        'location' => 'amsterdam',
+        'location' => 'arnhem,netherlands',
         'temp_type' => 'c',
         'distance_type' => 'km',
         'background_type' => 'none',

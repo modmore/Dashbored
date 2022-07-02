@@ -78,6 +78,19 @@ if (!createObject('modSystemSetting', [
 ], 'key', false)) {
     echo "Error creating dashbored.assets_url setting.\n";
 }
+
+// More Settings
+if (!createObject('modSystemSetting', [
+    'key' => 'dashbored.sitedash.site_key',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'dashbored',
+    'area' => 'SiteDash',
+    'editedon' => time(),
+], 'key', false)) {
+    echo "Error creating dashbored.sitedash.site_key setting.\n";
+}
+
 // Widgets
 $widgets = include $componentPath . '/_build/data/transport.dashboard_widgets.php';
 if (empty($widgets)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not create widgets.');

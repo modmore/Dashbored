@@ -93,13 +93,23 @@ DashboredSiteDash.prototype = {
     },
 
     render: function(data) {
-        this.renderAPIData(data);
+        if (typeof data.site_url !== 'undefined') {
+            this.renderAPIData(data);
+        }
+        else {
+            // Render error msg
+            Dashbored.displayMessage(this.containerEl, _('dashbored.no_data_msg', {type: 'SiteDash'}));
+        }
+        
         Dashbored.renderBackground(this, data);
         this.disableSpinner();
     },
     
     renderAPIData: function(data) {
         this.auditPanel.innerHTML = null;
+        this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
+            msg.remove();
+        });
         for (const score in data.lighthouse.scores) {
             this.renderLighthouseScore(score, data.lighthouse.scores[score]);
         }
@@ -175,7 +185,6 @@ DashboredSiteDash.prototype = {
             value.classList.add('sd-value');
             
             switch (item) {
-                case 'web_server_version':
                 case 'database_version':
                 case 'modx_upgrade_available':
                     continue;
@@ -186,12 +195,15 @@ DashboredSiteDash.prototype = {
                     value.textContent = rows[item];
                     break;
                 case 'web_server':
-                    tag.textContent = _('dashbored.sitedash.' + rows[item]);
-                    value.textContent = rows['web_server_version'];
+                    tag.textContent = _('dashbored.sitedash.web');
+                    value.textContent = rows['web_server'] || '';
                     break;
                 case 'database_type':
+                    if (rows['database_version'].length > 10) {
+                        rows['database_version'] = rows['database_version'].split('-')[0];
+                    }
                     tag.textContent = _('dashbored.sitedash.' + rows[item]);
-                    value.textContent = rows['database_version'];
+                    value.textContent = rows['database_version'] || '';
                     break;
             }
             
@@ -225,7 +237,7 @@ DashboredSiteDash.prototype = {
                     value.textContent = _('dashbored.sitedash.' + rows[item]);
                     break;
                 case 'tls_version':
-                    tag.textContent = _('dashbored.sitedash.' + item);
+                    tag.textContent = _('dashbored.sitedash.protocol');
                     value.textContent = rows[item];
                     break;
                 case 'core_protected':

@@ -76,3 +76,11 @@ Dashbored.getBackgroundStyle = function(bgOpacity) {
     }
     return 'rgba(0,0,0,' + bgOpacity + ')';
 }
+
+Dashbored.displayMessage = function(el, msg) {
+    let div = document.createElement('div');
+    div.classList.add('dashbored-error-msg');
+    div.textContent = msg;
+
+    el.appendChild(div);
+}
