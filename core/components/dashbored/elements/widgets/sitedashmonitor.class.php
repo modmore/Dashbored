@@ -36,7 +36,7 @@ class DashboredSiteDashMonitorDashboardWidget extends DashboredAbstractDashboard
     }
     #dashboard-block-{$this->widget->get('id')} .title-wrapper {background: #fff;}
 </style>
-<script src="{$this->dashbored->config['assets_url']}node_modules/chart.js/dist/chart.min.js"></script>
+<script src="{$this->dashbored->config['assets_url']}sitedash/chart.min.js"></script>
 <script src="{$this->dashbored->config['assets_url']}sitedash/sitedash-monitor.js"></script>
 <script>
 Ext.onReady(function() {
