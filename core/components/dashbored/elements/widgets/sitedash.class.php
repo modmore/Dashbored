@@ -63,7 +63,7 @@ HTML
         <div class="dashbored-sitedash-top">
             <h3 class="section-title">
                 [[%dashbored.sitedash.lighthouse_audit]]
-                <span class="dashbored-sitedash-updated-at">2022-07-02 11:00</span>
+                <span class="dashbored-sitedash-updated-at"></span>
             </h3>
             <div class="dashbored-sitedash-audit"></div>
         </div>

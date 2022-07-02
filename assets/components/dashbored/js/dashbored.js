@@ -11,7 +11,11 @@ Ext.extend(Dashbored, Ext.Component, {
 Ext.reg('dashbored', Dashbored);
 
 Dashbored.renderTimestamp = function(timestamp) {
-    return Ext.util.Format.date(new Date(parseInt(timestamp) * 1000), 'Y-m-d h:i')
+    let date = new Date(parseInt(timestamp) * 1000);
+    if (isNaN(date)) {
+        return '';
+    }
+    return Ext.util.Format.date(date, 'Y-m-d h:i')
 }
 
 /**

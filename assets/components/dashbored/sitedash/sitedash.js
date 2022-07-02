@@ -112,6 +112,8 @@ DashboredSiteDash.prototype = {
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });
+        this.containerEl.querySelector('.dashbored-sitedash-top .dashbored-sitedash-updated-at').textContent 
+            = Dashbored.renderTimestamp(data.lighthouse.updated_at);
         for (const score in data.lighthouse.scores) {
             this.renderLighthouseScore(score, data.lighthouse.scores[score]);
         }
