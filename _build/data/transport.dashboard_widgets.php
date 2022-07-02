@@ -13,7 +13,7 @@
 $widgets = [];
 
 // Use different base paths if we're bootstrapping rather than building.
-if ($componentPath) {
+if (isset($componentPath)) {
     $basePath = $componentPath . '/core/';
 }
 else {
