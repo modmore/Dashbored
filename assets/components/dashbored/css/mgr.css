@@ -282,6 +282,19 @@
     background: rgb(63,91,123);
     background: linear-gradient(120deg, rgba(90,114,142,1) 0%, rgba(63,91,123,1) 18%, rgba(35,67,104,1) 54%);
 }
+.dashbored-sitedash-msg {
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+.dashbored-sitedash-msg a,
+.dashbored-sitedash-msg a:hover {
+    color: #fff;
+}
 .dashbored-sitedash-panel {
     display: flex;
     flex-direction: column;

@@ -21,6 +21,8 @@ function DashboredSiteDash(widgetId) {
     
     this.footer = document.querySelector('.dashbored-sitedash-footer');
     this.sitedashBtn = this.footer.querySelector('.open-sitedash-btn');
+    this.sitedashLink = 'https://sitedash.app';
+    this.messagePanel = this.widgetEl.querySelector('.dashbored-sitedash-msg');
     
     this.record = {
         id: this.containerEl.dataset.id
@@ -33,7 +35,7 @@ function DashboredSiteDash(widgetId) {
         this.refresh(true);
     });
     this.sitedashBtn.addEventListener('click', (e) => {
-        window.open('https://sitedash.app');
+        window.open(this.sitedashLink);
     });
 }
 window['DashboredSiteDash'] = DashboredSiteDash;
@@ -66,7 +68,8 @@ DashboredSiteDash.prototype = {
 
     loadData: function(ignoreCache = false) {
         let that = this;
-
+        
+        this.hideMessage();
         this.enableSpinner();
 
         MODx.Ajax.request({
@@ -95,16 +98,30 @@ DashboredSiteDash.prototype = {
     },
 
     render: function(data) {
-        if (typeof data.site_url !== 'undefined') {
-            this.renderAPIData(data);
+        if (typeof data.missing_key !== 'undefined') {
+            this.showMessage(_('dashbored.sitedash.nokey_msg'));
+        }
+        else if (typeof data.account_valid === 'undefined') {
+            this.showMessage(_('dashbored.no_data_msg', {type: 'SiteDash'}));
+        }
+        else if (data.account_valid !== '1') {
+            this.showMessage(_('dashbored.sitedash.invalid_account_msg'));
         }
         else {
-            // Render error msg
-            Dashbored.displayMessage(this.containerEl, _('dashbored.no_data_msg', {type: 'SiteDash'}));
+            this.renderAPIData(data);
         }
         
         Dashbored.renderBackground(this, data);
         this.disableSpinner();
+    },
+    
+    showMessage: function(msg) {
+        this.messagePanel.innerHTML = msg;
+        this.messagePanel.style.visibility = 'visible';
+    },
+    
+    hideMessage: function() {
+        this.messagePanel.style.visibility = 'hidden';
     },
     
     renderAPIData: function(data) {
@@ -119,7 +136,8 @@ DashboredSiteDash.prototype = {
         }
         
         this.renderColumns(data);
-        
+        this.widgetEl.querySelector('.sitedash-site-url').textContent = data.site_url;
+        this.sitedashLink = data.sitedash_link
     },
     
     renderLighthouseScore: function(type, score) {
@@ -309,11 +327,11 @@ DashboredSiteDash.prototype = {
     },
     
     disableSpinner: function() {
-        document.querySelector('.dashbored-sitedash-mask').style.visibility = 'hidden';
+        this.widgetEl.querySelector('.dashbored-loading-mask').style.visibility = 'hidden';
     },
 
     enableSpinner: function() {
-        document.querySelector('.dashbored-sitedash-mask').style.visibility = 'visible';
+        this.widgetEl.querySelector('.dashbored-loading-mask').style.visibility = 'visible';
     },
 
     refresh: function() {

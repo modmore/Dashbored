@@ -24,6 +24,9 @@ abstract class DashboredSiteDashAbstractProcessor extends DashboredRefreshProces
                 $data = filter_var_array($data['data'], FILTER_SANITIZE_STRING) ?? [];
             }
         }
+        else {
+            $data['missing_key'] = true;
+        }
 
         return array_merge($data, $this->fields);
     }

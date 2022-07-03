@@ -48,9 +48,10 @@ HTML
         );
 
         return <<<HTML
-<div class="dashbored-sitedash-monitor-mask">
+<div class="dashbored-sitedash-monitor-mask dashbored-loading-mask">
     {$this->getSpinner()}
 </div>
+<div class="dashbored-sitedash-monitor-mask dashbored-sitedash-msg"></div>
 <div class="dashbored-bg">
     <div class="db-bg-mask"></div>
 </div>

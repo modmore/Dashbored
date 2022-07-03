@@ -46,6 +46,8 @@ $_lang['dashbored.sitedash.name'] = 'SiteDash';
 $_lang['dashbored.sitedash.menu_name'] = '[Dashbored] - SiteDash';
 $_lang['dashbored.sitedash.desc'] = 'SiteDash widget. Lighthouse audit scores, security checks, server config and more!';
 $_lang['dashbored.sitedash.view_in_sitedash'] = 'View in SiteDash';
+$_lang['dashbored.sitedash.nokey_msg'] = '<p><b>SiteDash key is missing.</b></p><p>Please add your SiteDash key to the <em>dashbored.sitedash.site_key</em> system settings.</p><p><a href="https://docs.modmore.com/en/Open_Source/Dashbored/index.html" target="_blank" rel="noopener">Learn more</a></p>';
+$_lang['dashbored.sitedash.invalid_account_msg'] = '<p><b>Account not valid</b></p><p>Please check your SiteDash key is correct, and that your account is active.</p>';
 $_lang['dashbored.sitedash.lighthouse_audit'] = 'Lighthouse audit';
 $_lang['dashbored.sitedash.average'] = 'Average';
 $_lang['dashbored.sitedash.performance'] = 'Performance';
