@@ -23,7 +23,6 @@ abstract class DashboredSiteDashAbstractProcessor extends DashboredRefreshProces
             if (isset($data['data'])) {
                 $data = filter_var_array($data['data'], FILTER_SANITIZE_STRING) ?? [];
             }
-            unset($data['extended']);
         }
         else {
             $data['missing_key'] = true;
