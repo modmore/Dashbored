@@ -17,12 +17,12 @@ function DashboredSiteDash(widgetId) {
     this.secondCol = this.middlePanel.querySelector('.second-col');
     this.thirdCol = this.middlePanel.querySelector('.third-col');
     
-    this.updatedAt = '';
+    this.updatedAt = this.widgetEl.querySelector('.dashbored-sitedash-updated-at');
     
     this.footer = document.querySelector('.dashbored-sitedash-footer');
     this.sitedashBtn = this.footer.querySelector('.open-sitedash-btn');
     this.sitedashLink = 'https://sitedash.app';
-    this.messagePanel = this.widgetEl.querySelector('.dashbored-sitedash-msg');
+    this.messagePanel = this.widgetEl.querySelector('.dashbored-msg');
     
     this.record = {
         id: this.containerEl.dataset.id
@@ -69,7 +69,7 @@ DashboredSiteDash.prototype = {
     loadData: function(ignoreCache = false) {
         let that = this;
         
-        this.hideMessage();
+        Dashbored.hideMessage(this.messagePanel);
         this.enableSpinner();
 
         MODx.Ajax.request({
@@ -99,13 +99,13 @@ DashboredSiteDash.prototype = {
 
     render: function(data) {
         if (typeof data.missing_key !== 'undefined') {
-            this.showMessage(_('dashbored.sitedash.nokey_msg'));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.sitedash.nokey_msg'));
         }
         else if (typeof data.account_valid === 'undefined') {
-            this.showMessage(_('dashbored.no_data_msg', {type: 'SiteDash'}));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.no_data_msg', {type: 'SiteDash'}));
         }
         else if (data.account_valid !== '1') {
-            this.showMessage(_('dashbored.sitedash.invalid_account_msg'));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.sitedash.invalid_account_msg'));
         }
         else {
             this.renderAPIData(data);
@@ -115,27 +115,19 @@ DashboredSiteDash.prototype = {
         this.disableSpinner();
     },
     
-    showMessage: function(msg) {
-        this.messagePanel.innerHTML = msg;
-        this.messagePanel.style.visibility = 'visible';
-    },
-    
-    hideMessage: function() {
-        this.messagePanel.style.visibility = 'hidden';
-    },
-    
     renderAPIData: function(data) {
         this.auditPanel.innerHTML = null;
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });
-        this.containerEl.querySelector('.dashbored-sitedash-top .dashbored-sitedash-updated-at').textContent 
+        this.containerEl.querySelector('.dashbored-sitedash-top .dashbored-sitedash-audit-updated-at').textContent 
             = Dashbored.renderTimestamp(data.lighthouse.updated_at);
         for (const score in data.lighthouse.scores) {
             this.renderLighthouseScore(score, data.lighthouse.scores[score]);
         }
         
         this.renderColumns(data);
+        this.updatedAt.textContent = _('dashbored.sitedash.updated_at', {at: Dashbored.renderTimestamp(data.updated_at)});
         this.widgetEl.querySelector('.sitedash-site-url').textContent = data.site_url;
         this.sitedashLink = data.sitedash_link
     },
@@ -181,20 +173,15 @@ DashboredSiteDash.prototype = {
     },
     
     renderColumns: function(data) {
-        this.updatedAt = Dashbored.renderTimestamp(data.updated_at);
         this.renderConfigColumn(data.config);
         this.renderSecurityColumn(data.security);
         this.renderChecksColumn(data.checks);
     },
     
     renderColumnTitle: function(type) {
-        let title = document.createElement('h3'),
-            span = document.createElement('span');
+        let title = document.createElement('h3');
         title.classList.add('section-title');
         title.textContent = _('dashbored.sitedash.' + type);
-        span.classList.add('dashbored-sitedash-updated-at');
-        span.textContent = this.updatedAt;
-        title.appendChild(span);
         return title;
     },
     

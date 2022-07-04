@@ -76,10 +76,20 @@ Dashbored.getBackgroundStyle = function(bgOpacity) {
     return 'rgba(0,0,0,' + bgOpacity + ')';
 }
 
-Dashbored.displayMessage = function(el, msg) {
-    let div = document.createElement('div');
-    div.classList.add('dashbored-error-msg');
-    div.textContent = msg;
+/**
+ * Display message in widget
+ * @param el
+ * @param msg
+ */
+Dashbored.showMessage = function(el, msg) {
+    el.innerHTML = msg;
+    el.style.visibility = 'visible';
+}
 
-    el.appendChild(div);
+/**
+ * Hide message in widget
+ * @param el
+ */
+Dashbored.hideMessage = function(el) {
+    el.style.visibility = 'hidden';
 }

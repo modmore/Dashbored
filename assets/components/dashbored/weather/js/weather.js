@@ -28,6 +28,8 @@ function DashboredWeather(widgetId) {
         id: this.containerEl.dataset.id
     };
     
+    this.messagePanel = this.widgetEl.querySelector('.dashbored-msg');
+    
     document.querySelector('.dashbored-title-btn.config.weather').addEventListener('click', (e) => {
         this.openSettings(this.record);
     });
@@ -67,6 +69,7 @@ DashboredWeather.prototype = {
     loadData: function(location = '', ignoreCache = false) {
         let that = this;
 
+        Dashbored.hideMessage(this.messagePanel);
         this.enableSpinner();
         
         MODx.Ajax.request({
@@ -102,7 +105,7 @@ DashboredWeather.prototype = {
         }
         else {
             // Render error msg
-            Dashbored.displayMessage(this.containerEl, _('dashbored.no_data_msg', {type: 'WeatherDB'}));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.no_data_msg', {type: 'WeatherDB'}));
         }
         
         Dashbored.renderBackground(this, data);
@@ -173,11 +176,11 @@ DashboredWeather.prototype = {
     },
     
     disableSpinner: function() {
-        document.querySelector('.dashbored-weather-mask').style.visibility = 'hidden';
+        this.widgetEl.querySelector('.dashbored-loading-mask').style.visibility = 'hidden';
     },
 
     enableSpinner: function() {
-        document.querySelector('.dashbored-weather-mask').style.visibility = 'visible';
+        this.widgetEl.querySelector('.dashbored-loading-mask').style.visibility = 'visible';
     },
     
     refresh: function(location) {

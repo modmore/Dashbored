@@ -9,7 +9,7 @@ function DashboredSiteDashMonitor(widgetId) {
     this.containerEl = this.widgetEl.querySelector('#dashbored' + widgetId + '-sitedash-monitor');
     
     this.panel = this.containerEl.querySelector('.dashbored-sitedash-monitor-panel');
-    this.messagePanel = this.widgetEl.querySelector('.dashbored-sitedash-msg');
+    this.messagePanel = this.widgetEl.querySelector('.dashbored-msg');
     
     this.record = {
         id: this.containerEl.dataset.id
@@ -53,7 +53,7 @@ DashboredSiteDashMonitor.prototype = {
     loadData: function(ignoreCache = false) {
         let that = this;
 
-        this.hideMessage();
+        Dashbored.hideMessage(this.messagePanel);
         this.enableSpinner();
 
         MODx.Ajax.request({
@@ -83,13 +83,13 @@ DashboredSiteDashMonitor.prototype = {
 
     render: function(data) {
         if (typeof data.missing_key !== 'undefined') {
-            this.showMessage(_('dashbored.sitedash.nokey_msg'));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.sitedash.nokey_msg'));
         }
         else if (typeof data.account_valid === 'undefined') {
-            this.showMessage(_('dashbored.no_data_msg', {type: 'SiteDash'}));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.no_data_msg', {type: 'SiteDash'}));
         }
         else if (data.account_valid !== '1') {
-            this.showMessage(_('dashbored.sitedash.invalid_account_msg'));
+            Dashbored.showMessage(this.messagePanel, _('dashbored.sitedash.invalid_account_msg'));
         }
         else {
             this.renderAPIData(data);
@@ -99,21 +99,12 @@ DashboredSiteDashMonitor.prototype = {
         this.disableSpinner();
     },
 
-    showMessage: function(msg) {
-        this.messagePanel.innerHTML = msg;
-        this.messagePanel.style.visibility = 'visible';
-    },
-
-    hideMessage: function() {
-        this.messagePanel.style.visibility = 'hidden';
-    },
-
     renderAPIData: function(data) {
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });
         this.containerEl.querySelector('.dashbored-sitedash-monitor-updated').textContent 
-            = _('dashbored.sitedash_monitor.last_updated_at', {at: Dashbored.renderTimestamp(data.extended.updated_at)});
+            = _('dashbored.sitedash_monitor.updated_at', {at: Dashbored.renderTimestamp(data.extended.updated_at)});
         
         let dates = data.extended.dates,
             uptime = data.extended.uptime,

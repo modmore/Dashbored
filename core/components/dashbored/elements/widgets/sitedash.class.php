@@ -50,7 +50,7 @@ HTML
 <div class="dashbored-sitedash-mask dashbored-loading-mask">
     {$this->getSpinner()}
 </div>
-<div class="dashbored-sitedash-mask dashbored-sitedash-msg"></div>
+<div class="dashbored-sitedash-mask dashbored-msg"></div>
 <div class="dashbored-bg">
     <div class="db-bg-mask"></div>
 </div>
@@ -64,7 +64,7 @@ HTML
         <div class="dashbored-sitedash-top">
             <h3 class="section-title">
                 [[%dashbored.sitedash.lighthouse_audit]]
-                <span class="dashbored-sitedash-updated-at"></span>
+                <span class="dashbored-sitedash-audit-updated-at"></span>
             </h3>
             <div class="dashbored-sitedash-audit"></div>
         </div>
@@ -73,10 +73,14 @@ HTML
             <div class="second-col"></div>
             <div class="third-col"></div>
         </div>
+        
     </div>
 </div>
 <div class="dashbored-sitedash-footer">
-    <span class="sitedash-site-url">{$this->modx->getOption('site_url')}</span>
+    <div class="dashbored-sitedash-footer-left">
+        <span class="sitedash-site-url">{$this->modx->getOption('site_url')}</span>
+        <div class="dashbored-sitedash-updated-at"></div>
+    </div>
     <button class="open-sitedash-btn" type="button">[[%dashbored.sitedash.view_in_sitedash]]</button>
 </div>
 HTML;

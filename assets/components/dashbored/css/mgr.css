@@ -92,16 +92,19 @@
     opacity: .5;
 }
 
-.dashbored-error-msg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+/* Message panel */
+.dashbored-msg {
+    box-sizing: border-box;
+    color: #fff;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    text-align: center;
+    justify-content: center;
+    padding: 30px;
+}
+.dashbored-msg a,
+.dashbored-msg a:hover {
+    color: #fff;
 }
 
 /* Weather */
@@ -282,19 +285,6 @@
     background: rgb(63,91,123);
     background: linear-gradient(120deg, rgba(90,114,142,1) 0%, rgba(63,91,123,1) 18%, rgba(35,67,104,1) 54%);
 }
-.dashbored-sitedash-msg {
-    box-sizing: border-box;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-}
-.dashbored-sitedash-msg a,
-.dashbored-sitedash-msg a:hover {
-    color: #fff;
-}
 .dashbored-sitedash-panel {
     display: flex;
     flex-direction: column;
@@ -324,8 +314,8 @@
     display: flex;
     flex-direction: column;
 }
-.dashbored-sitedash-panel .section-title .dashbored-sitedash-updated-at {
-    font-size: 5px;
+.dashbored-sitedash-panel .section-title .dashbored-sitedash-audit-updated-at {
+    font-size: 7px;
     font-weight: normal;
 }
 .dashbored-sitedash-audit {
@@ -391,7 +381,10 @@
 .dashbored-sitedash-middle .sd-value {
     font-weight: 500;
 }
-
+.dashbored-sitedash-updated-at {
+    font-size: 9px;
+    opacity: .6;
+}
 .dashbored-sitedash-footer {
     box-sizing: border-box;
     position: absolute;
@@ -403,12 +396,17 @@
     background-color: #234368;
     z-index: 3;
     color: #fff;
-    height: 34px;
+    height: 38px;
     border-radius: 0 0 3px 3px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: inset 0 1px 0 0 rgb(255 255 255/.2);
+}
+.dashbored-sitedash-footer-left {
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
 }
 .dashbored-sitedash-footer .open-sitedash-btn {
     background-color: #3f5b7b;
@@ -417,7 +415,7 @@
     box-shadow: 0 1px 0 0 rgb(0 0 0/.2);
     border-radius: 1px;
     font-size: 11px;
-    padding: 3px 8px;
+    padding: 6px 10px;
     cursor: pointer;
 }
 .dashbored-sitedash-footer .sitedash-site-url {
@@ -455,7 +453,8 @@
     height: 100%;
 }
 .dashbored-sitedash-monitor-updated {
-    font-size: 7px;
+    font-size: 9px;
+    opacity: .6;
 }
 
 /* Window */
