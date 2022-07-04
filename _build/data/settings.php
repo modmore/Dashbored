@@ -13,7 +13,7 @@ return [
         'area' => 'Paths',
         'value' => '{core_path}components/dashbored/',
     ],
-    'sitedash.site_key' => [
+    'sitedash.site_integration_key' => [
         'area' => 'SiteDash',
         'value' => '',
     ],

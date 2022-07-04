@@ -19,6 +19,6 @@ Dashbored is a free extra available on the modmore package provider. [Add the mo
 
 There is very little setup needed for Dashbored. Simply install the package and then on your MODX dashboard, click `Add` and select the widgets you would like to use.
 
-The SiteDash widgets are the only exception. For these you will need to add your `SiteDash Integration Key` to the `dashbored.sitedash.site_key` system setting.
+The SiteDash widgets are the only exception. For these you will need to add your `SiteDash Integration Key` to the `dashbored.sitedash.site_integration_key` system setting.
 You can generate a SiteDash Integration Key by logging into [sitedash.app](https://sitedash.app), select the site you would like to use, click on Manage & Actions, and you'll find it halfway down the page.
 

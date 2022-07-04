@@ -11,7 +11,7 @@ abstract class DashboredSiteDashAbstractProcessor extends DashboredRefreshProces
     protected function getSiteDashData(): array
     {
         $data = [];
-        $siteKey = $this->modx->getOption('dashbored.sitedash.site_key');
+        $siteKey = $this->modx->getOption('dashbored.sitedash.site_integration_key');
         if (!empty($siteKey)) {
             $c = curl_init();
             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
@@ -23,6 +23,7 @@ abstract class DashboredSiteDashAbstractProcessor extends DashboredRefreshProces
             if (isset($data['data'])) {
                 $data = filter_var_array($data['data'], FILTER_SANITIZE_STRING) ?? [];
             }
+            unset($data['extended']);
         }
         else {
             $data['missing_key'] = true;

@@ -81,14 +81,14 @@ if (!createObject('modSystemSetting', [
 
 // More Settings
 if (!createObject('modSystemSetting', [
-    'key' => 'dashbored.sitedash.site_key',
+    'key' => 'dashbored.sitedash.site_integration_key',
     'value' => '',
     'xtype' => 'textfield',
     'namespace' => 'dashbored',
     'area' => 'SiteDash',
     'editedon' => time(),
 ], 'key', false)) {
-    echo "Error creating dashbored.sitedash.site_key setting.\n";
+    echo "Error creating dashbored.sitedash.site_integration_key setting.\n";
 }
 
 // Widgets

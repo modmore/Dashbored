@@ -91,6 +91,9 @@ DashboredSiteDashMonitor.prototype = {
         else if (data.account_valid !== '1') {
             Dashbored.showMessage(this.messagePanel, _('dashbored.sitedash.invalid_account_msg'));
         }
+        else if (typeof data.extended === 'undefined') {
+            Dashbored.showMessage(this.messagePanel, _('dashbored.sitedash_monitor.no_extended_data'));
+        }
         else {
             this.renderAPIData(data);
         }
