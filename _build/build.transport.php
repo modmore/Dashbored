@@ -24,7 +24,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     define('PKG_NAME', 'Dashbored');
     define('PKG_NAMESPACE', 'dashbored');
     define('PKG_VERSION', '1.0.0');
-    define('PKG_RELEASE', 'dev1');
+    define('PKG_RELEASE', 'pl');
 
     /* load modx */
     require_once dirname(__DIR__) . '/config.core.php';
