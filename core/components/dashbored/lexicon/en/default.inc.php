@@ -8,6 +8,8 @@ $_lang['dashbored.select_video'] = 'Select video';
 $_lang['dashbored.none'] = 'None';
 $_lang['dashbored.no_background'] = 'No background';
 $_lang['dashbored.no_data_msg'] = 'Unable to retrieve data from [[+type]]. Please try again later.';
+$_lang['dashbored.configuration'] = 'Widget configuration';
+$_lang['dashbored.refresh'] = 'Refresh widget cache';
 
 // Dino Game
 $_lang['dashbored.dino_game.name'] = 'Dino Game';
