@@ -27,7 +27,7 @@ Dashbored.Settings = function(config) {
         buttonAlign: 'left',
         buttons: [{
             xtype: 'box',
-            html: `<a class="dashbored-credits__logo" href="https://www.modmore.com/dashbored/?utm_source=dashbored_footer" target="_blank" rel="noopener">
+            html: `<a class="dashbored-credits__logo" href="https://www.modmore.com/extras/dashbored/?utm_source=dashbored_footer" target="_blank" rel="noopener">
                 <img src="${Dashbored.config.assetsUrl}images/modmore.svg" alt="Dashbored is brought to you by {+} modmore"></a>`,
         },'->',{
             text: config.cancelBtnText || _('cancel')
