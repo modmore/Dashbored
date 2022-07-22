@@ -8,6 +8,7 @@ require_once dirname(__DIR__, 2) . '/model/dashbored/dashbored.class.php';
 abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterface
 {
     public static $initialized = false;
+    protected $canRefresh = true;
     
     /**
      * @var Dashbored
@@ -51,6 +52,17 @@ HTML
     
     public function getWidgetTitleBar($type): string
     {
+        $refresh = '';
+        if ($this->canRefresh) {
+            $refresh = <<<HTML
+<div class="dashbored-title-btn-outer">
+    <button title="{$this->modx->lexicon('dashbored.refresh')}" class="dashbored-title-btn refresh {$type}">
+        <i class="icon icon-refresh"></i>
+    </button>
+</div>
+HTML;
+        }
+
         return <<<HTML
 <div class="dashbored-widget-title">
     <span>{$this->modx->lexicon("dashbored.{$type}.name")}</span>
@@ -60,11 +72,7 @@ HTML
                 <i class="icon icon-cog"></i>
             </button>
         </div>
-        <div class="dashbored-title-btn-outer">
-            <button title="{$this->modx->lexicon('dashbored.refresh')}" class="dashbored-title-btn refresh {$type}">
-                <i class="icon icon-refresh"></i>
-            </button>
-        </div>
+        {$refresh}
     </div>
 </div>
 HTML;
