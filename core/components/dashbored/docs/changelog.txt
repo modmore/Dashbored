@@ -1,5 +1,4 @@
 - Add missing lexicons for the settings and refresh buttons
-- Don't show refresh button for the dino game
 - Fix credits URL
 
 Dashbored 1.0.0-pl

@@ -4,8 +4,6 @@ require_once __DIR__ . '/abstract.class.php';
 
 class DinosaurGameDashboardWidget extends DashboredAbstractDashboardWidget
 {
-    protected $canRefresh = false;
-
     // Values are defaults
     public const ACCEPTED_FIELDS = [
         'display_name' => '',
