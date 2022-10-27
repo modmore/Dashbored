@@ -87,10 +87,13 @@ $_lang['dashbored.sitedash.disk_used'] = 'Disk used';
 $_lang['dashbored.sitedash.extras_installed'] = 'Extras installed';
 $_lang['dashbored.sitedash.updates_available'] = 'Updates available';
 
-
 // SiteDash Monitor
 $_lang['dashbored.sitedash_monitor.name'] = 'SiteDash | Monitoring';
 $_lang['dashbored.sitedash_monitor.menu_name'] = '[Dashbored] - SiteDash | Extended Monitoring';
 $_lang['dashbored.sitedash_monitor.desc'] = 'SiteDash extended monitoring widget. See server uptime, response times, memory and CPU usage.';
 $_lang['dashbored.sitedash_monitor.updated_at'] = 'Updated at [[+at]]';
 $_lang['dashbored.sitedash_monitor.no_extended_data'] = 'Extended monitoring for this site is currently disabled in SiteDash.';
+
+// Settings
+$_lang['setting_dashbored.sitedash.site_integration_key'] = 'SiteDash: Integration Key';
+$_lang['setting_dashbored.sitedash.site_integration_key_desc'] = 'Not to be confused with your "Site Key" that is used by the SiteDash extra to authenticate, you can find your "Integration Key" by logging into SiteDash. Select the site you would like to use, click on "Manage & Actions", and you can find it half way down the page.';
