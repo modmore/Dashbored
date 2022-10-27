@@ -80,7 +80,13 @@ DashboredNewsFeed.prototype = {
 
     render: function(data) {
         this.containerEl.innerHTML = '';
-        
+
+        // Render feed title first
+        let feedTitle = document.createElement('div');
+        feedTitle.textContent = data['feed_title'];
+        feedTitle.classList.add('dashbored-newsfeed-feed-title');
+        this.containerEl.append(feedTitle);
+
         for (const article in data) {
             // Skip non-articles
             if (typeof data[article].title === 'undefined') {

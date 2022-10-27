@@ -46,6 +46,7 @@ class DashboredNewsFeedRefreshProcessor extends DashboredRefreshProcessor {
             
             $data = filter_var_array($data, FILTER_SANITIZE_STRING) ?? [];
             $data = array_merge($data, $this->fields);
+            $data['feed_title'] = $feed->get_title();
 
             $this->modx->cacheManager->set('newsfeed_data', $data, 7200, Dashbored::$cacheOptions);
         }

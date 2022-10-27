@@ -228,6 +228,19 @@
 /* News Feed */
 .dashbored-newsfeed-widget {
     height: 300px;
+    position: relative;
+}
+.dashbored-newsfeed-feed-title {
+    padding: 5px 10px;
+    margin: -10px -10px 10px -10px;
+    width: 100%;
+    background: rgb(250,250,250);
+    background: linear-gradient(0deg, rgba(250,250,250,1) 0%, rgba(255,255,255,1) 100%);
+    box-shadow: 0 0 1px rgba(0,0,0,0.3);
+    text-align: center;
+    font-size: 10px;
+    font-weight: bolder;
+    color: #53595f;
 }
 .dashbored-newsfeed-item {
     padding: 16px 0;
