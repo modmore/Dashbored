@@ -1,6 +1,6 @@
 Dashbored 1.0.2-pl
 ------------------
-Released on 2022-
+Released on 2022-11-10
 
 - Add description to SiteDash integration key setting. [#2]
 - Display feed name on news feed widget. [#1]

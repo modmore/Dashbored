@@ -44,7 +44,7 @@ class Dashbored
      *
      * @var string
      */
-    public $version = '1.0.0-dev1';
+    public $version = '1.0.2-pl';
 
     /**
      * Constructor to load the config as needed.
