@@ -8,7 +8,7 @@ require_once dirname(__DIR__, 2) . '/model/dashbored/dashbored.class.php';
 abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterface
 {
     public static $initialized = false;
-    
+
     /**
      * @var Dashbored
      */
@@ -17,7 +17,7 @@ abstract class DashboredAbstractDashboardWidget extends modDashboardWidgetInterf
      * @var mixed
      */
     protected $assetsUrl;
-    
+
     public function initialize(): void
     {
         $this->dashbored = new Dashbored($this->modx);
@@ -48,7 +48,7 @@ Ext.onReady(function() {
 HTML
         );
     }
-    
+
     public function getWidgetTitleBar($type): string
     {
         return <<<HTML
@@ -80,7 +80,6 @@ HTML;
   <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
 </svg>
 HTML;
-
     }
 
     /**
@@ -100,6 +99,17 @@ HTML;
         }
 
         return $userSetting->get('value');
+    }
+
+    /**
+     * @param modX $modx
+     * @param string $key
+     * @param mixed $default
+     * @return array|bool|float|mixed
+     */
+    public static function getSystemSetting(modX $modx, string $key, mixed $default): mixed
+    {
+        return $modx->getOption($key, null, $default, true);
     }
 }
 return 'DashboredAbstractDashboardWidget';

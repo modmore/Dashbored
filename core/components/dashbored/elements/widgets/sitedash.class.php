@@ -11,6 +11,16 @@ class DashboredSiteDashDashboardWidget extends DashboredAbstractDashboardWidget
         'bg_image' => '',
         'bg_video' => '',
     ];
+    public const SYSTEM_SETTINGS = [
+        'display_lighthouse' => 'yes',
+        'display_config' => 'no',
+        'display_security' => 'no',
+        'display_checks' => 'no',
+    ];
+    public function showMiddle(): bool
+    {
+        return false;
+    }
 
     public function render(): string
     {
@@ -22,7 +32,7 @@ class DashboredSiteDashDashboardWidget extends DashboredAbstractDashboardWidget
         $props = [];
         foreach (self::ACCEPTED_FIELDS as $field => $default) {
             $props[$field] = self::getUserSetting($this->modx, 'dashbored.sitedash.' . $field,
-                    $this->modx->user->get('id')) ?? $default;
+                $this->modx->user->get('id')) ?? $default;
         }
 
         $this->controller->addHtml(<<<HTML
@@ -73,7 +83,6 @@ HTML
             <div class="second-col"></div>
             <div class="third-col"></div>
         </div>
-        
     </div>
 </div>
 <div class="dashbored-sitedash-footer">
