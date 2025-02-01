@@ -7,23 +7,23 @@ function DashboredSiteDash(widgetId) {
     this.window = {};
     this.widgetEl = document.querySelector('#dashboard-block-' + widgetId);
     this.containerEl = this.widgetEl.querySelector('#dashbored' + widgetId + '-sitedash');
-    
+
     this.panel = this.containerEl.querySelector('.dashbored-sitedash-panel');
     this.topPanel = this.panel.querySelector('.dashbored-sitedash-top');
     this.auditPanel = this.topPanel.querySelector('.dashbored-sitedash-audit');
-    
+
     this.middlePanel = this.panel.querySelector('.dashbored-sitedash-middle');
     this.firstCol = this.middlePanel.querySelector('.first-col');
     this.secondCol = this.middlePanel.querySelector('.second-col');
     this.thirdCol = this.middlePanel.querySelector('.third-col');
-    
+
     this.updatedAt = this.widgetEl.querySelector('.dashbored-sitedash-updated-at');
-    
+
     this.footer = document.querySelector('.dashbored-sitedash-footer');
     this.sitedashBtn = this.footer.querySelector('.open-sitedash-btn');
     this.sitedashLink = 'https://sitedash.app';
     this.messagePanel = this.widgetEl.querySelector('.dashbored-msg');
-    
+
     this.record = {
         id: this.containerEl.dataset.id
     };
@@ -68,7 +68,7 @@ DashboredSiteDash.prototype = {
 
     loadData: function(ignoreCache = false) {
         let that = this;
-        
+
         Dashbored.hideMessage(this.messagePanel);
         this.enableSpinner();
 
@@ -110,28 +110,31 @@ DashboredSiteDash.prototype = {
         else {
             this.renderAPIData(data);
         }
-        
+
         Dashbored.renderBackground(this, data);
         this.disableSpinner();
     },
-    
+
     renderAPIData: function(data) {
         this.auditPanel.innerHTML = null;
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });
-        this.containerEl.querySelector('.dashbored-sitedash-top .dashbored-sitedash-audit-updated-at').textContent 
+        this.containerEl.querySelector('.dashbored-sitedash-top .dashbored-sitedash-audit-updated-at').textContent
             = Dashbored.renderTimestamp(data.lighthouse.updated_at);
-        for (const score in data.lighthouse.scores) {
-            this.renderLighthouseScore(score, data.lighthouse.scores[score]);
+
+        if (this.record.display_lighthouse === 'yes') {
+            for (const score in data.lighthouse.scores) {
+                this.renderLighthouseScore(score, data.lighthouse.scores[score]);
+            }
         }
-        
+
         this.renderColumns(data);
         this.updatedAt.textContent = _('dashbored.sitedash.updated_at', {at: Dashbored.renderTimestamp(data.updated_at)});
         this.widgetEl.querySelector('.sitedash-site-url').textContent = data.site_url;
         this.sitedashLink = data.sitedash_link
     },
-    
+
     renderLighthouseScore: function(type, score) {
         const outerDiv = document.createElement('div'),
             metricDiv = document.createElement('div'),
@@ -141,16 +144,16 @@ DashboredSiteDash.prototype = {
             ns = 'http://www.w3.org/2000/svg',
             svg = document.createElementNS(ns,'svg'),
             svgPath = document.createElementNS(ns,'path');
-        
+
         // Set classes, values and attributes
         outerDiv.classList.add('audit-' + type);
         metricDiv.classList.add('audit-metric');
         scoreDiv.classList.add('audit-score');
-        
+
         nameDiv.classList.add('audit-metric-name');
         nameDiv.textContent = _('dashbored.sitedash.' + type);
         span.textContent = score;
-        
+
         svg.classList.add('audit-metric-circle');
         svg.setAttribute('viewBox', '0 0 36 36');
         svgPath.setAttribute('d', `M18 2.0845
@@ -160,7 +163,7 @@ DashboredSiteDash.prototype = {
         svgPath.setAttribute('stroke', '#ffe168');
         svgPath.setAttribute('stroke-width', '3');
         svgPath.setAttribute('stroke-dasharray', score + ', 100');
-        
+
         // Append
         svg.appendChild(svgPath);
         scoreDiv.appendChild(span);
@@ -168,23 +171,29 @@ DashboredSiteDash.prototype = {
         metricDiv.appendChild(svg);
         outerDiv.appendChild(metricDiv);
         outerDiv.appendChild(nameDiv);
-        
+
         this.auditPanel.appendChild(outerDiv);
     },
-    
+
     renderColumns: function(data) {
-        this.renderConfigColumn(data.config);
-        this.renderSecurityColumn(data.security);
-        this.renderChecksColumn(data.checks);
+        if (this.record.display_config  === 'yes') {
+            this.renderConfigColumn(data.config);
+        }
+        if (this.record.display_security === 'yes') {
+            this.renderSecurityColumn(data.security);
+        }
+        if (this.record.display_checks === 'yes') {
+            this.renderChecksColumn(data.checks);
+        }
     },
-    
+
     renderColumnTitle: function(type) {
         let title = document.createElement('h3');
         title.classList.add('section-title');
         title.textContent = _('dashbored.sitedash.' + type);
         return title;
     },
-    
+
     renderConfigColumn: function(rows) {
         this.firstCol.innerHTML = '';
         this.firstCol.appendChild(this.renderColumnTitle('config'));
@@ -193,11 +202,11 @@ DashboredSiteDash.prototype = {
                 tag = document.createElement('span'),
                 dots = document.createElement('div'),
                 value = document.createElement('span');
-            
+
             tag.classList.add('tag');
             dots.classList.add('dots');
             value.classList.add('sd-value');
-            
+
             switch (item) {
                 case 'database_version':
                 case 'modx_upgrade_available':
@@ -220,12 +229,12 @@ DashboredSiteDash.prototype = {
                     value.textContent = rows['database_version'] || '';
                     break;
             }
-            
+
             row.appendChild(tag);
             row.appendChild(dots);
             row.appendChild(value);
             this.firstCol.appendChild(row);
-            
+
         }
     },
 
@@ -312,7 +321,7 @@ DashboredSiteDash.prototype = {
 
         }
     },
-    
+
     disableSpinner: function() {
         this.widgetEl.querySelector('.dashbored-loading-mask').style.visibility = 'hidden';
     },
