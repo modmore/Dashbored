@@ -116,14 +116,15 @@ DashboredSiteDash.prototype = {
     },
 
     renderAPIData: function(data) {
-        this.auditPanel.innerHTML = null;
+        // this.auditPanel.innerHTML = null;
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });
-        this.containerEl.querySelector('.dashbored-sitedash-top .dashbored-sitedash-audit-updated-at').textContent
-            = Dashbored.renderTimestamp(data.lighthouse.updated_at);
 
-        if (this.record.display_lighthouse === 'yes') {
+        // Only render lighthouse section if enabled in system setting
+        if (this.record.display_lighthouse === '1') {
+            this.renderLighthouse(data.lighthouse.updated_at);
+
             for (const score in data.lighthouse.scores) {
                 this.renderLighthouseScore(score, data.lighthouse.scores[score]);
             }
@@ -133,6 +134,27 @@ DashboredSiteDash.prototype = {
         this.updatedAt.textContent = _('dashbored.sitedash.updated_at', {at: Dashbored.renderTimestamp(data.updated_at)});
         this.widgetEl.querySelector('.sitedash-site-url').textContent = data.site_url;
         this.sitedashLink = data.sitedash_link
+    },
+
+    renderLighthouse: function(updatedAt) {
+        const container = this.containerEl.querySelector('.dashbored-sitedash-top'),
+            title = document.createElement('h3'),
+            updatedSpan = document.createElement('span'),
+            auditPanel = document.createElement('div');
+
+        container.innerHTML = null;
+
+        title.classList.add('section-title');
+        title.innerHTML = _('dashbored.sitedash.lighthouse_audit');
+        updatedSpan.classList.add('dashbored-sitedash-audit-updated-at');
+        updatedSpan.textContent = Dashbored.renderTimestamp(updatedAt);
+        title.appendChild(updatedSpan);
+        container.appendChild(title);
+
+        auditPanel.classList.add('dashbored-sitedash-audit');
+        container.appendChild(auditPanel);
+
+        this.auditPanel = auditPanel;
     },
 
     renderLighthouseScore: function(type, score) {
@@ -176,13 +198,13 @@ DashboredSiteDash.prototype = {
     },
 
     renderColumns: function(data) {
-        if (this.record.display_config  === 'yes') {
+        if (this.record.display_config  === '1') {
             this.renderConfigColumn(data.config);
         }
-        if (this.record.display_security === 'yes') {
+        if (this.record.display_security === '1') {
             this.renderSecurityColumn(data.security);
         }
-        if (this.record.display_checks === 'yes') {
+        if (this.record.display_checks === '1') {
             this.renderChecksColumn(data.checks);
         }
     },

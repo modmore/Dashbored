@@ -12,15 +12,11 @@ class DashboredSiteDashDashboardWidget extends DashboredAbstractDashboardWidget
         'bg_video' => '',
     ];
     public const SYSTEM_SETTINGS = [
-        'display_lighthouse' => 'yes',
-        'display_config' => 'no',
-        'display_security' => 'no',
-        'display_checks' => 'no',
+        'display_lighthouse' => '1',
+        'display_config' => '0',
+        'display_security' => '0',
+        'display_checks' => '0',
     ];
-    public function showMiddle(): bool
-    {
-        return false;
-    }
 
     public function render(): string
     {
@@ -71,13 +67,7 @@ HTML
     data-backgroundmask="{$props['bg_mask']}" 
 >
     <div class="dashbored-sitedash-panel">
-        <div class="dashbored-sitedash-top">
-            <h3 class="section-title">
-                [[%dashbored.sitedash.lighthouse_audit]]
-                <span class="dashbored-sitedash-audit-updated-at"></span>
-            </h3>
-            <div class="dashbored-sitedash-audit"></div>
-        </div>
+        <div class="dashbored-sitedash-top"></div>
         <div class="dashbored-sitedash-middle">
             <div class="first-col"></div>
             <div class="second-col"></div>
