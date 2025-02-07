@@ -1,3 +1,9 @@
+Dashbored 1.1.0-pl
+------------------
+Released on 2025-02-07
+
+- Enable hiding sections on the SiteDash widget via system/user settings (@svrhovac) [#3]
+
 Dashbored 1.0.2-pl
 ------------------
 Released on 2022-11-10
