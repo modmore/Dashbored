@@ -95,5 +95,13 @@ $_lang['dashbored.sitedash_monitor.updated_at'] = 'Updated at [[+at]]';
 $_lang['dashbored.sitedash_monitor.no_extended_data'] = 'Extended monitoring for this site is currently disabled in SiteDash.';
 
 // Settings
-$_lang['setting_dashbored.sitedash.site_integration_key'] = 'SiteDash: Integration Key';
+$_lang['setting_dashbored.sitedash.display_checks'] = 'Display Checks';
+$_lang['setting_dashbored.sitedash.display_checks_desc'] = 'Allows the "Checks" section of the SiteDash widget to be loaded.';
+$_lang['setting_dashbored.sitedash.display_config'] = 'Display Config';
+$_lang['setting_dashbored.sitedash.display_config_desc'] = 'Allows the "Config" section of the SiteDash widget to be loaded.';
+$_lang['setting_dashbored.sitedash.display_lighthouse'] = 'Display Lighthouse';
+$_lang['setting_dashbored.sitedash.display_lighthouse_desc'] = 'Allows the "Lighthouse" section of the SiteDash widget to be loaded.';
+$_lang['setting_dashbored.sitedash.display_security'] = 'Display Security';
+$_lang['setting_dashbored.sitedash.display_security_desc'] = 'Allows the "Security" section of the SiteDash widget to be loaded.';
+$_lang['setting_dashbored.sitedash.site_integration_key'] = 'Integration Key';
 $_lang['setting_dashbored.sitedash.site_integration_key_desc'] = 'Not to be confused with your "Site Key" that is used by the SiteDash extra to authenticate, you can find your "Integration Key" by logging into SiteDash. Select the site you would like to use, click on "Manage & Actions", and you can find it half way down the page.';

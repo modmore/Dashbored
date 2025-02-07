@@ -116,7 +116,6 @@ DashboredSiteDash.prototype = {
     },
 
     renderAPIData: function(data) {
-        // this.auditPanel.innerHTML = null;
         this.containerEl.querySelectorAll('.dashbored-error-msg').forEach((msg) => {
             msg.remove();
         });

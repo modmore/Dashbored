@@ -17,6 +17,26 @@ return [
         'area' => 'SiteDash',
         'value' => '',
     ],
+    'sitedash.display_checks' => [
+        'xtype' => 'combo-boolean',
+        'area' => 'SiteDash',
+        'value' => true,
+    ],
+    'sitedash.display_config' => [
+        'xtype' => 'combo-boolean',
+        'area' => 'SiteDash',
+        'value' => true,
+    ],
+    'sitedash.display_lighthouse' => [
+        'xtype' => 'combo-boolean',
+        'area' => 'SiteDash',
+        'value' => true,
+    ],
+    'sitedash.display_security' => [
+        'xtype' => 'combo-boolean',
+        'area' => 'SiteDash',
+        'value' => true,
+    ],
 ];
 
 

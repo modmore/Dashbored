@@ -91,6 +91,50 @@ if (!createObject('modSystemSetting', [
     echo "Error creating dashbored.sitedash.site_integration_key setting.\n";
 }
 
+if (!createObject('modSystemSetting', [
+    'key' => 'dashbored.sitedash.display_checks',
+    'value' => true,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'dashbored',
+    'area' => 'SiteDash',
+    'editedon' => time(),
+], 'key', false)) {
+    echo "Error creating dashbored.sitedash.display_checks setting.\n";
+}
+
+if (!createObject('modSystemSetting', [
+    'key' => 'dashbored.sitedash.display_config',
+    'value' => true,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'dashbored',
+    'area' => 'SiteDash',
+    'editedon' => time(),
+], 'key', false)) {
+    echo "Error creating dashbored.sitedash.display_config setting.\n";
+}
+
+if (!createObject('modSystemSetting', [
+    'key' => 'dashbored.sitedash.display_lighthouse',
+    'value' => true,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'dashbored',
+    'area' => 'SiteDash',
+    'editedon' => time(),
+], 'key', false)) {
+    echo "Error creating dashbored.sitedash.display_lighthouse setting.\n";
+}
+
+if (!createObject('modSystemSetting', [
+    'key' => 'dashbored.sitedash.display_security',
+    'value' => true,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'dashbored',
+    'area' => 'SiteDash',
+    'editedon' => time(),
+], 'key', false)) {
+    echo "Error creating dashbored.sitedash.display_security setting.\n";
+}
+
 // Widgets
 $widgets = include $componentPath . '/_build/data/transport.dashboard_widgets.php';
 if (empty($widgets)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not create widgets.');
